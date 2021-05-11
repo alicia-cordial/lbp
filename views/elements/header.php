@@ -1,1 +1,3 @@
-<?php
+<header>
+    <p>Header</p>
+</header>
