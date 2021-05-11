@@ -2,10 +2,10 @@
 -- version 4.9.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 06, 2021 at 02:04 PM
--- Server version: 5.7.30
--- PHP Version: 7.4.9
+-- Hôte : localhost:3306
+-- Généré le : mar. 11 mai 2021 à 12:25
+-- Version du serveur :  5.7.30
+-- Version de PHP : 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `lbp`
+-- Base de données : `lbp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `article`
+-- Structure de la table `article`
 --
 
 CREATE TABLE `article` (
@@ -35,7 +35,7 @@ CREATE TABLE `article` (
   `photo` varchar(255) NOT NULL,
   `prix` int(20) NOT NULL,
   `etat_objet` enum('neuf','très bon état','bon état') NOT NULL,
-  `signalé` int(1) NOT NULL,
+  `signal` int(1) NOT NULL,
   `id_categorie` int(1) NOT NULL,
   `ouvert_negociation` enum('oui','non') NOT NULL,
   `status` enum('vendu','disponible') NOT NULL,
@@ -46,7 +46,19 @@ CREATE TABLE `article` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categorie`
+-- Structure de la table `article_categorie`
+--
+
+CREATE TABLE `article_categorie` (
+  `id` int(11) NOT NULL,
+  `id_categorie` int(1) NOT NULL,
+  `id_article` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `categorie`
 --
 
 CREATE TABLE `categorie` (
@@ -57,33 +69,20 @@ CREATE TABLE `categorie` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jonction_categorie`
---
-
-CREATE TABLE `jonction_categorie` (
-  `id` int(11) NOT NULL,
-  `id_categorie` int(1) NOT NULL,
-  `id_article` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `message`
+-- Structure de la table `message`
 --
 
 CREATE TABLE `message` (
   `id` int(11) NOT NULL,
-  `id_expediteur` int(11) NOT NULL,
-  `id_destinataire` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `contenu` text NOT NULL
+  `contenu` text NOT NULL,
+  `id_expediteur` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utilisateur`
+-- Structure de la table `utilisateur`
 --
 
 CREATE TABLE `utilisateur` (
@@ -97,12 +96,37 @@ CREATE TABLE `utilisateur` (
   `date_inscription` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
--- Indexes for dumped tables
+-- Structure de la table `utilisateur_article`
+--
+
+CREATE TABLE `utilisateur_article` (
+  `id` int(11) NOT NULL,
+  `id_client` int(11) NOT NULL,
+  `id_article` int(11) NOT NULL,
+  `id_vendeur` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur_message`
+--
+
+CREATE TABLE `utilisateur_message` (
+  `id` int(11) NOT NULL,
+  `id_message` int(11) NOT NULL,
+  `id_destinataire` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `article`
+-- Index pour la table `article`
 --
 ALTER TABLE `article`
   ADD PRIMARY KEY (`id`),
@@ -110,91 +134,117 @@ ALTER TABLE `article`
   ADD KEY `vendeur` (`id_vendeur`);
 
 --
--- Indexes for table `categorie`
+-- Index pour la table `article_categorie`
 --
-ALTER TABLE `categorie`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `jonction_categorie`
---
-ALTER TABLE `jonction_categorie`
+ALTER TABLE `article_categorie`
   ADD PRIMARY KEY (`id`),
   ADD KEY `article` (`id_article`),
   ADD KEY `categorie` (`id_categorie`);
 
 --
--- Indexes for table `message`
+-- Index pour la table `categorie`
 --
-ALTER TABLE `message`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `expediteur_suppression` (`id_expediteur`),
-  ADD KEY `destinataire_suppression` (`id_destinataire`);
+ALTER TABLE `categorie`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `utilisateur`
+-- Index pour la table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Index pour la table `utilisateur_article`
+--
+ALTER TABLE `utilisateur_article`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client` (`id_client`),
+  ADD KEY `vendeur` (`id_vendeur`),
+  ADD KEY `article_suppression` (`id_article`);
+
+--
+-- Index pour la table `utilisateur_message`
+--
+ALTER TABLE `utilisateur_message`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `message` (`id_message`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `article`
+-- AUTO_INCREMENT pour la table `article`
 --
 ALTER TABLE `article`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `categorie`
+-- AUTO_INCREMENT pour la table `article_categorie`
+--
+ALTER TABLE `article_categorie`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `jonction_categorie`
---
-ALTER TABLE `jonction_categorie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `message`
+-- AUTO_INCREMENT pour la table `message`
 --
 ALTER TABLE `message`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `utilisateur`
+-- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT pour la table `utilisateur_article`
+--
+ALTER TABLE `utilisateur_article`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `utilisateur_message`
+--
+ALTER TABLE `utilisateur_message`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `article`
+-- Contraintes pour la table `article_categorie`
 --
-ALTER TABLE `article`
-  ADD CONSTRAINT `acheteur` FOREIGN KEY (`id_acheteur`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ALTER TABLE `article_categorie`
+  ADD CONSTRAINT `article` FOREIGN KEY (`id_article`) REFERENCES `article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `categorie` FOREIGN KEY (`id_categorie`) REFERENCES `categorie` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `utilisateur_article`
+--
+ALTER TABLE `utilisateur_article`
+  ADD CONSTRAINT `article_suppression` FOREIGN KEY (`id_article`) REFERENCES `article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `client` FOREIGN KEY (`id_client`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `vendeur` FOREIGN KEY (`id_vendeur`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `jonction_categorie`
+-- Contraintes pour la table `utilisateur_message`
 --
-ALTER TABLE `jonction_categorie`
-  ADD CONSTRAINT `article` FOREIGN KEY (`id_article`) REFERENCES `article` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `categorie` FOREIGN KEY (`id_categorie`) REFERENCES `categorie` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `message`
---
-ALTER TABLE `message`
-  ADD CONSTRAINT `destinataire_suppression` FOREIGN KEY (`id_destinataire`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `expediteur_suppression` FOREIGN KEY (`id_expediteur`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `utilisateur_message`
+  ADD CONSTRAINT `message` FOREIGN KEY (`id_message`) REFERENCES `message` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

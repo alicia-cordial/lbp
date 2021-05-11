@@ -1,7 +1,7 @@
 $(function() {
 
     $("#article").autocomplete({
-        source: "charge_bdd.php"
+        source: "../view/autocompletion.php"
     });
 
 
@@ -15,3 +15,22 @@ if (url === 'http://localhost/lbp/index.php' || url === 'http://localhost/lbp/')
 } else {
     $('.bar_header').show();
 }
+
+
+// (C) ATTACH AUTOCOMPLETE TO INPUT FIELDS
+window.addEventListener("DOMContentLoaded", function() {
+    ac.attach({
+        target: "demoA",
+        data: "../views/Database.php",
+        post: { type: "name" }
+    });
+
+    ac.attach({
+        target: "demoB",
+        data: "2b-search.php",
+        post: { type: "email" },
+        // OPTIONAL
+        delay: 1000,
+        min: 3
+    });
+});
