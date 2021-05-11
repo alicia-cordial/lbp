@@ -1,7 +1,7 @@
 <?php
 
 
-class Autocompletion extends Database{
+class Autocompletion extends Routeur{
 
 
 function getInfos(){
