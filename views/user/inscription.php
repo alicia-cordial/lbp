@@ -3,20 +3,35 @@
         <h2>INSCRIPTION</h2>
     </article>
     <article id="form">
-        <form method="post" class="formModule">
-            <div>
-                <input type="email" id="email" name="email" placeholder="email">
-                <input type="password" id="password" name="password" placeholder="mot de passe">
+        <form method="get" class="formModule">
+            <div class="formBloc" id="bloc1">
+                <p>Vous êtes...</p>
+                <div id="formRadio">
+                    <input type="radio" name="status" value="vendeur">
+                    <label for="vendeur">vendeur.se</label>
+                    <input type="radio" name="status" value="client">
+                    <label for="client">client.e</label>
+                </div>
             </div>
-            <div>
-                <input type="text" name="login">
+
+            <div class="formBloc" id="bloc2">
+                <input type="text" id="login" name="login" placeholder="identifiant">
+                <input type="password" id="password" name="password" placeholder="mot de passe">
+                <input type="password" id="password2" name="password2" placeholder="confirmez votre mot de passe">
+                <p><em>*Le mot de passe doit comporter au moins 6 caractères, un caractère spécial et un chiffre.</em>
+                </p>
+            </div>
+
+            <div class="formBloc" id="bloc3">
+                <input type="email" id="email" name="email" placeholder="email">
+                <input type="text" pattern="[0-9]{5}" id="zip" name="zip" placeholder="code postal">
+                <button id="formConnexion">S'inscrire</button>
             </div>
         </form>
 
         <div class="formInfo">
-            <button id="formConnexion">S'inscrire</button>
             <div id="message"></div>
         </div>
     </article>
-    <p>Vous avez déjà un compte ?  <span onclick="changeForm()">Connectez-vous.</span></p>
+    <p>Vous avez déjà un compte ? <span onclick="changeForm()">Connectez-vous.</span></p>
 </main>
