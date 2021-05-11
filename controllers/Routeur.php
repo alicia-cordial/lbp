@@ -18,7 +18,7 @@ class Routeur
         if (isset($_GET['r']) && key_exists($_GET['r'], $this->controllers)) {
             $this->controller = new $this->controllers[$_GET['r']]();
         } else {
-            header('location: index.php?r=home');
+            header('location: home');
             new Home();
         }
     }
