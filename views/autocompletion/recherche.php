@@ -1,3 +1,5 @@
+
+
 <main class="main_recherche">
       <?php
        while ($donnees = $query->fetch()){ ?>
@@ -15,5 +17,5 @@
           </article>
           <?php
     }
-?>
+   ?>
  </main>

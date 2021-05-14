@@ -1,11 +1,18 @@
-window.addEventListener("DOMContentLoaded", (function() {
+$(function() {
 
-    window.addEventListener("#article").autocomplete({
-        source: "../view/autocompletion.php"
+    $("#article").autocomplete({
+        source: "../views/autocompletion/charge_bdd.php"
     });
 
+});
 
-}));
+$(function() {
+
+    $("#article_header").autocomplete({
+        source: "../views/autocompletion/charge_bdd.php"
+    });
+
+});
 /*
 var url = window.location.href;
 console.log(url);
