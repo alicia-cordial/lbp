@@ -1,3 +1,15 @@
+<?php
+include("models/Database.php");
+// Afficher les résultats de recherche provenant du formulaire de l'index
+if(isset($_GET['search'])){
+
+  $search = $_GET['search'];
+
+  $query = $db->query("SELECT * FROM article WHERE titre LIKE '%$search%'");
+  ?>
+
+
+
 <main class="main_recherche">
       <?php
        while ($donnees = $query->fetch()){ ?>
@@ -15,5 +27,11 @@
           </article>
           <?php
     }
-?>
+  }else{
+    //header('Location:home.php');
+  echo "erreur";
+  } ?>
  </main>
+
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
