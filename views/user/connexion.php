@@ -11,9 +11,9 @@
         </form>
 
         <div class="formInfo">
-            <button id="formConnexion">Se connecter</button>
+            <button id ="submitConnexion">Se connecter</button>
             <div id="message"></div>
         </div>
     </article>
-    <p>Vous n'avez pas encore de compte ?  <span id="changeToInscription" onclick="changeForm()">Inscrivez-vous.</span></p>
+    <p>Vous n'avez pas encore de compte ?  <span class="callForm" id="callformInscription">Inscrivez-vous.</span></p>
 </main>
