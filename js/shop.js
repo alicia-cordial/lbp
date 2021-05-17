@@ -1,7 +1,7 @@
 $(function() {
 
     $("#article").autocomplete({
-        source: "home.php"
+        source: "../models/Database.php"
     });
 
 });
@@ -10,7 +10,7 @@ $(function() {
 $(function() {
 
     $("#article_header").autocomplete({
-        source: "home.php"
+        source: "../models/Database.php"
     });
 
 });

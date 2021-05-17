@@ -1,7 +1,7 @@
 <?php
 
 
-class Home extends Routeur
+class Recherche extends Home
 {
 
 
@@ -10,19 +10,15 @@ class Home extends Routeur
 
 
         $model = new Autocompletion();
-        $recherche = $model->recherche();
-    
+  
+        $infos = $model->getInfos();
+        $chargebdd = $model->chargeBdd();
 
-  var_dump($model);
-  var_dump($recherche);
-
-       
-
-        $title = "Home";
+        $title = "Recherche";
         $css = "home.css";
 
         ob_start();
-        require_once ('views/home.php');
+        require_once ('views/autocompletion/recherche.php');
 
    
         $main = ob_get_clean();
