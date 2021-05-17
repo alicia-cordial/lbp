@@ -1,5 +1,6 @@
 <?php
-ini_set('display_errors', 'on');
+session_start()
+;ini_set('display_errors', 'on');
 error_reporting(E_ALL);
 
 class Autoloader
@@ -18,7 +19,8 @@ class Autoloader
             'controllers/shop',
             'controllers/user',
             'controllers/admin',
-            'classes'
+            'classes',
+            'models'
         ];
 
         foreach ($dirs as $dir) {

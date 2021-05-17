@@ -2,8 +2,8 @@
     <article>
         <h2>INSCRIPTION</h2>
     </article>
-    <article id="form">
-        <form method="get" class="formModule">
+    <article class="form">
+        <form id="formInscription">
             <div class="formBloc" id="bloc1">
                 <p>Vous êtes...</p>
                 <div id="formRadio">
@@ -25,7 +25,7 @@
             <div class="formBloc" id="bloc3">
                 <input type="email" id="email" name="email" placeholder="email">
                 <input type="text" pattern="[0-9]{5}" id="zip" name="zip" placeholder="code postal">
-                <button id="formConnexion">S'inscrire</button>
+                <button type="submit">S'inscrire</button>
             </div>
         </form>
 
