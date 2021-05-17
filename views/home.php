@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 
 <main id="form" class="main_index">
@@ -5,6 +9,7 @@
         <input type="text" name="search" class="input_index" id="article" placeholder="Que recherchez-vous ?">
       </form>
 
+<<<<<<< Updated upstream
            <?php
        while ($donnees = $query->fetch()){ ?>
 
@@ -30,6 +35,8 @@
           <h2> <?php echo $article['titre']; ?> </h2>   
           <p> <?php echo $article['description']; ?> </p>
 </section>
+=======
+>>>>>>> Stashed changes
 </main>
   
   
