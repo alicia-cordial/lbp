@@ -11,8 +11,9 @@ class Home extends Routeur
 
         $model = new Autocompletion();
         $infos = $model->getInfos();
-        $recherche = $model->recherche();
         $chargebdd = $model->chargeBdd();
+        $recherche = $model->recherche();
+       
 
         $title = "Home";
         $css = "home.css";

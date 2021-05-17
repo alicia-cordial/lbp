@@ -6,8 +6,8 @@ class Autocompletion extends Routeur{
 
 function getInfos(){
     $id = $_GET['id'];
-    $req = $this->pdo->prepare(" SELECT * FROM article WHERE id = '$id' ");
-    $req->execute();
+    $req = $this->pdo->prepare(" SELECT * FROM article WHERE id = ':id' ");
+    $req->execute(["id"=>":id"]);
     $article = $req->fetch();
 }
 
