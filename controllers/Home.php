@@ -1,11 +1,19 @@
 <?php
 
 
-class Home
+class Home extends Routeur
 {
+
+
     function __construct()
     {
-        
+
+
+        $model = new Autocompletion();
+        $infos = $model->getInfos();
+        $recherche = $model->recherche();
+        $chargebdd = $model->chargeBdd();
+
         $title = "Home";
         $css = "home.css";
 
@@ -20,6 +28,7 @@ class Home
     }
 
 
+        
 
 
 }

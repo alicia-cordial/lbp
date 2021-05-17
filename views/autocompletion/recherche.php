@@ -1,8 +1,14 @@
 
+<<<<<<< Updated upstream
 
 <main class="main_recherche">
       <?php
        while ($donnees = $query->fetch()){ ?>
+=======
+    <main class="main_recherche">
+      <?php
+      while ($donnees = $query->fetch()){ ?>
+>>>>>>> Stashed changes
          <article class="recherche_cont">
 
            <section class="recherche_nom">
@@ -15,7 +21,15 @@
            </section>
          
           </article>
+<<<<<<< Updated upstream
           <?php
     }
    ?>
  </main>
+=======
+<?php
+   }
+?>
+
+    </main>
+>>>>>>> Stashed changes

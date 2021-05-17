@@ -18,6 +18,7 @@ class Autoloader
             'controllers/shop',
             'controllers/user',
             'controllers/admin',
+            'models',
             'classes'
         ];
 

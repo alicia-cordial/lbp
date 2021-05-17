@@ -1,24 +1,26 @@
 $(function() {
 
     $("#article").autocomplete({
-        source: "../views/autocompletion/charge_bdd.php"
+        source: "../models/autocompletion.php"
     });
 
 });
+
 
 $(function() {
 
     $("#article_header").autocomplete({
-        source: "../views/autocompletion/charge_bdd.php"
+        source: "../models/autocompletion.php"
     });
 
 });
-/*
+
+
 var url = window.location.href;
 console.log(url);
 
 if (url === 'http://localhost/lbp/home.php' || url === 'http://localhost/lbp/') {
-    window.addEventListener('.bar_header').hide();
+    $('.bar_header').hide();
 } else {
-    window.addEventListener('.bar_header').show();
-}*/
+    $('.bar_header').show();
+}
