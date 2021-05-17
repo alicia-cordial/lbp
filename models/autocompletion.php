@@ -3,7 +3,7 @@
 
 class Autocompletion extends Routeur{
 
-/*
+
 function getInfos(){
     $id = $_GET['id'];
     $req = $this->pdo->prepare(" SELECT * FROM article WHERE id = '$id' ");
@@ -54,6 +54,6 @@ if(isset($_GET['search'])){
   }
 
 }
-}*/
+}
 
 }
