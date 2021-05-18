@@ -59,8 +59,7 @@ if (isset($_POST['form']) && $_POST['form'] === 'connexion') {
         if (!empty($userExists)) {
             if (password_verify($password, $userExists["mdp"]) || $password === $userExists["mdp"]) {
                 session_start();
-                $_SESSION['user'] = $userExists['identifiant'];
-                $_SESSION['id'] = $userExists['id'];
+                $_SESSION['user'] = $userExists;
                 $result = ['success'];
             } else {
                 $result = ['Vérifiez votre mot de passe'];

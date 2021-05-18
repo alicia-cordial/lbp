@@ -23,4 +23,10 @@ class UserModel extends Database
         return $insert;
     }
 
+    public function selectVendeurArticles($id) {
+        $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article AS ua on art.id = id_article WHERE ua.id_vendeur = ? ");
+        $request->execute([$id]);
+        $articlesVendeur[] = $request->fetch(PDO::FETCH_ASSOC);
+        return $articlesVendeur;
+    }
 }
