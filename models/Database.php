@@ -40,7 +40,7 @@ class Database
     }
 
     public function findById($table,$id){
-        $query = $this->pdo->prepare("SELECT * from '$table' WHERE id=:id");
+        $query = $this->pdo->prepare("SELECT * from '$table' WHERE id =:id");
         $query->execute(["id"=>$id]);
         $result = $query->fetchAll();
         return $result;

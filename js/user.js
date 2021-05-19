@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-    /*GENERAL*/
-    //Toggle inscription / connexion
+ /*1 - Module Inscription/Connexion*/
+    //TOGGLE inscription / connexion
     $('body').on('click', '.callForm', function () {
         if ($(this).is('#callFormInscription')) {
             callform('inscription')
@@ -17,7 +17,6 @@ $(document).ready(function () {
         };
     });
 
-
     /*INSCRIPTION*/
     //Display inscription blocks
     $('body').on('click', 'input[name=status]', function () {
@@ -32,7 +31,7 @@ $(document).ready(function () {
         $('#message').empty();
         event.preventDefault()
         $.post(
-            'API/apiModule.php',
+            'API/apiModule',
             {
                 form: 'inscription',
                 status: $("input[name='status']:checked").val(),
@@ -57,7 +56,6 @@ $(document).ready(function () {
     });
 
     /*CONNEXION*/
-
     //Display 2d block
     $('body').on('click', '#login', function () {
         $('#bloc2').css('display', 'block')
@@ -68,7 +66,7 @@ $(document).ready(function () {
         $('#message').empty();
         event.preventDefault()
         $.post(
-            'API/apiModule.php',
+            'API/apiModule',
             {
                 form: 'connexion',
                 login: $('#login').val(),
@@ -87,5 +85,10 @@ $(document).ready(function () {
             },
         );
     });
+
+
+    /*2 - ESPACE VENDEUR*/
+
+
 
 });
