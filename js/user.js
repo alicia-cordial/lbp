@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
- /*1 - Module Inscription/Connexion*/
+    /*1 - Module Inscription/Connexion*/
     //TOGGLE inscription / connexion
     $('body').on('click', '.callForm', function () {
         if ($(this).is('#callFormInscription')) {
@@ -88,7 +88,55 @@ $(document).ready(function () {
 
 
     /*2 - ESPACE VENDEUR*/
+    //TABULATIONS
+    /* $('body').on('click', '.navUser', function () {
+         if ($(this).is('.navNewArticle')) {
+             callform('vendeurNewArticle')
+         } else {
+             callform('vendeurArticlesEnVente')
+         }
 
+         function callform(page) {
+             $.get('views/user/' + page + '.php',
+                 function (data) {
+                     $('#sectionVendeur').html(data);
+                 });
+         };
+     });*/
+
+    $('body').on('click', '.navUser', function () {
+        $('#sectionVendeur').empty();
+
+        function callSectionUser(page) {
+            $.get('views/user/' + page + '.php',
+                function (data) {
+                    $('#sectionVendeur').html(data);
+                });
+        }
+
+        if ($(this).is('#navArticleSelling')) {
+            callSectionUser('vendeurArticlesEnVente')
+            $.post(
+                'API/apiVendeur',
+                {action: 'articleSelling',},
+                function (data) {
+                    let articles = JSON.parse(data);
+                    console.log(data);
+                    for (let article of articles) {
+                        if (article === "none") {
+                            $("#articlesSelling").append("<p>Il n'y a rien ici.</p><p class='navUser navNewArticle'> + Déposer une annonce</p>");
+                        } else {
+                            $('#articlesSelling').append("<p>" + article.titre + "</p>");
+                        }
+                    }
+                },
+            );
+        } else if ($(this).is('.navNewArticle')) {
+            callSectionUser('vendeurNewArticle')
+        } else if ($(this).is('#navSoldArticle')) {
+            callSectionUser('vendeurArticlesVendus')
+        }
+    });
 
 
 });
