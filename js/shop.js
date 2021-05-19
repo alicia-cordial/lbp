@@ -1,25 +1,25 @@
-/*
-$(function() {
+$(document).ready(function() {
+    $('#article_search').keyup(function() {
+        $('#result').html('');
+        var article = $(this).val();
 
-    $("#article").autocomplete({
-        source: "../views/autocompletion/charge_bdd.php"
+        if (article != "") {
+
+            $.ajax({
+                type: 'GET',
+                url: 'views/shop/resultatArticles.php',
+                data: 'article=' + encodeURIComponent(article),
+                success: function(data) {
+
+                    if (data != "") {
+                        $('#result').append(data);
+                    } else {
+                        document.getElementById('result').innerHTML = "<div>Aucun article</div>"
+                    }
+                }
+
+            });
+
+        }
     });
-
 });
-
-$(function() {
-
-    $("#article_header").autocomplete({
-        source: "../views/autocompletion/charge_bdd.php"
-    });
-
-});
-/!*
-var url = window.location.href;
-console.log(url);
-
-if (url === 'http://localhost/lbp/home.php' || url === 'http://localhost/lbp/') {
-    window.addEventListener('.bar_header').hide();
-} else {
-    window.addEventListener('.bar_header').show();
-}*!/*/
