@@ -22,8 +22,6 @@ class Compte
             require_once('views/user/connexion.php');
         } else {
             if ($_SESSION['user']['status'] === 'vendeur') {
-                $model = new userModel;
-                $userArticles = $model->selectVendeurArticles($_SESSION['user']['id']);
                 require_once('views/user/vendeur.php');
             } else {
                 require_once('views/user/client.php');
