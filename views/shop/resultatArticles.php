@@ -1,7 +1,14 @@
-RESULTATS RECHERCHE
+
+
+
+
+
 <?php
+
+
 if (is_array($articles) || is_object($articles)){
 foreach($articles as $a) :
+   
     ?>
 
 <h2>
@@ -17,6 +24,6 @@ foreach($articles as $a) :
 <?php endforeach ?>
 
 <?php }
-var_dump($a);
-?>
+//var_dump($a);
 
+?>

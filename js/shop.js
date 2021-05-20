@@ -7,15 +7,15 @@ $(document).ready(function() {
 
             $.ajax({
                 type: 'GET',
-                url: 'views/shop/resultatArticles.php',
+                url: 'test.php',
                 data: 'article=' + encodeURIComponent(article),
                 success: function(data) {
-
-                    if (data != "") {
+                    console.log(data);
+                    /*if (data != "") {
                         $('#result').append(data);
                     } else {
                         document.getElementById('result').innerHTML = "<div>Aucun article</div>"
-                    }
+                    }*/
                 }
 
             });

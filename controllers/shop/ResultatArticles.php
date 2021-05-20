@@ -1,19 +1,20 @@
 <?php
-
+require_once('../../models/Shop.php');
 
 class ResultatArticles
 {
     function __construct()
     {
 
-        $model = new Shop();
-        $result= $model->resultatArticle();
         
         $title = "ResultatArticle";
         $css = "home.css";
 
         ob_start();
-        require_once ('views/shop/resultatArticles.php');
+
+        $model = new Shop();
+        $articles = $model->resultatArticle($this->search);
+        require_once ('test.php');
         $main = ob_get_clean();
 
         $render = new View($title, $css, $main);
@@ -21,8 +22,7 @@ class ResultatArticles
 
 
 
-
 }
-
 $model = new Shop();
 
+//var_dump($model->resultatArticle('a'));
