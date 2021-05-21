@@ -1,29 +1,11 @@
+<?php var_dump($_GET);?>
+<main id="mainRecherche">
+    <article>
+        <h2>RESULTATS RECHERCHE</h2>
+        <h3></h3>
+    </article>
 
+    <article>
 
-
-
-
-<?php
-
-
-if (is_array($articles) || is_object($articles)){
-foreach($articles as $a) :
-   
-    ?>
-
-<h2>
-<?= $a['titre']; ?>
-</h2>
-
-<p>
-<?= $a['description']; ?>
-</p>
-
-
-
-<?php endforeach ?>
-
-<?php }
-//var_dump($a);
-
-?>
+    </article>
+</main>

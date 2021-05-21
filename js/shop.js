@@ -1,3 +1,10 @@
+/*$(function() {
+    $("#article_search").autocomplete({
+        source: 'controllers/shop/ResultatArticles.php',
+    });
+});*/
+
+
 $(document).ready(function() {
     $('#article_search').keyup(function() {
         $('#result').html('');
@@ -7,15 +14,15 @@ $(document).ready(function() {
 
             $.ajax({
                 type: 'GET',
-                url: 'test.php',
+                url: 'controllers/shop/ResultatArticles.php',
                 data: 'article=' + encodeURIComponent(article),
                 success: function(data) {
-                    console.log(data);
-                    /*if (data != "") {
+
+                    if (data != "") {
                         $('#result').append(data);
                     } else {
                         document.getElementById('result').innerHTML = "<div>Aucun article</div>"
-                    }*/
+                    }
                 }
 
             });
