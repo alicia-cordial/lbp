@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
     /*1 - Module Inscription/Connexion*/
     //TOGGLE inscription / connexion
     $('body').on('click', '.callForm', function () {
@@ -88,22 +89,8 @@ $(document).ready(function () {
 
 
     /*2 - ESPACE VENDEUR*/
-    //TABULATIONS
-    /* $('body').on('click', '.navUser', function () {
-         if ($(this).is('.navNewArticle')) {
-             callform('vendeurNewArticle')
-         } else {
-             callform('vendeurArticlesEnVente')
-         }
 
-         function callform(page) {
-             $.get('views/user/' + page + '.php',
-                 function (data) {
-                     $('#sectionVendeur').html(data);
-                 });
-         };
-     });*/
-
+    /*TABULATIONS*/
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
@@ -118,15 +105,15 @@ $(document).ready(function () {
             callSectionUser('vendeurArticlesEnVente')
             $.post(
                 'API/apiVendeur',
-                {action: 'articleSelling',},
+                {action: 'articlesSelling'},
                 function (data) {
                     let articles = JSON.parse(data);
                     console.log(data);
-                    for (let article of articles) {
-                        if (article === "none") {
-                            $("#articlesSelling").append("<p>Il n'y a rien ici.</p><p class='navUser navNewArticle'> + Déposer une annonce</p>");
-                        } else {
-                            $('#articlesSelling').append("<p>" + article.titre + "</p>");
+                    if (articles === 'none') {
+                        $("#articlesSelling").append("<tr><td>Il n'y a rien ici.</td><td class='navUser navNewArticle'> + Déposer une annonce</td></tr>");
+                    } else {
+                        for (let article of articles) {
+                            $('#articlesSelling').append("<tr><td>" + article.titre + "</td></tr>");
                         }
                     }
                 },
@@ -135,8 +122,43 @@ $(document).ready(function () {
             callSectionUser('vendeurNewArticle')
         } else if ($(this).is('#navSoldArticle')) {
             callSectionUser('vendeurArticlesVendus')
+            console.log($(this))
+            $.post(
+                'API/apiVendeur',
+                {action: 'articlesSold'},
+                function (data) {
+                    let articles = JSON.parse(data);
+                    console.log(data);
+                    if (articles == 'none') {
+                        $("#articlesVendus").append("<tr><td>Il n'y a rien ici.</td></tr>");
+                    } else {
+                        for (let article of articles) {
+                            $('#articlesVendus').append("<tr><td>" + article.titre + "</td><td>" + article.identifiant + "</td><td>" + article.date_vente + "</td><td><button id ='" + article.id_article + "' class='supprimerArticle' >Supprimer</button></td></tr>");
+                        }
+                    }
+                },
+            );
         }
     });
 
 
+
+
+    $('body').on('click', '.supprimerArticle', function () {
+        let idArticle = this.id
+        let row = $(this).parents('tr')
+        $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.es ? </button><button class="navUser" id ="navSoldArticle">Non.</button>')
+        $('body').on('click', '#confirmSupprArticle', function () {
+          console.log(row)
+              $.post(
+                'API/apiVendeur',
+                {action: 'supprimerArticle', id: idArticle},
+                function (data) {
+                    let message = JSON.parse(data);
+                    row.hide()
+                    console.log(message)
+                },
+            );
+        });
+    });
 });

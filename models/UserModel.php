@@ -1,4 +1,5 @@
 <?php
+require_once('../models/Database.php');
 
 class UserModel extends Database
 {
@@ -23,10 +24,31 @@ class UserModel extends Database
         return $insert;
     }
 
-    public function selectVendeurArticles($id) {
-        $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article AS ua on art.id = id_article WHERE ua.id_vendeur = ? ");
+    public function selectVendeurArticles($id)
+    {
+        $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article AS ua on art.id = id_article WHERE ua.id_vendeur = ? AND art.status = 'disponible' ");
         $request->execute([$id]);
-        $articlesVendeur[] = $request->fetch(PDO::FETCH_ASSOC);
+        $articlesVendeur = $request->fetchAll(PDO::FETCH_ASSOC);
         return $articlesVendeur;
     }
+
+    public function selectVendeurArticlesSold($id)
+    {
+        $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article as ua ON art.id = ua.id_article INNER JOIN utilisateur AS u ON art.id_acheteur = u.id WHERE ua.id_vendeur = ? AND art.status = 'vendu'  ");
+        $request->execute([$id]);
+        $articlesVendeur = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $articlesVendeur;
+    }
+
+    public function supprimerArticle($id)
+    {
+        $request = $this->pdo->prepare("DELETE FROM article WHERE id = ? ");
+        $request->execute([$id]);
+        return true;
+    }
 }
+
+
+/*$model = new UserModel();
+var_dump($articles = $model->selectVendeurArticlesSold('1'));
+echo json_encode($articles, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);*/

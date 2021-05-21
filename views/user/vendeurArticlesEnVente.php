@@ -1,5 +1,5 @@
 <section id="sectionVendeur">
-    <article id="articlesSelling">
-        <h3>Articles en vente</h3>
-    </article>
+    <table id="articlesSelling">
+        <thead><tr><th>Articles en vente</th></tr></thead>
+    </table>
 </section>
