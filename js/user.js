@@ -90,7 +90,7 @@ $(document).ready(function () {
 
     /*2 - ESPACE VENDEUR*/
 
-    /*TABULATIONS*/
+    /*NAVIGATION*/
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
@@ -101,26 +101,36 @@ $(document).ready(function () {
                 });
         }
 
-        if ($(this).is('#navArticleSelling')) {
+        if ($(this).is('#navArticleSelling')) { //En vente
             callSectionUser('vendeurArticlesEnVente')
             $.post(
                 'API/apiVendeur',
                 {action: 'articlesSelling'},
                 function (data) {
                     let articles = JSON.parse(data);
-                    console.log(data);
-                    if (articles === 'none') {
+                    // console.log(data);
+                    if (articles == 'none') {
                         $("#articlesSelling").append("<tr><td>Il n'y a rien ici.</td><td class='navUser navNewArticle'> + Déposer une annonce</td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesSelling').append("<tr><td>" + article.titre + "</td></tr>");
+                            $('#articlesSelling').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td><button class='modifierArticle' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button id ='" + article.id_article + "' class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
+
+                        let select = $('.marquerCommeVendu') //Liste d'acheteurs potentiels
+
+                        let contacts = ["contact1", "contact2"] //RECUPERER LA LISTE
+                        $.each(contacts, function(key, value) {
+                            select.append("<option value='"+ value + "'>" + value + "</option>")
+                        })
+                        //Quand un item est sélectionné, ajouter un bouton confirmer
                     }
                 },
             );
-        } else if ($(this).is('.navNewArticle')) {
+        } else if ($(this).is('.navNewArticle')) { //Créer nouvelle annonce
             callSectionUser('vendeurNewArticle')
-        } else if ($(this).is('#navSoldArticle')) {
+
+
+        } else if ($(this).is('#navSoldArticle')) { //Historique de vente
             callSectionUser('vendeurArticlesVendus')
             console.log($(this))
             $.post(
@@ -133,7 +143,7 @@ $(document).ready(function () {
                         $("#articlesVendus").append("<tr><td>Il n'y a rien ici.</td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesVendus').append("<tr><td>" + article.titre + "</td><td>" + article.identifiant + "</td><td>" + article.date_vente + "</td><td><button id ='" + article.id_article + "' class='supprimerArticle' >Supprimer</button></td></tr>");
+                            $('#articlesVendus').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td>" + article.identifiant + "</td><td>" + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
                     }
                 },
@@ -142,15 +152,13 @@ $(document).ready(function () {
     });
 
 
-
-
-    $('body').on('click', '.supprimerArticle', function () {
-        let idArticle = this.id
+    /*BOUTONS D'ACTION*/
+    $('body').on('click', '.supprimerArticle', function () { //Supprimer article de la bdd
         let row = $(this).parents('tr')
-        $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.es ? </button><button class="navUser" id ="navSoldArticle">Non.</button>')
+        let idArticle = row.attr('id')
+        $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.es ? </button><button class="navUser">Non.</button>')
         $('body').on('click', '#confirmSupprArticle', function () {
-          console.log(row)
-              $.post(
+            $.post(
                 'API/apiVendeur',
                 {action: 'supprimerArticle', id: idArticle},
                 function (data) {
@@ -161,4 +169,5 @@ $(document).ready(function () {
             );
         });
     });
+
 });

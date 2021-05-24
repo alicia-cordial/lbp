@@ -19,7 +19,7 @@ class Database
     public function connexionDb()
     {
         try {
-            $this->pdo = new pdo("mysql:dbname=lbp;host=localhost", "root","");
+            $this->pdo = new pdo("mysql:dbname=lbp;host=localhost;charset=UTF8",'root','');
         }
         catch (Exception $e)
         {

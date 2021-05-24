@@ -46,9 +46,17 @@ class UserModel extends Database
         $request->execute([$id]);
         return true;
     }
+
+    public function marquerCommeVendu($idAcheteur, $id)
+    {
+        $request = $this->pdo->prepare("UPDATE article SET status = 'vendu', date_vente =". NOW() .", id_acheteur = ? WHERE id = ? ");
+        $request->execute([$idAcheteur, $id]);
+        return true;
+    }
 }
 
 
 /*$model = new UserModel();
-var_dump($articles = $model->selectVendeurArticlesSold('1'));
-echo json_encode($articles, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);*/
+$articles = $model->selectVendeurArticles('1');
+//var_dump($articles);
+//echo json_encode($articles, JSON_PRETTY_PRINT);*/
