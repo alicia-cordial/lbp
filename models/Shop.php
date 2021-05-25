@@ -12,7 +12,7 @@ class Shop extends Database{
 
   function get_article($term){
   
-  $request = $this->pdo->prepare("SELECT * FROM `article` where `titre` LIKE '%$term%' ORDER BY `titre` ASC");
+  $request = $this->pdo->prepare("SELECT `titre`, id FROM `article` where `titre` LIKE '%$term%' ORDER BY `titre` ASC");
   $request->execute([$term]);
   $articles[] = $request->fetchAll(PDO::FETCH_ASSOC);
 
@@ -24,7 +24,8 @@ return $articles;
   }
 
 }
-$model = new Shop();
-var_dump($model->get_article('a'));
+//$model = new Shop();
+//var_dump($model->get_article('a'));
 
 
+//ÇA MARCHE LIER À CONTROLLER

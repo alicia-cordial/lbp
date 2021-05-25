@@ -1,7 +1,7 @@
 <?php
 
-require_once('models/Database.php');
-require_once('models/Shop.php');
+require_once('../models/Database.php');
+require_once('../models/Shop.php');
 
 if (isset($_GET['term'])) {
     //var_dump($_GET['term']);

@@ -6,7 +6,8 @@ class Routeur
 //    tableau associatif des pages et de leurs controllers
     private $controllers = [
         "home" => "Home",
-        "compte" => "Compte"
+        "compte" => "Compte",
+        "article" => "ResultatArticles"
     ];
 
 //    controller sélectionné
