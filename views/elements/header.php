@@ -2,7 +2,7 @@
     <p>Header</p>
     <a href="home">Home</a>
     <a href="compte">Compte</a>
-    
+<section id="mainAutocompletion">
 <div class="form_recherche">
 
 <form id="form_autocomplete" class="form_autocomplete"  method="get">
@@ -13,4 +13,5 @@
 <div>
     <div id="result"></div>
 </div>
+</section>
 </header>

@@ -7,7 +7,8 @@ class Routeur
     private $controllers = [
         "home" => "Home",
         "compte" => "Compte",
-        "article" => "ResultatArticles"
+        "article" => "Article",
+        "resultatArticles" => "RésultatArticles"
     ];
 
 //    controller sélectionné
