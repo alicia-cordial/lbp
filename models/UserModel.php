@@ -32,6 +32,8 @@ class UserModel extends Database
         return $articlesVendeur;
     }
 
+
+
     public function selectVendeurArticlesSold($id)
     {
         $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article as ua ON art.id = ua.id_article INNER JOIN utilisateur AS u ON art.id_acheteur = u.id WHERE ua.id_vendeur = ? AND art.status = 'vendu'  ");
@@ -47,10 +49,20 @@ class UserModel extends Database
         return true;
     }
 
+    public function selectVendeurContacts($id)
+    {
+        $request = $this->pdo->prepare("SELECT DISTINCT u.id, identifiant FROM utilisateur as u INNER JOIN message as m ON m.id_expediteur = u.id INNER JOIN utilisateur_message as um ON um.id_destinataire = ?");
+        $request->execute([$id]);
+        $contacts = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $contacts;
+    }
+
     public function marquerCommeVendu($idAcheteur, $id)
     {
-        $request = $this->pdo->prepare("UPDATE article SET status = 'vendu', date_vente =". NOW() .", id_acheteur = ? WHERE id = ? ");
+        $request = $this->pdo->prepare("UPDATE article SET status = 'vendu', date_vente ='". date('Y-m-d H:i:s') ."', id_acheteur = ? WHERE id = ? ");
         $request->execute([$idAcheteur, $id]);
+        $request2 = $this->pdo->prepare("UPDATE utilisateur_article SET id_client = ? WHERE id = ? ");
+        $request2->execute([$idAcheteur, $id]);
         return true;
     }
 }
