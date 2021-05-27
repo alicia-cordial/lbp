@@ -55,6 +55,7 @@ function get_onearticle($term1){
     $result_search[] = $request->fetchAll(PDO::FETCH_ASSOC);
 
     return $result_search;
+var_dump($result_search);
   }
 
 
