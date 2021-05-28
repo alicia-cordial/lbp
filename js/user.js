@@ -8,12 +8,6 @@ $(document).ready(function () {
             callform('connexion')
         }
 
-        function callform(page) {
-            $.get('views/user/' + page + '.php',
-                function (data) {
-                    $('#mainCompte').html(data);
-                });
-        };
     });
 
     /*INSCRIPTION*/
@@ -92,13 +86,6 @@ $(document).ready(function () {
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
-        function callSectionUser(page) {
-            $.get('views/user/' + page + '.php',
-                function (data) {
-                    $('#sectionVendeur').html(data);
-                });
-        }
-
         //Articles en vente
         if ($(this).is('#navArticleSelling')) {
             callSectionUser('vendeurArticlesEnVente')
@@ -145,9 +132,12 @@ $(document).ready(function () {
 
 
         } else if ($(this).is('.navNewArticle')) { //Créer nouvelle annonce
-            callSectionUser('vendeurNewArticle')
-
-
+            $.post(
+                'API/apiVendeur',
+                {action: 'afficherNewArticle'},
+                function (data) {
+                    $('#sectionVendeur').html(data);
+                })
         } else if ($(this).is('#navSoldArticle')) { //Historique de vente
             callSectionUser('vendeurArticlesVendus')
             console.log($(this))
@@ -164,14 +154,39 @@ $(document).ready(function () {
                             $('#articlesVendus').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td>" + article.identifiant + "</td><td>" + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
                     }
-                },
-            );
+                });
         }
     });
 
+    /*Submit New Article*/
+    $('body').on('submit', '#newArticle', function (event) {
+        $('#message').empty();
+        event.preventDefault()
+        $.post(
+            'API/apiVendeur',
+            {
+                form: 'newArticle',
+                titre: $('#titre').val(),
+                description: $('#description').val(),
+                prix: $('#prix').val(),
+                etat: $('select[name="etat"] option:selected').val(),
+                categorie: $('select[name="categorie"] option:selected').val(),
+                negociation: $('#negociation input:checked').val()
+            },
+            function (data) {
+                console.log(data);
+                let message = JSON.parse(data);
+                if (message === "success") {
+                    $("#message").append("<p>Annonce créée !</p>");
+                } else {
+                    $('#message').append("<p>" + message + "</p>");
+                }
+            });
+    });
 
     /*BOUTONS D'ACTION*/
-    $('body').on('click', '.supprimerArticle', function () { //Supprimer article de la bdd
+    //Supprimer article de la bdd
+    $('body').on('click', '.supprimerArticle', function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
         $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.es ? </button><button class="navUser">Non.</button>')
@@ -188,7 +203,8 @@ $(document).ready(function () {
         });
     });
 
-    $('body').on('click', '#confirmerVente', function () { //Marquer comme vendu
+    //Marquer comme vendu
+    $('body').on('click', '#confirmerVente', function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
         if ($('option:selected').val().length > 0) {
@@ -208,23 +224,67 @@ $(document).ready(function () {
         }
     });
 
-
-    $('body').one('click', '.afficherDetails', function () { //Afficher formulaire modification article
+    //Afficher formulaire modification article
+    $('body').on('click', '.afficherDetails', function () {
+        $('#detailsArticles').empty()
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
-        console.log(idArticle)
-            $.post(
-                'API/apiVendeur',
-                {
-                    action: 'afficherDetails',
-                    idArticle: idArticle,
-                },
-                function (data) {
-                    let article = JSON.parse(data);
-                    // console.log(article[0]['description'])
-                     $("<p>"+ article[0]['description'] +"</p>").insertAfter(row) //FORMULAIRE DE MODIFICATION
-                },
-            );
+        $.post(
+            'API/apiVendeur',
+            {
+                action: 'afficherDetails',
+                idArticle: idArticle,
+            },
+            function (data) {
+                $('#detailsArticles').append(data)
+            },
+        );
     });
+
+    //Formulaire modification article
+    $('body').on('submit', '.formUpdateArticle', function (event) {
+        $('#message').empty();
+        event.preventDefault()
+        console.log($('.formUpdateArticle').attr('id'))
+        $.post(
+            'API/apiVendeur',
+            {
+                form: 'updateArticle',
+                idArticle: $('.formUpdateArticle').attr('id'),
+                titre: $('#titre').val(),
+                description: $('#description').val(),
+                prix: $('#prix').val(),
+                etat: $('select[name="etat"] option:selected').val(),
+                categorie: $('select[name="categorie"] option:selected').val(),
+                negociation: $('#negociation input:checked').val()
+            },
+            function (data) {
+                console.log(data);
+                let message = JSON.parse(data);
+                if (message === "success") {
+                    $("#message").append("<p>Update réussie !</p>");
+                } else {
+                    $('#message').append("<p>" + message + "</p>");
+                }
+            },
+        );
+    });
+
+
+    /*FUNCTIONS*/
+    function callform(page) {
+        $.get('views/user/' + page + '.php',
+            function (data) {
+                $('#mainCompte').html(data);
+            });
+    };
+
+
+    function callSectionUser(page) {
+        $.get('views/user/' + page + '.php',
+            function (data) {
+                $('#sectionVendeur').html(data);
+            });
+    }
 
 });
