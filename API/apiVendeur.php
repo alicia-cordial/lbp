@@ -36,6 +36,39 @@ if (isset($_POST['action']) && $_POST['action'] === 'articlesSelling') {
         echo json_encode('vendu', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 } elseif (isset($_POST['action']) && $_POST['action'] === 'afficherDetails') {
-    $article = $model->findById('article', $_POST['idArticle']);
-    echo json_encode($article, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $article = $model->findById('article', $_POST['idArticle'])[0];
+    $categories = $model->selectAll('categorie');
+    $etats = ['neuf', 'très bon état', 'bon état'];
+    require_once('../views/user/updateArticle.php');
+
+} elseif (isset($_POST['form']) && $_POST['form'] === 'updateArticle') {
+    if (!empty($_POST['titre']) && !empty($_POST['description']) && !empty($_POST['prix']) && !empty($_POST['etat']) && !empty($_POST['categorie']) && !empty($_POST['negociation'])) {
+        $titre = htmlspecialchars($_POST['titre']);
+        $description = htmlspecialchars($_POST['description']);
+        $prix = htmlspecialchars($_POST['prix']);
+        $etat = htmlspecialchars($_POST['etat']);
+        $categorie = htmlspecialchars($_POST['categorie']);
+        $negociation = htmlspecialchars($_POST['negociation']);
+        $update = $model->updateArticle($titre, $description, $prix, $etat, $categorie, $negociation, $_POST['idArticle']);
+        echo json_encode('success', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode('Veuillez remplir tous les champs SVP', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+} else if (isset($_POST['action']) && $_POST['action'] === 'afficherNewArticle') {
+    $categories = $model->selectAll('categorie');
+    $etats = ['neuf', 'très bon état', 'bon état'];
+    require_once('../views/user/vendeurNewArticle.php');
+} else if (isset($_POST['form']) && $_POST['form'] === 'newArticle') {
+    if (!empty($_POST['titre']) && !empty($_POST['description']) && !empty($_POST['prix']) && !empty($_POST['etat']) && !empty($_POST['categorie']) && !empty($_POST['negociation'])) {
+        $titre = htmlspecialchars($_POST['titre']);
+        $description = htmlspecialchars($_POST['description']);
+        $prix = htmlspecialchars($_POST['prix']);
+        $etat = htmlspecialchars($_POST['etat']);
+        $categorie = htmlspecialchars($_POST['categorie']);
+        $negociation = htmlspecialchars($_POST['negociation']);
+        $insert = $model->insertArticle($titre, $description, $prix, $etat, $categorie, $negociation, $_SESSION['user']['id']);
+        echo json_encode('success', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode('Veuillez remplir tous les champs SVP', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
 }

@@ -19,10 +19,8 @@ class Database
     public function connexionDb()
     {
         try {
-            $this->pdo = new pdo("mysql:dbname=lbp;host=localhost;charset=UTF8",'root','');
-        }
-        catch (Exception $e)
-        {
+            $this->pdo = new pdo("mysql:dbname=lbp;host=localhost;charset=UTF8", 'root', '');
+        } catch (Exception $e) {
             echo $e . "<br>";
         }
     }
@@ -32,10 +30,11 @@ class Database
         $this->pdo = null;
     }
 
-    public function selectAll($table){
-        $query = $this->pdo->prepare("SELECT * from `$table`");
+    public function selectAll($table)
+    {
+        $query = $this->pdo->prepare("SELECT * from ". $table);
         $query->execute();
-        $result = $query->fetchAll();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
