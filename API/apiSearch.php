@@ -16,6 +16,7 @@ if (isset($_POST['form']) && $_POST['form'] === 'objet') {
       $nom = htmlspecialchars($_POST['categorie']);
       $zip = htmlspecialchars($_POST['zip']);
       $titre = htmlspecialchars($_POST['titre']);
+      $prix = htmlspecialchars($_POST['prix']);
       $errors = [];
       $objectExists = $model->selectArticle($nom, $zip, $titre);
       
@@ -63,4 +64,23 @@ if (isset($_GET['search']) ) {
     $sellerList = $sellers;
   }
   echo json_encode($sellerList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+}
+
+//PRICE RANGE
+
+if(isset($_POST['price_range'])){
+    
+    
+  //set conditions for filter by price range
+  $whereSQL = $orderSQL = '';
+  $priceRange = $_POST['price_range'];
+  if(!empty($priceRange)){
+      $priceRangeArr = explode(',', $priceRange);
+      $whereSQL = "WHERE prix BETWEEN '".$priceRangeArr[0]."' AND '".$priceRangeArr[1]."'";
+      $orderSQL = " ORDER BY prix ASC ";
+  }else{
+      $orderSQL = " ORDER BY titre DESC ";
+  }
+  
+
 }

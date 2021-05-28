@@ -59,7 +59,7 @@ $(document).ready(function() {
     $('body').on('submit', '#form_objet', function(event) {
         $('#message').empty();
         event.preventDefault()
-        $.get(
+        $.post(
             'API/apiSearch.php', {
                 form: 'home',
                 nom: $('#categorie').val(),
@@ -95,27 +95,37 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#message').append('<a href="resultatArticles?article=' + article.id + '">' + article.titre + '</a ></br> ');
+                    $('#message').append('<a href="resultatArticles?article=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
                 }
             },
         );
     });
 
+    //PRICE RANGE
+    var rangeslider = document.getElementById("sliderRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = rangeslider.value;
+
+    rangeslider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+
+
 
     $('#user').keyup(function() {
         $('#message').html('');
-        var identifiant = $(this).val();
-        console.log(identifiant);
+        var user = $(this).val();
+        console.log(user);
         $.get(
             'API/apiSearch.php', {
-                search: identifiant,
+                search: user,
             },
             function(data) {
                 console.log(data)
-                let identifiants = JSON.parse(data);
-                console.log(identifiants);
-                for (let identifiant of identifiants) {
-                    $('#message').append('<a href="profilVendeur?vendeur=' + identifiant.id + '">' + identifiant.identifiant + '</a></br>');
+                let users = JSON.parse(data);
+                console.log(users);
+                for (let user of users) {
+                    $('#message').append('<a href="profilVendeur?vendeur=' + user.id + '">' + user.identifiant + '</a></br>');
                 }
             },
         );

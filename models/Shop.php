@@ -2,14 +2,9 @@
 
 session_start();
 
-//require_once('../../controllers/shop/ResultatArticles.php');
 require_once('Database.php');
 
 class Shop extends Database{
-
-
-  
-
 
 
   function selectArticle($nom, $zip, $titre){
@@ -19,24 +14,6 @@ class Shop extends Database{
 
     return $result;
   }
-
-  function selectSeller($status, $zip){
-    $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE utilisateur.status LIKE 'vendeur'");
-    $request->execute();
-    $result[] = $request->fetchAll(PDO::FETCH_ASSOC);
-
-    return $result;
-  }
-
-/*
-function get_onearticle($term1){
-    $request = $this->pdo->prepare("SELECT * FROM article WHERE titre LIKE '%$term1%'");
-    $request->execute([$term1]);
-    $article_one[] = $request->fetchAll(PDO::FETCH_ASSOC);
-
-    return $article_one;
-}
-*/
 
 
   function get_article($term){
@@ -74,6 +51,17 @@ function get_cat(){
   $request->execute();
   $getcat[] = $request->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+
+function price_range(){
+  $query = $this->pdo->prepare("SELECT * FROM article ORDER BY prix DESC");
+  $query->execute();
+  $price[] = $query->fetchAll(PDO::FETCH_ASSOC);
+  
+  return $price;
+
+  }
 
 }
 //$model = new Shop();

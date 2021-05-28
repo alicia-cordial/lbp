@@ -15,9 +15,18 @@
                 <option>Vêtements</option>
             </select>
             <input type="text" name="titre" id="titre" placeholder="Que recherchez-vous ?">
-            <input type="text" name="zip" id="zip" placeholder="Quelle région?">    
+            <input type="text" name="zip" id="zip" placeholder="Quelle région?">  
+
+            <input type="range" min="1" max="10000" value="10" class="myslider" id="sliderRange">
+            <p>Value: <span id="demo"></span></p>
+
+
         <button type="submit">Submit</button>
+        
+
         </form>
+</div>
+
 
     </section>
 
@@ -28,7 +37,6 @@
         <form id="form_vendeur" class="form_index"  method="post">
             <input type="text" name="user" id="user" placeholder="Qui recherchez-vous ?">
            <!-- <input type="text" name="zip" id="zip" placeholder="Quelle région?">    -->
-            <button type="submit">Submit</button>
         </form>
 
     </section>
