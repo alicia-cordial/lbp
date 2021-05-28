@@ -17,7 +17,7 @@ if (isset($_GET['term'])) {
 
   }
 
-
+/*
   if(isset($_GET['searchone'])){
 
     $model = new Shop();
@@ -28,5 +28,5 @@ if (isset($_GET['term'])) {
         echo json_encode($getOnearticle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
         echo json_encode('none', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
-  }
+
+  }*/

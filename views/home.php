@@ -5,37 +5,37 @@
 
     <section id="objet">
     
-    <span id="form_vendeur">Vendeur</span>  
+    <span id="formVendeur">Vendeur</span>
 
-        <form id="form_autocompleteavancee" class="form_index"  method="post">
-            <label for="nom">Categories</label>
-            <select id="nom" name="nom"> 
+        <form id="form_objet" class="form_index"  method="get">
+            <label for="categorie">Categories</label>
+            <select id="categorie" name="categorie"> 
                 <option>Voiture</option>
                 <option>Bijoux</option>
                 <option>Vêtements</option>
             </select>
-            <input type="text" name="titre" class="input_index" id="search_all" placeholder="Que recherchez-vous ?">
-            <input type="text" name="zip" class="search_zip" id="search_zip" placeholder="Quelle région?">    
-        <button type="submit" value="Submit">Submit</button>
+            <input type="text" name="titre" id="titre" placeholder="Que recherchez-vous ?">
+            <input type="text" name="zip" id="zip" placeholder="Quelle région?">    
+        <button type="submit">Submit</button>
         </form>
 
     </section>
 
     <section id="vendeur">
     
-    <span id="form_objet">Objet</span>
+    <span id="formObjet">Objet</span>
         
-        <form id="form_usersearch" class="form_index"  method="post">
-            <input type="text" name="user" class="input_user" id="search_user" placeholder="Qui recherchez-vous ?">
-            <input type="text" name="zip" class="search_zip" id="search_zip" placeholder="Quelle région?">    
-            <button type="submit" value="submit">Submit</button>
+        <form id="form_vendeur" class="form_index"  method="post">
+            <input type="text" name="user" id="user" placeholder="Qui recherchez-vous ?">
+           <!-- <input type="text" name="zip" id="zip" placeholder="Quelle région?">    -->
+            <button type="submit">Submit</button>
         </form>
 
     </section>
 </div>
 
 <div>
-    <div id="result_search"></div>
+    <div id="message"></div>
 </div>
 
 </main>
