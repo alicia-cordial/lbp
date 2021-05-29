@@ -1,7 +1,7 @@
 <section id="sectionVendeur">
-    <article id="newArticle">
+    <article>
         <h3>Déposer une nouvelle annonce</h3>
-        <form class="formUpdateArticle">
+        <form id="formNewArticle">
             <input type="text" id="titre" name="titre" placeholder="titre">
             <label for="titre">Titre</label>
 
@@ -20,6 +20,7 @@
                 <?php foreach ($categories as $categorie) : ?>
                     <option value="<?= $categorie['id'] ?>"><?= $categorie['nom'] ?></option>
                 <?php endforeach; ?>
+                    <option id="autreCat" value="autre">autre</option>
             </select>
 
             <div id="negociation">

@@ -80,8 +80,14 @@ class UserModel extends Database
         $request->execute([$titre, $description, $prix, $etat, $categorie, $negociation, $idUser]);
         return true;
     }
+
+    public function insertArticleAModerer($titre, $description, $prix, $etat, $negociation, $catSuggeree, $idUser, $visible)
+    {
+        $request = $this->pdo->prepare("INSERT into article (titre, description, prix, etat_objet, ouvert_negociation, categorie_suggeree, id_vendeur, visible) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $request->execute([$titre, $description, $prix, $etat, $negociation, $catSuggeree, $idUser, $visible]);
+        return true;
+    }
 }
-//
-//
+
 //$model = new UserModel();
-//var_dump($model->insertArticle('lala', 'lala', '40', 'bon état', '1', 'non', '1'));
+//var_dump($model->insertArticleAModerer('lala', 'lala', '40', 'bon état', 'non', 'kakak', '1', '0'));

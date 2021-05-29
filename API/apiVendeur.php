@@ -58,16 +58,24 @@ if (isset($_POST['action']) && $_POST['action'] === 'articlesSelling') {
     $categories = $model->selectAll('categorie');
     $etats = ['neuf', 'très bon état', 'bon état'];
     require_once('../views/user/vendeurNewArticle.php');
+
 } else if (isset($_POST['form']) && $_POST['form'] === 'newArticle') {
-    if (!empty($_POST['titre']) && !empty($_POST['description']) && !empty($_POST['prix']) && !empty($_POST['etat']) && !empty($_POST['categorie']) && !empty($_POST['negociation'])) {
+    if (!empty($_POST['titre']) && !empty($_POST['description']) && !empty($_POST['prix']) && !empty($_POST['etat']) && !empty($_POST['negociation']) && !empty($_POST['categorie'])) {
         $titre = htmlspecialchars($_POST['titre']);
         $description = htmlspecialchars($_POST['description']);
         $prix = htmlspecialchars($_POST['prix']);
         $etat = htmlspecialchars($_POST['etat']);
         $categorie = htmlspecialchars($_POST['categorie']);
         $negociation = htmlspecialchars($_POST['negociation']);
-        $insert = $model->insertArticle($titre, $description, $prix, $etat, $categorie, $negociation, $_SESSION['user']['id']);
-        echo json_encode('success', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if (empty($_POST['catSuggeree'])) {
+            $insert = $model->insertArticle($titre, $description, $prix, $etat, $categorie, $negociation, $_SESSION['user']['id']);
+            echo json_encode('success', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        } else {
+            $catSuggeree = htmlspecialchars($_POST['catSuggeree']);
+            $visible = 0;
+            $insert = $model->insertArticleAModerer($titre, $description, $prix, $etat, $negociation, $catSuggeree, $_SESSION['user']['id'], $visible);
+            echo json_encode('moderation', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }
     } else {
         echo json_encode('Veuillez remplir tous les champs SVP', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }

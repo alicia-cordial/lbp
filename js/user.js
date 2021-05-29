@@ -1,7 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
     /*1 - Module Inscription/Connexion*/
     //TOGGLE inscription / connexion
-    $('body').on('click', '.callForm', function() {
+    $('body').on('click', '.callForm', function () {
         if ($(this).is('#callFormInscription')) {
             callform('inscription')
         } else {
@@ -11,15 +11,15 @@ $(document).ready(function() {
 
     /*INSCRIPTION*/
     //Display inscription blocks
-    $('body').on('click', 'input[name=status]', function() {
+    $('body').on('click', 'input[name=status]', function () {
         $('#bloc2').css('display', 'block')
     });
-    $('body').on('change', '#password2', function() {
+    $('body').on('change', '#password2', function () {
         $('#bloc3').css('display', 'block')
     });
 
     //Submit inscription
-    $('body').on('submit', '#formInscription', function(event) {
+    $('body').on('submit', '#formInscription', function (event) {
         $('#message').empty();
         event.preventDefault()
         $.post(
@@ -32,7 +32,7 @@ $(document).ready(function() {
                 email: $('#email').val(),
                 zip: $('#zip').val()
             },
-            function(data) {
+            function (data) {
                 console.log(data);
                 let messages = JSON.parse(data);
                 for (let message of messages) {
@@ -48,12 +48,12 @@ $(document).ready(function() {
 
     /*CONNEXION*/
     //Display 2d block
-    $('body').on('click', '#login', function() {
+    $('body').on('click', '#login', function () {
         $('#bloc2').css('display', 'block')
     });
 
     //Submit connexion
-    $('body').on('submit', '#formConnexion', function(event) {
+    $('body').on('submit', '#formConnexion', function (event) {
         $('#message').empty();
         event.preventDefault()
         $.post(
@@ -62,7 +62,7 @@ $(document).ready(function() {
                 login: $('#login').val(),
                 password: $('#password').val(),
             },
-            function(data) {
+            function (data) {
                 console.log(data);
                 let messages = JSON.parse(data);
                 for (let message of messages) {
@@ -80,15 +80,15 @@ $(document).ready(function() {
     /*2 - ESPACE VENDEUR*/
 
     /*NAVIGATION*/
-    $('body').on('click', '.navUser', function() {
+    $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
         //Articles en vente
         if ($(this).is('#navArticleSelling')) {
             callSectionUser('vendeurArticlesEnVente')
             $.post(
-                'API/apiVendeur', { action: 'articlesSelling' },
-                function(data) {
+                'API/apiVendeur', {action: 'articlesSelling'},
+                function (data) {
                     let articles = JSON.parse(data);
                     console.log(articles)
                     if (articles == 'none') {
@@ -97,21 +97,21 @@ $(document).ready(function() {
                         for (let article of articles) {
                             $('#articlesSelling').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
-                        $('body').one('click', '.marquerCommeVendu', function() { //Liste d'acheteurs potentiels
+                        $('body').one('click', '.marquerCommeVendu', function () { //Liste d'acheteurs potentiels
                             let row = $(this).parents('tr')
                             let select = $('.marquerCommeVendu')
                             $.post(
-                                'API/apiVendeur', { action: 'selectContacts' },
-                                function(data) {
+                                'API/apiVendeur', {action: 'selectContacts'},
+                                function (data) {
                                     let contacts = JSON.parse(data);
                                     console.log(data);
                                     if (contacts == 'none') {
                                         select.append("<option>Aucun contact</option>");
                                     } else {
-                                        $.each(contacts, function(key, value) {
+                                        $.each(contacts, function (key, value) {
                                             select.append("<option value='" + value.id + "'>" + value.identifiant + "</option>")
                                         })
-                                        $('body').one('click', '.marquerCommeVendu option:selected', function() { //Quand un acheteur est sélectionné, append le bouton confirmer
+                                        $('body').one('click', '.marquerCommeVendu option:selected', function () { //Quand un acheteur est sélectionné, append le bouton confirmer
                                             if ($('option:selected').val().length > 0) {
                                                 $('<button id ="confirmerVente">Confirmer la vente</button>').insertAfter('.marquerCommeVendu')
                                             }
@@ -126,16 +126,17 @@ $(document).ready(function() {
 
         } else if ($(this).is('.navNewArticle')) { //Créer nouvelle annonce
             $.post(
-                'API/apiVendeur', { action: 'afficherNewArticle' },
-                function(data) {
+                'API/apiVendeur', {action: 'afficherNewArticle'},
+                function (data) {
                     $('#sectionVendeur').html(data);
                 })
+
         } else if ($(this).is('#navSoldArticle')) { //Historique de vente
             callSectionUser('vendeurArticlesVendus')
             console.log($(this))
             $.post(
-                'API/apiVendeur', { action: 'articlesSold' },
-                function(data) {
+                'API/apiVendeur', {action: 'articlesSold'},
+                function (data) {
                     let articles = JSON.parse(data);
                     console.log(data);
                     if (articles == 'none') {
@@ -150,7 +151,21 @@ $(document).ready(function() {
     });
 
     /*Submit New Article*/
-    $('body').on('submit', '#newArticle', function(event) {
+    //Suggérer une nouvelle catégorie
+    $('body').on('click', 'select[name="categorie"] option', function (event) {
+        if ($(this).is('#autreCat')) {
+            if ($('#infoCat').length === 0) {
+                $('<input id="catSuggeree" placeholder="categorie suggérée">').insertAfter('select[name="categorie"]')
+                $("#message").append("<p id='infoCat'>La création d'une nouvelle catégorie envoie votre article en modération</p>");
+            }
+        } else {
+            $('#catSuggeree').remove()
+            $('#infoCat').remove()
+        }
+    })
+
+    /*Submit New Article*/
+    $('body').on('submit', '#formNewArticle', function (event) {
         $('#message').empty();
         event.preventDefault()
         $.post(
@@ -161,13 +176,16 @@ $(document).ready(function() {
                 prix: $('#prix').val(),
                 etat: $('select[name="etat"] option:selected').val(),
                 categorie: $('select[name="categorie"] option:selected').val(),
-                negociation: $('#negociation input:checked').val()
+                negociation: $('#negociation input:checked').val(),
+                catSuggeree: $('#catSuggeree').val()
             },
-            function(data) {
+            function (data) {
                 console.log(data);
                 let message = JSON.parse(data);
                 if (message === "success") {
                     $("#message").append("<p>Annonce créée !</p>");
+                } else if (message === "moderation") {
+                    $("#message").append("<p>Annonce en modération</p>");
                 } else {
                     $('#message').append("<p>" + message + "</p>");
                 }
@@ -176,14 +194,14 @@ $(document).ready(function() {
 
     /*BOUTONS D'ACTION*/
     //Supprimer article de la bdd
-    $('body').on('click', '.supprimerArticle', function() {
+    $('body').on('click', '.supprimerArticle', function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
         $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.es ? </button><button class="navUser">Non.</button>')
-        $('body').on('click', '#confirmSupprArticle', function() {
+        $('body').on('click', '#confirmSupprArticle', function () {
             $.post(
-                'API/apiVendeur', { action: 'supprimerArticle', id: idArticle },
-                function(data) {
+                'API/apiVendeur', {action: 'supprimerArticle', id: idArticle},
+                function (data) {
                     let message = JSON.parse(data);
                     row.hide()
                     console.log(message)
@@ -193,7 +211,7 @@ $(document).ready(function() {
     });
 
     //Marquer comme vendu
-    $('body').on('click', '#confirmerVente', function() {
+    $('body').on('click', '#confirmerVente', function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
         if ($('option:selected').val().length > 0) {
@@ -203,7 +221,7 @@ $(document).ready(function() {
                     idArticle: idArticle,
                     idAcheteur: $('option:selected').val()
                 },
-                function(data) {
+                function (data) {
                     let message = JSON.parse(data);
                     row.hide()
                     console.log(message)
@@ -213,7 +231,7 @@ $(document).ready(function() {
     });
 
     //Afficher formulaire modification article
-    $('body').on('click', '.afficherDetails', function() {
+    $('body').on('click', '.afficherDetails', function () {
         $('#detailsArticles').empty()
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
@@ -222,14 +240,14 @@ $(document).ready(function() {
                 action: 'afficherDetails',
                 idArticle: idArticle,
             },
-            function(data) {
+            function (data) {
                 $('#detailsArticles').append(data)
             },
         );
     });
 
     //Formulaire modification article
-    $('body').on('submit', '.formUpdateArticle', function(event) {
+    $('body').on('submit', '.formUpdateArticle', function (event) {
         $('#message').empty();
         event.preventDefault()
         console.log($('.formUpdateArticle').attr('id'))
@@ -244,7 +262,7 @@ $(document).ready(function() {
                 categorie: $('select[name="categorie"] option:selected').val(),
                 negociation: $('#negociation input:checked').val()
             },
-            function(data) {
+            function (data) {
                 console.log(data);
                 let message = JSON.parse(data);
                 if (message === "success") {
@@ -260,7 +278,7 @@ $(document).ready(function() {
     /*FUNCTIONS*/
     function callform(page) {
         $.get('views/user/' + page + '.php',
-            function(data) {
+            function (data) {
                 $('#mainCompte').html(data);
             });
     };
@@ -268,7 +286,7 @@ $(document).ready(function() {
 
     function callSectionUser(page) {
         $.get('views/user/' + page + '.php',
-            function(data) {
+            function (data) {
                 $('#sectionVendeur').html(data);
             });
     }
