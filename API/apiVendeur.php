@@ -55,9 +55,13 @@ if (isset($_POST['action']) && $_POST['action'] === 'articlesSelling') {
         echo json_encode('Veuillez remplir tous les champs SVP', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 } else if (isset($_POST['action']) && $_POST['action'] === 'afficherNewArticle') {
-    $categories = $model->selectAll('categorie');
-    $etats = ['neuf', 'très bon état', 'bon état'];
-    require_once('../views/user/vendeurNewArticle.php');
+    if (count($model->selectVendeurArticles($_SESSION['user']['id'])) >= 5) {
+        echo 'maximum';
+    } else {
+        $categories = $model->selectAll('categorie');
+        $etats = ['neuf', 'très bon état', 'bon état'];
+        require_once('../views/user/vendeurNewArticle.php');
+    }
 
 } else if (isset($_POST['form']) && $_POST['form'] === 'newArticle') {
     if (!empty($_POST['titre']) && !empty($_POST['description']) && !empty($_POST['prix']) && !empty($_POST['etat']) && !empty($_POST['negociation']) && !empty($_POST['categorie'])) {

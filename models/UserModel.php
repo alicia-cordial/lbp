@@ -60,7 +60,7 @@ class UserModel extends Database
     {
         $request = $this->pdo->prepare("UPDATE article SET status = 'vendu', date_vente ='" . date('Y-m-d H:i:s') . "', id_acheteur = ? WHERE id = ? ");
         $request->execute([$idAcheteur, $id]);
-        $request2 = $this->pdo->prepare("UPDATE utilisateur_article SET id_client = ? WHERE id = ? ");
+        $request2 = $this->pdo->prepare("UPDATE utilisateur_article SET id_client = ? WHERE id_article = ? ");
         $request2->execute([$idAcheteur, $id]);
         return true;
     }
@@ -69,8 +69,6 @@ class UserModel extends Database
     {
         $request = $this->pdo->prepare("UPDATE article SET titre = ?, description = ?, prix = ?, etat_objet = ?, id_categorie = ?, ouvert_negociation = ? WHERE id = ?");
         $request->execute([$titre, $description, $prix, $etat, $categorie, $negociation, $id]);
-        $request2 = $this->pdo->prepare("UPDATE article_categorie SET id_categorie = ? WHERE id = ? ");
-        $request2->execute([$categorie, $id]);
         return true;
     }
 
@@ -78,6 +76,9 @@ class UserModel extends Database
     {
         $request = $this->pdo->prepare("INSERT into article (titre, description, prix, etat_objet, id_categorie, ouvert_negociation, id_vendeur) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $request->execute([$titre, $description, $prix, $etat, $categorie, $negociation, $idUser]);
+        $idArticle = $this->pdo->lastInsertId();
+        $request2 = $this->pdo->prepare("INSERT into utilisateur_article (id_article, id_vendeur) VALUES (?, ?)");
+        $request2->execute([$idArticle, $idUser]);
         return true;
     }
 
@@ -90,4 +91,5 @@ class UserModel extends Database
 }
 
 //$model = new UserModel();
+
 //var_dump($model->insertArticleAModerer('lala', 'lala', '40', 'bon état', 'non', 'kakak', '1', '0'));

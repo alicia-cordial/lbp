@@ -24,9 +24,9 @@
                name="negociation" value="non">
         <label for="non">Prix ferme</label>
     </div>
-    <div class="formInfo">
-        <div id="message"></div>
-    </div>
-
     <button type="submit">Modifier l'annonce</button>
 </form>
+
+<div class="formInfo">
+    <div id="message"></div>
+</div>

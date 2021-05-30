@@ -83,8 +83,11 @@ $(document).ready(function () {
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
-        //Articles en vente
-        if ($(this).is('#navArticleSelling')) {
+        if ($(this).is('#navUpdateProfil')) {
+            callSectionUser('updateProfile')
+
+            //Articles en vente
+        } else if ($(this).is('#navArticleSelling')) {
             callSectionUser('vendeurArticlesEnVente')
             $.post(
                 'API/apiVendeur', {action: 'articlesSelling'},
@@ -95,43 +98,41 @@ $(document).ready(function () {
                         $("#articlesSelling").append("<tr><td>Il n'y a rien ici.</td><td class='navUser navNewArticle'> + Déposer une annonce</td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesSelling').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                            $('#articlesSelling').append("<tr id ='" + article.id_article + "'><td><a href='article?id=" + article.id_article + "'>" + article.titre + "</a></td><td>Annonce créee le : " + article.date_ajout + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
-                        $('body').one('click', '.marquerCommeVendu', function () { //Liste d'acheteurs potentiels
-                            let row = $(this).parents('tr')
-                            let select = $('.marquerCommeVendu')
-                            $.post(
-                                'API/apiVendeur', {action: 'selectContacts'},
-                                function (data) {
-                                    let contacts = JSON.parse(data);
-                                    console.log(data);
-                                    if (contacts == 'none') {
-                                        select.append("<option>Aucun contact</option>");
-                                    } else {
-                                        $.each(contacts, function (key, value) {
-                                            select.append("<option value='" + value.id + "'>" + value.identifiant + "</option>")
-                                        })
-                                        $('body').one('click', '.marquerCommeVendu option:selected', function () { //Quand un acheteur est sélectionné, append le bouton confirmer
-                                            if ($('option:selected').val().length > 0) {
-                                                $('<button id ="confirmerVente">Confirmer la vente</button>').insertAfter('.marquerCommeVendu')
-                                            }
-                                        });
-                                    }
-                                },
-                            );
-                        });
+                        let select = $('.marquerCommeVendu')
+                        $.post(
+                            'API/apiVendeur', {action: 'selectContacts'},
+                            function (data) {
+                                let contacts = JSON.parse(data);
+                                console.log(data);
+                                if (contacts == 'none') {
+                                    select.append("<option>Aucun contact</option>");
+                                } else {
+                                    $.each(contacts, function (key, value) {
+                                        select.append("<option value='" + value.id + "'>" + value.identifiant + "</option>")
+                                    })
+                                }
+                            },
+                        );
                     }
-                });
+                })
 
-
-        } else if ($(this).is('.navNewArticle')) { //Créer nouvelle annonce
+//Créer nouvelle annonce
+        } else if ($(this).is('.navNewArticle')) {
             $.post(
                 'API/apiVendeur', {action: 'afficherNewArticle'},
                 function (data) {
-                    $('#sectionVendeur').html(data);
+                    if (data === 'maximum') {
+                        $('#sectionVendeur').html('Vous avez atteint le maximum d\'annonces en ligne.');
+                    } else {
+                        $('#sectionVendeur').html(data);
+                    }
+
                 })
 
-        } else if ($(this).is('#navSoldArticle')) { //Historique de vente
+            //Historique de vente
+        } else if ($(this).is('#navSoldArticle')) {
             callSectionUser('vendeurArticlesVendus')
             console.log($(this))
             $.post(
@@ -143,7 +144,7 @@ $(document).ready(function () {
                         $("#articlesVendus").append("<tr><td>Il n'y a rien ici.</td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesVendus').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td>" + article.identifiant + "</td><td>" + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                            $('#articlesVendus').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td> Acheté par : " + article.identifiant + "</td><td> Vendu le : " + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
                     }
                 });
@@ -166,7 +167,6 @@ $(document).ready(function () {
 
     /*Submit New Article*/
     $('body').on('submit', '#formNewArticle', function (event) {
-        $('#message').empty();
         event.preventDefault()
         $.post(
             'API/apiVendeur', {
@@ -180,12 +180,14 @@ $(document).ready(function () {
                 catSuggeree: $('#catSuggeree').val()
             },
             function (data) {
+                $('#formNewArticle').empty();
+                $('#message').empty();
                 console.log(data);
                 let message = JSON.parse(data);
                 if (message === "success") {
                     $("#message").append("<p>Annonce créée !</p>");
                 } else if (message === "moderation") {
-                    $("#message").append("<p>Annonce en modération</p>");
+                    $("#message").append("<p>Annonce en modération. Veuillez attendre 48 heures avant de contacter un.e administrateur.ice.</p>");
                 } else {
                     $('#message').append("<p>" + message + "</p>");
                 }
@@ -210,6 +212,15 @@ $(document).ready(function () {
         });
     });
 
+//Quand un acheteur est sélectionné, append le bouton confirmer
+    $('body').on('click', '.marquerCommeVendu option:selected', function () {
+        if (($('option:selected').val().length > 0 && $('#confirmerVente').length === 0)) {
+            $('<button id ="confirmerVente">Confirmer la vente</button>').insertAfter('.marquerCommeVendu')
+        } else if ($('option:selected').val().length === 0) {
+            $('#confirmerVente').remove()
+        }
+    });
+
     //Marquer comme vendu
     $('body').on('click', '#confirmerVente', function () {
         let row = $(this).parents('tr')
@@ -225,7 +236,7 @@ $(document).ready(function () {
                     let message = JSON.parse(data);
                     row.hide()
                     console.log(message)
-                },
+                }
             );
         }
     });
@@ -267,6 +278,7 @@ $(document).ready(function () {
                 let message = JSON.parse(data);
                 if (message === "success") {
                     $("#message").append("<p>Update réussie !</p>");
+                    // $(".formUpdateArticle").load(location.href + ' .formUpdateArticle')
                 } else {
                     $('#message').append("<p>" + message + "</p>");
                 }
