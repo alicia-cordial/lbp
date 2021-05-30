@@ -18,8 +18,7 @@
                 <input type="text" id="login" name="login" placeholder="identifiant">
                 <input type="password" id="password" name="password" placeholder="mot de passe">
                 <input type="password" id="password2" name="password2" placeholder="confirmez votre mot de passe">
-                <p><em>*Le mot de passe doit comporter au moins 6 caractères, un caractère spécial et un chiffre.</em>
-                </p>
+                <p><em>*Le mot de passe doit comporter au moins 6 caractères, un caractère spécial et un chiffre.</em></p>
             </div>
 
             <div class="formBloc" id="bloc3">

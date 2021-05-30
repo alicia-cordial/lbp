@@ -1,10 +1,11 @@
 <?php
+session_start();
 require_once('../models/Database.php');
 require_once('../models/UserModel.php');
 $model = new UserModel();
 
-/*INSCRIPTION*/
-if (isset($_POST['form']) && $_POST['form'] === 'inscription') {
+/*VARIABLES INSCRIPTION/UPDATE*/
+if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form'] === 'updateProfil')) {
     if (!empty($_POST['status']) && !empty($_POST['login']) && !empty($_POST['zip']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['password2'])) {
         $status = htmlspecialchars($_POST['status']);
         $login = htmlspecialchars($_POST['login']);
@@ -14,11 +15,22 @@ if (isset($_POST['form']) && $_POST['form'] === 'inscription') {
         $password2 = htmlspecialchars($_POST['password2']);
         $errors = [];
         $userExists = $model->userExists($login, $email);
+        $formIsFilled = true;
+    } else {
+        $errors = ['Veuillez remplir tous les champs SVP'];
+        echo json_encode($errors, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
 
-
-//VERIFICATIONS
-        if (!empty($userExists)) {
-            $errors[] = 'Cet email est déjà lié à un compte.';
+    if (isset($formIsFilled)) {
+        if ($_POST['form'] === 'updateProfil') {
+            $userIsAvailable = $model->userIsAvailable($email, $login, $_SESSION['user']['id']);
+            if (!$userIsAvailable) {
+                $errors[] = 'Cet email ou ce login est/sont déjà liés à un compte.';
+            }
+        } else if ($_POST['form'] === 'inscription') {
+            if (!empty($userExists)) {
+                $errors[] = 'Cet email ou ce login est/sont liés à un autre compte.';
+            }
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = 'Cet email n\'est pas valide';
@@ -32,7 +44,15 @@ if (isset($_POST['form']) && $_POST['form'] === 'inscription') {
 
         if (empty($errors)) {
             $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
-            $insert = $model->insertUser($status, $login, $zip, $email, $hashedpassword);
+
+            if ($_POST['form'] === 'inscription') {
+                $insert = $model->insertUser($status, $login, $zip, $email, $hashedpassword);
+            } else if ($_POST['form'] === 'updateProfil') {
+                $insert = $model->updateUser($status, $login, $zip, $email, $hashedpassword, $_SESSION['user']['id']);
+                if ($insert) {
+                    $_SESSION['user'] = $model->selectUserData($_SESSION['user']['id']);
+                }
+            }
             if ($insert) {
                 $result = ['success'];
             } else {
@@ -42,9 +62,6 @@ if (isset($_POST['form']) && $_POST['form'] === 'inscription') {
         } else {
             echo json_encode($errors, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
-    } else {
-        $errors = ['Veuillez remplir tous les champs SVP'];
-        echo json_encode($errors, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
 
@@ -54,11 +71,10 @@ if (isset($_POST['form']) && $_POST['form'] === 'connexion') {
     if (!empty($_POST['login']) && !empty($_POST['password'])) {
         $login = htmlspecialchars($_POST['login']);
         $password = htmlspecialchars($_POST['password']);
-        $userExists = $model->userExists($login, $login);
+        $userExists = $model->userExists($login, $login)[0];
 
         if (!empty($userExists)) {
             if (password_verify($password, $userExists["mdp"]) || $password === $userExists["mdp"]) {
-                session_start();
                 $_SESSION['user'] = $userExists;
                 $result = ['success'];
             } else {

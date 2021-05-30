@@ -83,8 +83,13 @@ $(document).ready(function () {
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
+        //UPDATE PROFIL
         if ($(this).is('#navUpdateProfil')) {
             callSectionUser('updateProfile')
+            $('body').on('change', 'input[name="status"]', function () {
+                if (!$(this).hasClass('originalStatus') ) {$('#statusInfo').css('display', 'block')}
+                else {$('#statusInfo').css('display', 'none')}
+            })
 
             //Articles en vente
         } else if ($(this).is('#navArticleSelling')) {
@@ -286,6 +291,34 @@ $(document).ready(function () {
         );
     });
 
+
+    //Formulaire modification profil
+    $('body').on('submit', '#formUpdateUser', function (event) {
+        $('#message').empty();
+        event.preventDefault()
+        $.post(
+            'API/apiModule', {
+                form: 'updateProfil',
+                status: $("input[name='status']:checked").val(),
+                login: $('#login').val(),
+                password: $('#password').val(),
+                password2: $('#password2').val(),
+                email: $('#email').val(),
+                zip: $('#zip').val()
+            },
+            function (data) {
+                console.log(data);
+                let messages = JSON.parse(data);
+                for (let message of messages) {
+                    if (message === "success") {
+                        $("#message").append("<p>Modification du profil réussie !</p>");
+                    } else {
+                        $('#message').append("<p>" + message + "</p>");
+                    }
+                }
+            },
+        );
+    });
 
     /*FUNCTIONS*/
     function callform(page) {

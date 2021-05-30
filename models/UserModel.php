@@ -7,6 +7,31 @@ class UserModel extends Database
     {
         $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE mail = ? OR identifiant = ?");
         $request->execute([$email, $login]);
+        $userExists = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $userExists;
+    }
+
+    public function userIsAvailable($email, $login, $id)
+    {
+        $numberLines = count($this->userExists($email, $login));
+
+        if ($numberLines === 1) {
+            $row = $this->userExists($email, $login);
+            if ($row[0]['id'] === $id) {
+                return true;
+            } else {
+                return false;
+            }
+        } elseif ($numberLines === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function selectUserData($id) {
+        $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE id = ?");
+        $request->execute([$id]);
         $userExists = $request->fetch(PDO::FETCH_ASSOC);
         return $userExists;
     }
@@ -22,6 +47,19 @@ class UserModel extends Database
             ':zip' => $zip
         ));
         return $insert;
+    }
+
+    public function updateUser($status, $login, $zip, $email, $hashedpassword, $id)
+    {
+        $request = $this->pdo->prepare("UPDATE utilisateur SET identifiant = :identifiant, mdp = :password, mail = :email, status = :status, zip = :zip WHERE id = $id ");
+        $update = $request->execute(array(
+            ':status' => $status,
+            ':email' => $email,
+            ':password' => $hashedpassword,
+            ':identifiant' => $login,
+            ':zip' => $zip
+        ));
+        return $update;
     }
 
     public function selectVendeurArticles($id)
@@ -91,5 +129,7 @@ class UserModel extends Database
 }
 
 //$model = new UserModel();
-
+//var_dump($model->userExists('may@hotmail.fr', 'may'));
+//if($model->userIsAvailable('may@hotmail.fr', 'may', '1')) echo "no";
+//var_dump($model->userIsAvailable('may@hotmail.fr', 'may', '2'));
 //var_dump($model->insertArticleAModerer('lala', 'lala', '40', 'bon état', 'non', 'kakak', '1', '0'));
