@@ -1,5 +1,4 @@
-<?php session_start();
-//var_dump($_SESSION['user']); ?>
+<?php session_start();?>
 <section id="sectionVendeur">
     <article>
         <h3>VOTRE PROFIL</h3>

@@ -1,98 +1,11 @@
 $(document).ready(function () {
-    /*1 - Module Inscription/Connexion*/
-    //TOGGLE inscription / connexion
-    $('body').on('click', '.callForm', function () {
-        if ($(this).is('#callFormInscription')) {
-            callform('inscription')
-        } else {
-            callform('connexion')
-        }
-    });
-
-    /*INSCRIPTION*/
-    //Display inscription blocks
-    $('body').on('click', 'input[name=status]', function () {
-        $('#bloc2').css('display', 'block')
-    });
-    $('body').on('change', '#password2', function () {
-        $('#bloc3').css('display', 'block')
-    });
-
-    //Submit inscription
-    $('body').on('submit', '#formInscription', function (event) {
-        $('#message').empty();
-        event.preventDefault()
-        $.post(
-            'API/apiModule', {
-                form: 'inscription',
-                status: $("input[name='status']:checked").val(),
-                login: $('#login').val(),
-                password: $('#password').val(),
-                password2: $('#password2').val(),
-                email: $('#email').val(),
-                zip: $('#zip').val()
-            },
-            function (data) {
-                console.log(data);
-                let messages = JSON.parse(data);
-                for (let message of messages) {
-                    if (message === "success") {
-                        $("#message").append("<p>Inscription réussie !</p>");
-                    } else {
-                        $('#message').append("<p>" + message + "</p>");
-                    }
-                }
-            },
-        );
-    });
-
-    /*CONNEXION*/
-    //Display 2d block
-    $('body').on('click', '#login', function () {
-        $('#bloc2').css('display', 'block')
-    });
-
-    //Submit connexion
-    $('body').on('submit', '#formConnexion', function (event) {
-        $('#message').empty();
-        event.preventDefault()
-        $.post(
-            'API/apiModule', {
-                form: 'connexion',
-                login: $('#login').val(),
-                password: $('#password').val(),
-            },
-            function (data) {
-                console.log(data);
-                let messages = JSON.parse(data);
-                for (let message of messages) {
-                    if (message === "success") {
-                        $("#message").append("<p>Connexion réussie !</p> <a href='compte'>Voir votre profil</a>");
-                    } else {
-                        $('#message').append("<p>" + message + "</p>");
-                    }
-                }
-            },
-        );
-    });
-
-
-    /*2 - ESPACE VENDEUR*/
 
     /*NAVIGATION*/
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
-        //UPDATE PROFIL
-        if ($(this).is('#navUpdateProfil')) {
-            callSectionUser('updateProfile')
-            $('body').on('change', 'input[name="status"]', function () {
-                if (!$(this).hasClass('originalStatus') ) {$('#statusInfo').css('display', 'block')}
-                else {$('#statusInfo').css('display', 'none')}
-            })
-
             //Articles en vente
-        } else if ($(this).is('#navArticleSelling')) {
+        if ($(this).is('#navArticleSelling')) {
             callSectionUser('vendeurArticlesEnVente')
             $.post(
                 'API/apiVendeur', {action: 'articlesSelling'},
@@ -123,7 +36,7 @@ $(document).ready(function () {
                     }
                 })
 
-//Créer nouvelle annonce
+        //Créer nouvelle annonce
         } else if ($(this).is('.navNewArticle')) {
             $.post(
                 'API/apiVendeur', {action: 'afficherNewArticle'},
@@ -170,7 +83,7 @@ $(document).ready(function () {
         }
     })
 
-    /*Submit New Article*/
+    /*Formulaire New Article*/
     $('body').on('submit', '#formNewArticle', function (event) {
         event.preventDefault()
         $.post(
@@ -185,11 +98,11 @@ $(document).ready(function () {
                 catSuggeree: $('#catSuggeree').val()
             },
             function (data) {
-                $('#formNewArticle').empty();
                 $('#message').empty();
                 console.log(data);
                 let message = JSON.parse(data);
                 if (message === "success") {
+                    $('#formNewArticle').empty();
                     $("#message").append("<p>Annonce créée !</p>");
                 } else if (message === "moderation") {
                     $("#message").append("<p>Annonce en modération. Veuillez attendre 48 heures avant de contacter un.e administrateur.ice.</p>");
@@ -290,50 +203,4 @@ $(document).ready(function () {
             },
         );
     });
-
-
-    //Formulaire modification profil
-    $('body').on('submit', '#formUpdateUser', function (event) {
-        $('#message').empty();
-        event.preventDefault()
-        $.post(
-            'API/apiModule', {
-                form: 'updateProfil',
-                status: $("input[name='status']:checked").val(),
-                login: $('#login').val(),
-                password: $('#password').val(),
-                password2: $('#password2').val(),
-                email: $('#email').val(),
-                zip: $('#zip').val()
-            },
-            function (data) {
-                console.log(data);
-                let messages = JSON.parse(data);
-                for (let message of messages) {
-                    if (message === "success") {
-                        $("#message").append("<p>Modification du profil réussie !</p>");
-                    } else {
-                        $('#message').append("<p>" + message + "</p>");
-                    }
-                }
-            },
-        );
-    });
-
-    /*FUNCTIONS*/
-    function callform(page) {
-        $.get('views/user/' + page + '.php',
-            function (data) {
-                $('#mainCompte').html(data);
-            });
-    };
-
-
-    function callSectionUser(page) {
-        $.get('views/user/' + page + '.php',
-            function (data) {
-                $('#sectionVendeur').html(data);
-            });
-    }
-
 });

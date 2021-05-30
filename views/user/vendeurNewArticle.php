@@ -31,12 +31,12 @@
             </div>
 
 <!--            INPUT PHOTO-->
-
-            <div class="formInfo">
-                <div id="message"></div>
-            </div>
-
             <button type="submit">Créer l'annonce</button>
         </form>
+
+        <div class="formInfo">
+            <div id="message"></div>
+        </div>
+
     </article>
 </section>

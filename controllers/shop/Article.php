@@ -10,6 +10,7 @@ class Article
         
         $title = "Article";
         $css = "home.css";
+        $js = ["shop.js"];
 
         ob_start();
 
@@ -17,7 +18,7 @@ class Article
         require_once ('views/shop/article.php');
         $main = ob_get_clean();
 
-        $render = new View($title, $css, $main);
+        $render = new View($title, $css, $main, $js);
     }
 
 

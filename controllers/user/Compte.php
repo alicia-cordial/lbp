@@ -7,12 +7,12 @@ class Compte
     {
         $title = "Compte";
         $css = "compte.css";
-
+        $js = ['module.js', 'compte.js', 'vendeur.js'];
         ob_start();
         $this->selectMain();
         $main = ob_get_clean();
 
-        $render = new View($title, $css, $main);
+        $render = new View($title, $css, $main, $js);
     }
 
     public function selectMain()

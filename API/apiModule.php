@@ -71,9 +71,10 @@ if (isset($_POST['form']) && $_POST['form'] === 'connexion') {
     if (!empty($_POST['login']) && !empty($_POST['password'])) {
         $login = htmlspecialchars($_POST['login']);
         $password = htmlspecialchars($_POST['password']);
-        $userExists = $model->userExists($login, $login)[0];
+        $userExists = $model->userExists($login, $login);
 
         if (!empty($userExists)) {
+            $userExists = $userExists[0];
             if (password_verify($password, $userExists["mdp"]) || $password === $userExists["mdp"]) {
                 $_SESSION['user'] = $userExists;
                 $result = ['success'];

@@ -3,7 +3,7 @@
 
 class View
 {
-    function __construct($title, $css, $main)
+    function __construct($title, $css, $main, $js)
     {
         require_once ('views/elements/head.php');
         require_once ('views/elements/header.php');

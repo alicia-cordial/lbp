@@ -29,7 +29,8 @@ class UserModel extends Database
         }
     }
 
-    public function selectUserData($id) {
+    public function selectUserData($id)
+    {
         $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE id = ?");
         $request->execute([$id]);
         $userExists = $request->fetch(PDO::FETCH_ASSOC);
@@ -88,7 +89,7 @@ class UserModel extends Database
 
     public function selectVendeurContacts($id)
     {
-        $request = $this->pdo->prepare("SELECT DISTINCT u.id, identifiant FROM utilisateur as u INNER JOIN message as m ON m.id_expediteur = u.id INNER JOIN utilisateur_message as um ON um.id_destinataire = ?");
+        $request = $this->pdo->prepare("SELECT DISTINCT u.id, identifiant FROM utilisateur as u INNER JOIN message as m ON m.id_expediteur = u.id INNER JOIN utilisateur_message as um ON um.id_destinataire = ? WHERE u.id != $id");
         $request->execute([$id]);
         $contacts = $request->fetchAll(PDO::FETCH_ASSOC);
         return $contacts;
@@ -126,10 +127,22 @@ class UserModel extends Database
         $request->execute([$titre, $description, $prix, $etat, $negociation, $catSuggeree, $idUser, $visible]);
         return true;
     }
+
+    public function selectMessagesConversation($idDestinataire, $idUser)
+    {
+        $request = $this->pdo->prepare("SELECT * FROM message as m INNER JOIN utilisateur_message as um on id_message = m.id WHERE (id_expediteur = $idDestinataire AND id_destinataire = $idUser) OR (id_expediteur = $idUser AND id_destinataire = $idDestinataire)");
+        $request->execute();
+        $messages = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $messages;
+    }
 }
 
+////
 //$model = new UserModel();
-//var_dump($model->userExists('may@hotmail.fr', 'may'));
+//var_dump($model->selectMessagesConversation('4', '1'));
+////var_dump($model->selectMessagesConversation('2', '1'));
+//$userExists = $model->userExists('may5', 'may5');
+//var_dump($userExists);
 //if($model->userIsAvailable('may@hotmail.fr', 'may', '1')) echo "no";
 //var_dump($model->userIsAvailable('may@hotmail.fr', 'may', '2'));
 //var_dump($model->insertArticleAModerer('lala', 'lala', '40', 'bon état', 'non', 'kakak', '1', '0'));
