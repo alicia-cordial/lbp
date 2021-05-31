@@ -2,7 +2,11 @@
     <article id="contacts">
 
     </article>
-    <article id="conversation">
-
+    <article>
+        <div id="conversation">
+        </div>
+        <form id="formNewMessage">
+            <input id="newMessage" placeholder="écrivez un message ..." required>
+        </form>
     </article>
 </section>

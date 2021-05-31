@@ -23,13 +23,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'articlesSelling') {
     if ($suppr) {
         echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
-} elseif (isset($_POST['action']) && $_POST['action'] === 'selectContacts') {
-    $contacts = $model->selectVendeurContacts($_SESSION['user']['id']);
-    if ($contacts) {
-        echo json_encode($contacts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    } else {
-        echo json_encode('none', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
 } elseif (isset($_POST['action']) && $_POST['action'] === 'marquerCommeVendu') {
     $vendu = $model->marquerCommeVendu($_POST['idAcheteur'], $_POST['idArticle']);
     if ($vendu) {

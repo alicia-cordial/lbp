@@ -17,7 +17,7 @@ $(document).ready(function () {
         } else if ($(this).is('#navMessagerie')) {
             callSectionUser('messagerie')
             $.post(
-                'API/apiVendeur', {action: 'selectContacts'},
+                'API/apiMessagerie', {action: 'selectContacts'},
                 function (data) {
                     let contacts = JSON.parse(data);
                     let contactList = $('#contacts')
@@ -37,22 +37,47 @@ $(document).ready(function () {
     //MESSAGERIE
     $('body').on('click', '.individualConversation', function (event) {
         let idDestinataire = $(this).attr('id')
-        console.log(idDestinataire)
+        // console.log(idDestinataire)
         let conversation = $('#conversation')
         conversation.empty()
         $.post(
             'API/apiMessagerie', {action: 'showConversation', idDestinataire: idDestinataire},
             function (data) {
+                $('#formNewMessage').css('display', 'block')
+                $('#formNewMessage').attr('value', idDestinataire)
                 let messages = JSON.parse(data);
                 console.log(messages);
                 for (let message of messages) {
+                    conversation.append("<p id='message" + message.id + "'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
                     if (message.id_expediteur == idDestinataire) {
-                        conversation.append("<p class='pink'>" + message.contenu + "</p>")
+                        $('#message' + message.id).addClass('messageDestinataire')
                     } else {
-                        conversation.append("<p class='green'>" + message.contenu + "</p>")
+                        $('#message' + message.id).addClass('messageUtilisateur')
                     }
                 }
             })
+    })
+
+    //NEW MESSAGE IN CONVERSATION
+    $('body').on('submit', '#formNewMessage', function (event) {
+        let idDestinataire = $(this).attr('value')
+        event.preventDefault()
+        let conversation = $('#conversation')
+        console.log(idDestinataire)
+        console.log($('#newMessage').val())
+        $.post(
+            'API/apiMessagerie', {
+                action: 'sendNewMessage',
+                idDestinataire: idDestinataire,
+                messageContent: $('#newMessage').val()
+            },
+            function (data) {
+                let message = JSON.parse(data);
+                $('#newMessage').val('')
+                console.log(data);
+                conversation.append("<p id='message" + message.id + "' class='messageUtilisateur'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
+            }
+        )
     })
 
 

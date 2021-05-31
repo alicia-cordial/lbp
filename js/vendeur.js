@@ -20,7 +20,7 @@ $(document).ready(function () {
                         }
                         let select = $('.marquerCommeVendu')
                         $.post(
-                            'API/apiVendeur', {action: 'selectContacts'},
+                            'API/apiMessagerie', {action: 'selectContacts'},
                             function (data) {
                                 let contacts = JSON.parse(data);
                                 console.log(data);

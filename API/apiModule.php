@@ -25,11 +25,11 @@ if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form']
         if ($_POST['form'] === 'updateProfil') {
             $userIsAvailable = $model->userIsAvailable($email, $login, $_SESSION['user']['id']);
             if (!$userIsAvailable) {
-                $errors[] = 'Cet email ou ce login est/sont déjà liés à un compte.';
+                $errors[] = 'Cet email ou ce login est/sont déjà liés à un autre compte.';
             }
         } else if ($_POST['form'] === 'inscription') {
             if (!empty($userExists)) {
-                $errors[] = 'Cet email ou ce login est/sont liés à un autre compte.';
+                $errors[] = 'Cet email ou ce login est/sont liés à un compte.';
             }
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
