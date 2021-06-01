@@ -35,7 +35,7 @@ if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form']
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = 'Cet email n\'est pas valide';
         }
-        if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $password)) {
+        if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{6,15}$/', $password)) {
             $errors[] = 'Le mot de passe n\'est pas suffisamment sécurisé.';
         }
         if ($password != $password2) {

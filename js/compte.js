@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    //UPDATE PROFIL
+
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 

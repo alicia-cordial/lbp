@@ -9,7 +9,8 @@ class Routeur
         "compte" => "Compte",
         "article" => "Article",
         "resultatArticles" => "ResultatArticles",
-        "profilVendeur" => "ProfilVendeur"
+        "profilVendeur" => "ProfilVendeur",
+        "admin" => "Admin"
     ];
 
 //    controller sélectionné

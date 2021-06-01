@@ -1,4 +1,5 @@
 <main id="mainCompte">
+    <?php var_dump($_SESSION);?>
     <article>
         <h2>ESPACE PERSONNEL - Vendeur</h2>
         <h3><?= $_SESSION['user']['identifiant'] ?></h3>
