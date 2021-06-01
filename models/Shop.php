@@ -6,19 +6,19 @@ require_once('Database.php');
 
 class Shop extends Database{
 
-
-  function selectArticle($nom, $zip, $titre){
-    $request = $this->pdo->prepare("SELECT $nom, $zip, $titre FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id");
-    $request->execute();
-    $result[] = $request->fetchAll(PDO::FETCH_ASSOC);
+/*FORMULAIRE RECHERCHE */
+  function selectObject($nom, $zip, $titre){
+    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id WHERE $nom = ? OR $zip = ? OR $titre = ?");
+    $request->execute([$nom, $zip, $titre]);
+    $result = $request->fetchAll(PDO::FETCH_ASSOC);
 
     return $result;
   }
 
-
+/*AUTOCOMPLETION HEADER */
   function get_article($term){
   
-    $request = $this->pdo->prepare("SELECT * FROM `article` where `titre` LIKE '%$term%' ORDER BY `titre` ASC");
+    $request = $this->pdo->prepare("SELECT * FROM `article` where `titre` LIKE '%$term%' ORDER BY `titre` ASC LIMIT 8");
     $request->execute([$term]);
     $articles[] = $request->fetchAll(PDO::FETCH_ASSOC);
   
@@ -28,8 +28,20 @@ class Shop extends Database{
     }
 
 
+    function get_oneArticle($titre){
+      $request = $this->pdo->prepare("SELECT * FROM `article` WHERE titre = ?");
+      $request->execute([$titre]);
+      $article[] = $request->fetchAll(PDO::FETCH_ASSOC);
+      
+      return $article;
+    }
+
+
+    /*AUTOCOMPLETION RECHERCHE OBJET*/
+
+
     function get_articleCat($term){
-      $request = $this->pdo->prepare("SELECT `titre`, `nom` FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE titre LIKE '%$term%'");
+      $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE titre LIKE '%$term%'");
       $request->execute([$term]);
       $result_search[] = $request->fetchAll(PDO::FETCH_ASSOC);
   
@@ -37,8 +49,11 @@ class Shop extends Database{
   
     }
 
+
+    /*AUTOCOMPLETION RECHERCHE VENDEUR */
+
   function get_seller($search){
-    $request = $this->pdo->prepare("SELECT identifiant, utilisateur.status FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$search%'");
+    $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$search%'");
     $request->execute();
     $getseller[] = $request->fetchAll(PDO::FETCH_ASSOC);
 
@@ -46,13 +61,27 @@ class Shop extends Database{
 
   }
 
+  function seller($id){
+    $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE utilisateur.id = '$id' ");
+    $request->execute([$id]);
+    $userExist = $request->fetchAll(PDO::FETCH_ASSOC);
+ 
+    return $userExist;
+  }
+
+
+  /*
+
 function get_cat(){
   $request = $this->pdo->prepare("SELECT * FROM `categorie`");
   $request->execute();
   $getcat[] = $request->fetchAll(PDO::FETCH_ASSOC);
 }
+*/
 
 
+
+/*RECHERCHE PRICE RANGE */
 
 function price_range(){
   $query = $this->pdo->prepare("SELECT * FROM article ORDER BY prix DESC");
@@ -65,7 +94,7 @@ function price_range(){
 
 }
 //$model = new Shop();
-//var_dump($model->get_seller('alicia'));
+//var_dump($model->seller('1'));
 
 
 //ÇA MARCHE LIER À CONTROLLER

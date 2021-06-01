@@ -8,7 +8,7 @@ class Home
         
         $title = "Home";
         $css = "home.css";
-        $js = false;
+           $js = ['shop.js'];
 
         ob_start();
         require_once ('views/home.php');

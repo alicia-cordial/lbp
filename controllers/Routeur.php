@@ -8,7 +8,8 @@ class Routeur
         "home" => "Home",
         "compte" => "Compte",
         "article" => "Article",
-        "resultatArticles" => "RésultatArticles",
+        "resultatArticles" => "ResultatArticles",
+        "profilVendeur" => "ProfilVendeur"
     ];
 
 //    controller sélectionné

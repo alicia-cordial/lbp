@@ -27,7 +27,12 @@ $(document).ready(function() {
     });
 
 
-    /*AUTOCOMPLETION HEADER*/
+    /*************************AUTOCOMPLETION HEADER************************/
+
+    //RECHERCHE ARTICLE
+
+
+    //$('#sectionArticle').empty();
 
 
     $('#article_search').keyup(function() {
@@ -50,40 +55,59 @@ $(document).ready(function() {
 
     });
 
+    /*
+        ('body').on('click', '#login', function() {
 
+            //$('#sectionArticle').empty();
+            $('#message').empty();
+            event.preventDefault()
 
+            if ($(this).is('#sectionArticle')) {
+                $.get(
+                    'API/apiAutocompletion', { titre: resultat },
+                    function(data) {
+                        let resultat = JSON.parse(data);
+                        console.log(resultat)
+                        for (let resultat of resultats) {
+                            if (message === "success")
+                                $('#recherche_titre').append("<tr id='" + resultat.id + "'><td>" + resultat.titre + "</td></tr>")
+                        }
+                    }
+                );
+            };
 
+        });*/
+    /***********************BARRE DE RECHERCHE AVANCÉE************************/
 
-    /*BARRE DE RECHERCHE AVANCÉE*/
+    //FORMULAIRE RECHERCHE OBJET
 
     $('body').on('submit', '#form_objet', function(event) {
-        $('#message').empty();
+        $('#message_form').empty();
         event.preventDefault()
         $.post(
             'API/apiSearch.php', {
                 form: 'home',
-                nom: $('#categorie').val(),
+                nom: $('#nom').val(),
                 zip: $('#zip').val(),
                 titre: $('#titre').val(),
 
             },
             function(data) {
                 console.log(data);
-                let messages = JSON.parse(data);
-                for (let message of messages) {
-                    if (message === "success") {
-                        $('#message').append("<a href='resultatArticles'></a>");
-                    } else {
-                        $('#message').append("<p>" + message + "</p>")
+                let articles = JSON.parse(data);
+                for (let article of articles) {
+                    if (article === "success") {
+                        $('#message_form').append('<a href="resultatArticles' + article.id + '" > ' + article.zip + ' </a></br > ');
                     }
                 }
             },
         );
     });
 
+    //RECHERCHE TITRE AVEC CATEGORIE
 
     $('#titre').keyup(function() {
-        $('#message').html('');
+        $('#message_form').html('');
         var article = $(this).val();
         console.log(article);
         $.get(
@@ -95,22 +119,31 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#message').append('<a href="resultatArticles?article=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
+                    $('#message_form').append('<a href="resultatArticles?article=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
                 }
             },
         );
     });
+    /*
+        //PRICE RANGE
 
-    //PRICE RANGE
-    var rangeslider = document.getElementById("sliderRange");
-    var output = document.getElementById("demo");
-    output.innerHTML = rangeslider.value;
+        var rangeslider = document.getElementById("sliderRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = rangeslider.value;
 
-    rangeslider.oninput = function() {
-        output.innerHTML = this.value;
-    }
+        rangeslider.oninput = function() {
+            output.innerHTML = this.value;
+        }
+    */
 
 
+
+
+
+
+
+
+    //RECHERCHE VENDEUR
 
     $('#user').keyup(function() {
         $('#message').html('');
@@ -126,10 +159,25 @@ $(document).ready(function() {
                 console.log(users);
                 for (let user of users) {
                     $('#message').append('<a href="profilVendeur?vendeur=' + user.id + '">' + user.identifiant + '</a></br>');
+                    //$('#input-id').bind('autocompleteSelect', function(event, node) });
                 }
+
+
+
             },
+
         );
 
     });
 
-});
+
+
+    /*
+        jQuery(function() {
+            $("#user").autocomplete("API/apiSearch");
+        });
+    */
+
+
+
+})

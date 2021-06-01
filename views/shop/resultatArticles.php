@@ -1,4 +1,4 @@
-<?php var_dump($_GET);?>
+
 <main id="mainRecherche">
     <article>
         <h2>RESULTATS RECHERCHE</h2>

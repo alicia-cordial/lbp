@@ -13,7 +13,6 @@ class Article
         $js = ["shop.js"];
 
         ob_start();
-
      
         require_once ('views/shop/article.php');
         $main = ob_get_clean();
