@@ -3,6 +3,8 @@ $(document).ready(function () {
     //UPDATE PROFIL
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
+
+        //UPDATE PROFIL
         if ($(this).is('#navUpdateProfil')) {
             callSectionUser('updateProfile')
             $('body').on('change', 'input[name="status"]', function () {
@@ -12,6 +14,24 @@ $(document).ready(function () {
                     $('#statusInfo').css('display', 'none')
                 }
             })
+
+            //ARTICLES ACHETES
+        } else if ($(this).is('#navBoughtArticle')) {
+            callSectionUser('clientArticlesAchetes')
+            $.post(
+                'API/apiClient', {action: 'selectArticlesAchetes'},
+                function (data) {
+                    let articles = JSON.parse(data);
+                    console.log(data);
+                    if (articles == 'none') {
+                        $("#articlesAchetes").append("<tr><td>Il n'y a rien ici.</td></tr>");
+                    } else {
+                        for (let article of articles) {
+                            $('#articlesAchetes').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td> Vendeur : <a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td> Acheté le : " + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                        }
+                    }
+                }
+            );
 
             //MESSAGERIE
         } else if ($(this).is('#navMessagerie')) {
@@ -101,6 +121,10 @@ $(document).ready(function () {
                 for (let message of messages) {
                     if (message === "success") {
                         $("#message").append("<p>Modification du profil réussie !</p>");
+                        setTimeout(
+                            function () {
+                                $("#mainCompte").load(location.href + " #mainCompte")
+                            }, 3000);
                     } else {
                         $('#message').append("<p>" + message + "</p>");
                     }

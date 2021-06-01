@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('body').on('click', '.navUser', function () {
         $('#sectionVendeur').empty();
 
-            //Articles en vente
+        //Articles en vente
         if ($(this).is('#navArticleSelling')) {
             callSectionUser('vendeurArticlesEnVente')
             $.post(
@@ -36,7 +36,7 @@ $(document).ready(function () {
                     }
                 })
 
-        //Créer nouvelle annonce
+            //Créer nouvelle annonce
         } else if ($(this).is('.navNewArticle')) {
             $.post(
                 'API/apiVendeur', {action: 'afficherNewArticle'},
@@ -179,11 +179,11 @@ $(document).ready(function () {
     $('body').on('submit', '.formUpdateArticle', function (event) {
         $('#message').empty();
         event.preventDefault()
-        console.log($('.formUpdateArticle').attr('id'))
+        idArticle = ($('.formUpdateArticle').attr('id'))
         $.post(
             'API/apiVendeur', {
                 form: 'updateArticle',
-                idArticle: $('.formUpdateArticle').attr('id'),
+                idArticle: idArticle,
                 titre: $('#titre').val(),
                 description: $('#description').val(),
                 prix: $('#prix').val(),
@@ -196,7 +196,7 @@ $(document).ready(function () {
                 let message = JSON.parse(data);
                 if (message === "success") {
                     $("#message").append("<p>Update réussie !</p>");
-                    // $(".formUpdateArticle").load(location.href + ' .formUpdateArticle')
+                    $('#'+idArticle).find('a').text($('#titre').val())
                 } else {
                     $('#message').append("<p>" + message + "</p>");
                 }

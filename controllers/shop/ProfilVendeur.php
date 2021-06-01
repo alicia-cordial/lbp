@@ -6,12 +6,12 @@ class ProfilVendeur
     function __construct()
     {
         
-        $title = "ProfilVendeurs";
+        $title = "Profil Vendeur";
         $css = "home.css";
         $js = ["shop.js" ];
 
         ob_start();
-        require_once ('views/shop/profilVendeur.php');
+        require_once('views/shop/profilVendeur.php');
         $main = ob_get_clean();
 
         $render = new View($title, $css, $main, $js);

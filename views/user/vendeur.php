@@ -1,6 +1,7 @@
 <main id="mainCompte">
     <article>
         <h2>ESPACE PERSONNEL - Vendeur</h2>
+        <h3><?= $_SESSION['user']['identifiant'] ?></h3>
         <ul>
             <li class="navUser navNewArticle">Déposer une nouvelle annonce</li>
             <li class="navUser" id="navArticleSelling">Articles en vente</li>
@@ -10,6 +11,6 @@
         </ul>
     </article>
     <section id="sectionVendeur">
-        <h3>...</h3>
+
     </section>
 </main>
