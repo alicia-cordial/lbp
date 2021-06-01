@@ -6,7 +6,7 @@ class ProfilVendeur
     function __construct()
     {
         
-        $title = "ProfilVendeurs";
+        $title = "ProfilVendeur";
         $css = "home.css";
         $js = ["shop.js" ];
 

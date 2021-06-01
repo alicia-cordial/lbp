@@ -9,27 +9,29 @@ require_once('../models/Shop.php');
 
 //FORMULAIRE RECHERCHE PRÉCISE
 
+if(isset($_POST['form'])){
 
-if (isset($_POST['form']) && $_POST['form'] === 'objet') {
- 
-  if (!empty($_POST['zip']) && !empty($_POST['titre'])) {
-      $nom = htmlspecialchars($_POST['categorie']);
-      $zip = htmlspecialchars($_POST['zip']);
-      $titre = htmlspecialchars($_POST['titre']);
-      $prix = htmlspecialchars($_POST['prix']);
-      $errors = [];
-      $objectExists = $model->selectArticle($nom, $zip, $titre);
-      
 
-      if (!empty($objectExists)) {
-              session_start();
-              $result = ['success'];
-              echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    
-       }
-   }
+  $model = new Shop();
+
+
+  if(!empty($_POST['nom']) OR !empty($_POST['zip']) OR !empty($_POST['titre'])){
+    $nom = htmlspecialchars($_POST['nom']);
+    $zip = htmlspecialchars($_POST['zip']);
+    $titre = htmlspecialchars($_POST['titre']);
+
+    $objectExists = $model->selectObject($nom, $zip, $titre);
+    $articleList = array();
+
+    foreach($objectExists as $article){
+      $articleList = $article;
+    }
+
+
   }
+  echo json_encode($articleList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
+}
 
   //RECHERCHE ARTICLES
 
@@ -64,23 +66,38 @@ if (isset($_GET['search']) ) {
     $sellerList = $sellers;
   }
   echo json_encode($sellerList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  //require_once('../views/shop/profilVendeur.php');
 }
 
-//PRICE RANGE
 
-if(isset($_POST['price_range'])){
+
+if(isset($_GET['id'])){
+
+  $model = new Shop();
+
+  $id = htmlspecialchars($_GET['id']);
+  $getId = $model->seller($id);
+  //$IdList = array();
+
+  if($getId){
+    $count = $IdList->rowCount();
     
+    echo json_encode($IdList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     
-  //set conditions for filter by price range
-  $whereSQL = $orderSQL = '';
-  $priceRange = $_POST['price_range'];
-  if(!empty($priceRange)){
-      $priceRangeArr = explode(',', $priceRange);
-      $whereSQL = "WHERE prix BETWEEN '".$priceRangeArr[0]."' AND '".$priceRangeArr[1]."'";
-      $orderSQL = " ORDER BY prix ASC ";
-  }else{
-      $orderSQL = " ORDER BY titre DESC ";
   }
-  
+
 
 }
+/*
+$id = $_GET['user'];
+$request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$$id%'");
+$request->execute();
+
+if ($result->num_rows > 0) {
+  while($row = $result->fetch_assoc()) {
+  echo $row["id"]. "\n";
+ 
+  }
+ } else {
+  echo "0 results";
+ }*/
