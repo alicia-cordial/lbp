@@ -14,3 +14,10 @@ if (isset($_POST['action']) && $_POST['action'] === 'showUsers') {
         echo json_encode('none', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
+
+if (isset($_POST['action']) && $_POST['action'] === 'deleteUser') {
+    $suppr = $model->deleteUser($_POST['id']);
+    if ($suppr) {
+        echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}

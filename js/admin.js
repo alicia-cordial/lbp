@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     //
     $('body').on('click', '.navAdmin', function () {
-        $('#sectionVendeur').empty();
+        $('#sectionAdmin').empty();
 
         if ($(this).is('#navAdminUsers')) {
             callSectionAdmin('adminUsers')
@@ -26,17 +26,40 @@ $(document).ready(function () {
                 choice: choice
             },
             function (data) {
-                console.log(data);
+                // console.log(data);
                 let users = JSON.parse(data);
                 if (users === 'none') {
                     $('#listeUsersTries').append("<p>Rien</p>")
                 } else {
                     for (let user of users) {
-                        $('#listeUsersTries').append("<tr><td>" + user.identifiant + "</td><td>"+ user.status +"</td></tr>")
+                        if (user.status == 'vendeur') {
+                            $('#listeUsersTries').append("<tr id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                        } else {
+                            $('#listeUsersTries').append("<tr id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                        }
                     }
                 }
             }
         )
+    })
+
+
+    $('body').on('click', '.deleteUser', function () {
+        let row = $(this).parents('tr')
+        let idUser = row.attr('id')
+        $('#infoUser').empty()
+        $(this).html('<button id="confirmSupprUser">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
+        $('#infoUser').append("<p>Si l'utilisateur est un vendeur, ses articles en vente seront aussi supprimés. Procéder avec prudence.</p>")
+        $('body').on('click', '#confirmSupprUser', function () {
+            $.post(
+                'API/apiAdmin', {action: 'deleteUser', id: idUser},
+                function (data) {
+                    let message = JSON.parse(data);
+                    row.hide()
+                    $('#infoUser').append('<p>Utilisateur.ice supprimé.e.</p>')
+                },
+            );
+        });
     })
 })
 

@@ -117,7 +117,7 @@ $(document).ready(function () {
     $('body').on('click', '.supprimerArticle', function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
-        $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.es ? </button><button class="navUser">Non.</button>')
+        $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.e ? </button><button class="navUser">Non.</button>')
         $('body').on('click', '#confirmSupprArticle', function () {
             $.post(
                 'API/apiVendeur', {action: 'supprimerArticle', id: idArticle},
