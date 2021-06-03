@@ -4,8 +4,8 @@ $(document).ready(function () {
     $('body').on('click', '.navAdmin', function () {
         $('#sectionAdmin').empty();
 
-        if ($(this).is('#navAdminarticles')) {
-            callSectionAdmin('adminarticles')
+        if ($(this).is('#navAdminUsers')) {
+            callSectionAdmin('adminUsers')
         } else if ($(this).is('#navAdminMessagerie')) {
             callSectionAdmin('adminMessagerie')
         } else if ($(this).is('#navAdminModeration')) {
@@ -16,26 +16,26 @@ $(document).ready(function () {
     })
 
 
-    $('body').on('click', '.showarticles', function () {
+    $('body').on('click', '.showUsers', function () {
         let choice = $(this).attr('value');
-        $('#listearticlesTries').empty()
+        $('#listeUsersTries').empty()
         console.log(choice)
         $.post(
             'API/apiAdmin', {
-                action: 'showarticles',
+                action: 'showUsers',
                 choice: choice
             },
             function (data) {
                 // console.log(data);
-                let articles = JSON.parse(data);
-                if (articles === 'none') {
-                    $('#listearticlesTries').append("<p>Rien</p>")
+                let users = JSON.parse(data);
+                if (users === 'none') {
+                    $('#listeUsersTries').append("<p>Rien</p>")
                 } else {
-                    for (let article of articles) {
-                        if (article.status == 'vendeur') {
-                            $('#listearticlesTries').append("<tr value='" + article.identifiant + "' id='" + article.id + "'><td><a href='profilVendeur?id=" + article.id + "'>" + article.identifiant + "</a></td><td>" + article.status + "</td><td>Inscription : " + article.date_inscription + "</td><td><button class='contactarticle'>Contacter</button></td><td><button class='deletearticle'>Supprimer</button></td></tr>")
+                    for (let user of users) {
+                        if (users.status == 'vendeur') {
+                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
                         } else {
-                            $('#listearticlesTries').append("<tr value='" + article.identifiant + "' id='" + article.id + "'><td>" + article.identifiant + "</td><td>" + article.status + "</td><td>Inscription : " + article.date_inscription + "</td><td><button class='contactarticle'>Contacter</button></td><td><button class='deletearticle'>Supprimer</button></td></tr>")
+                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
                         }
                     }
                 }
@@ -43,16 +43,16 @@ $(document).ready(function () {
         )
     })
 
-    //BOUTON SUPPRIMER article
-    $('body').on('click', '.deletearticle', function () {
+    //BOUTON SUPPRIMER user
+    $('body').on('click', '.deleteUser', function () {
         let row = $(this).parents('tr')
-        let idarticle = row.attr('id')
+        let idUser = row.attr('id')
         $('#infoAdmin').empty()
-        $(this).html('<button id="confirmSupprarticle">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
+        $(this).html('<button id="confirmSupprUser">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
         $('#infoAdmin').append("<p>Si l'utilisateur est un vendeur, ses articles en vente seront aussi supprimés. Procéder avec prudence.</p>")
-        $('body').on('click', '#confirmSupprarticle', function () {
+        $('body').on('click', '#confirmSupprUser', function () {
             $.post(
-                'API/apiAdmin', {action: 'deletearticle', id: idarticle},
+                'API/apiAdmin', {action: 'deleteUser', id: idUser},
                 function (data) {
                     let message = JSON.parse(data);
                     row.hide()
@@ -63,7 +63,7 @@ $(document).ready(function () {
     })
 
     //BOUTON CONTACT article
-    $('body').on('click', '.contactarticle', function (event) {
+    $('body').on('click', '.contactUser', function (event) {
         $('#newMessage').remove()
         let row = $(this).parents('tr')
         let idDestinataire = row.attr('id')

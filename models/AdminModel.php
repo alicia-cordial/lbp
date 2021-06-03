@@ -28,10 +28,10 @@ class AdminModel extends Database
     public function showModeration($choice)
     {
         if (empty($choice)) {
-            $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE droit = 0 and status != 'supprimé' ");
+            $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE visible = 0");
             $request->execute();
         } else {
-            $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE status = ? AND droit = 0");
+            $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE visible = 0 AND categorie_suggeree != 'null'");
             $request->execute([$choice]);
         }
         $articles = $request->fetchAll(PDO::FETCH_ASSOC);
