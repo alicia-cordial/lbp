@@ -48,7 +48,7 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#result').append('<a href="article?article=' + article.id + '">' + article.titre + "</a></td><td>Annonce créee le : " + article.date_ajout + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                    $('#result').append('<a href="article?article=' + article.id + '">' + article.titre + "</a>");
 
                 }
             },
@@ -80,7 +80,7 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 for (let article of articles) {
                     if (article === "success") {
-                        $('#message_form').append('<a href="resultatArticles' + article.id + '" > ' + article.zip + ' </a></br > ');
+                        $('#message_form').append('<a href="resultatArticles?article' + article.id + '" > ' + article.zip + ' </a></br > ');
                     }
                 }
             },
@@ -102,7 +102,7 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#message_form').append('<a href="resultatArticles?article=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
+                    $('#message_form').append('<a href="resultatArticles?resultatArticles=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
                 }
             },
         );
@@ -142,8 +142,8 @@ $(document).ready(function() {
                 let users = JSON.parse(data);
                 console.log(users);
                 for (let user of users) {
-                    $('#message').append('<a href="profilVendeur?id=' + user.id + '">' + user.identifiant + '</a></br>');
-                    //$('#input-id').bind('autocompleteSelect', function(event, node) });
+                    $('#message').append('<a href="profilVendeur?user=' + user.id + '">' + user.identifiant + '</a></br>');
+
                 }
 
 
@@ -152,55 +152,6 @@ $(document).ready(function() {
         );
 
     });
-    /*
 
-        $('body').on('click', '.navVendeur', function() {
-            $('#sectionVendeur').empty();
-
-            if ($(this).is('#navRechercheVendeur')) {
-                callSectionRecherche('profilVendeur')
-            }
-
-        })
-
-        $('body').on('click', '.showVendeur', function() {
-            let choice = $(this).attr('value');
-            $('#listeVendeur').empty()
-            console.log(choice)
-
-            $.get(
-                'API/apiadmin', {
-                    action: 'showVendeur',
-                    id: choice
-                },
-                function(data) {
-                    console.log(data);
-                    let vendeurs = JSON.parse(data);
-                    if (vendeurs === 'none') {
-                        $('#listeVendeur').append('<p>Rien</p>')
-                    } else {
-                        for (let vendeur of vendeurs)
-                            $('#listeVendeur').append("<tr><td>" + vendeur.identifiant + "</td><td>" + vendeur.status + "</td></tr>")
-                    }
-                }
-
-            )
-        })
-
-
-        
-            jQuery(function() {
-                $("#user").autocomplete("API/apiSearch");
-            });
-        */
-
-    /*FUNCTIONS*/
-    /*function callSectionRecherche(page) {
-        $.get('views/shop/' + page + '.php',
-            function(data) {
-                $('#sectionAdmin').html(data);
-            });
-    }
-*/
 
 })

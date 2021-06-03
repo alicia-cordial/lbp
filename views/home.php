@@ -15,7 +15,7 @@
             <input type="text" name="zip" id="zip" placeholder="Quelle région?">  
 
           
-        <button type="submit">Submit</button>
+        <button type="submit" name="submit" value="submit">Submit</button>
 
         </form>
 
@@ -33,11 +33,11 @@
     <section id="vendeur">
     
         
-        <form id="form_vendeur" class="form_index"  method="post">
+        <form id="form_vendeur" class="form_index"  method="get">
             <input type="text" name="user" id="user" placeholder="Qui recherchez-vous ?">
            <!-- <input type="text" name="zip" id="zip" placeholder="Quelle région?">    -->
         </form>
-
+       
     </section>
 </div>
 

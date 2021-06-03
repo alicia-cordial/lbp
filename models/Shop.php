@@ -8,11 +8,15 @@ class Shop extends Database{
 
   private $id;
   private $identifiant;
-
   private $mail;
-
   private $zip;
   private $date_inscription;
+  private $titre;
+  private $description;
+  private $date_ajout;
+  private $photo;
+  private $prix;
+  private $etat_objet;
 
 
 
@@ -39,14 +43,6 @@ class Shop extends Database{
     }
 
 
-    function get_oneArticle($titre){
-      $request = $this->pdo->prepare("SELECT * FROM `article` WHERE titre = ?");
-      $request->execute([$titre]);
-      $article[] = $request->fetchAll(PDO::FETCH_ASSOC);
-      
-      return $article;
-    }
-
 
     /*AUTOCOMPLETION RECHERCHE OBJET*/
 
@@ -61,16 +57,33 @@ class Shop extends Database{
     }
 
 
+
+  /*PROFIL ARTICLE*/
+
+  function showArticle($id){
+ 
+    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id  WHERE titre.id = '$id' ");
+    $request->execute([$id]);
+    $articleExist = $request->fetchAll(PDO::FETCH_ASSOC);
+  
+    return $articleExist;
+  }
+
+
+
+
     /*AUTOCOMPLETION RECHERCHE VENDEUR */
 
   function get_seller($search){
     $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$search%'");
-    $request->execute();
+    $request->execute([$search]);
     $getseller[] = $request->fetchAll(PDO::FETCH_ASSOC);
 
     return $getseller;
 
   }
+
+  /*PROFIL VENDEUR*/
 
   function showVendeur($id){
  
@@ -123,30 +136,13 @@ function getDateInscription()
 
 }
 
-  /*
-
-function get_cat(){
-  $request = $this->pdo->prepare("SELECT * FROM `categorie`");
-  $request->execute();
-  $getcat[] = $request->fetchAll(PDO::FETCH_ASSOC);
-}
-*/
 
 
 
-/*RECHERCHE PRICE RANGE */
 
-function price_range(){
-  $query = $this->pdo->prepare("SELECT * FROM article ORDER BY prix DESC");
-  $query->execute();
-  $price[] = $query->fetchAll(PDO::FETCH_ASSOC);
-  
-  return $price;
-
-  }
 
 }
-$model = new Shop();
+//$model = new Shop();
 //var_dump($model->showVendeur('1'));
 
 
