@@ -109,23 +109,6 @@ $(document).ready(function() {
     });
 
 
-    /*
-        //PRICE RANGE
-
-        var rangeslider = document.getElementById("sliderRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = rangeslider.value;
-
-        rangeslider.oninput = function() {
-            output.innerHTML = this.value;
-        }
-    */
-
-
-
-
-
-
 
     //RECHERCHE VENDEUR
 

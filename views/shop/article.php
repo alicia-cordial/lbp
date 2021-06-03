@@ -4,8 +4,10 @@ if(isset($_GET['id'])){
     $model = new Shop();
   
     $id = htmlspecialchars($_GET['id']);
-    $objets = $model->showArticle($id);
-    var_dump($objets);
+    $articles = $model->showArticle($id);
+    //echo '<pre>';
+    //var_dump($articles);
+    //echo'</pre>';
     }
     ?>
 
@@ -27,20 +29,18 @@ if(isset($_GET['id'])){
     </thead>
 
     <tbody>
-    <?php 
-    
-    foreach ($objets as $objet) {
-        ?>
+   
         <tr>
-            <td><?= $objet['titre']; ?></td>
-            <td><?= $objet['description']; ?></td>
-            <td><?= $objet['date_ajout']; ?></td>
-            <td><?= $objet['prix']; ?></td>
-            <td><?= $objet['etat_objet']; ?></td>
-            <td><?= $objet['ouvert_negociation']; ?></td>
+            <td><?= $articles['titre']; ?></td>
+            <td><?= $articles['description']; ?></td>
+            <td><?= $articles['date_ajout']; ?></td>
+            <td><?= $articles['prix']; ?></td>
+            <td><?= $articles['etat_objet']; ?></td>
+            <td><?= $articles['ouvert_negociation']; ?></td>
+          
         </tr>
 
-    <?php } ?>
+
 
     </tbody>
 </table>

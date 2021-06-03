@@ -21,6 +21,7 @@ class Shop extends Database{
 
 
 
+
 /*FORMULAIRE RECHERCHE */
   function selectObject($nom, $zip, $titre){
     $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id WHERE $nom = ? OR $zip = ? OR $titre = ?");
@@ -62,9 +63,9 @@ class Shop extends Database{
 
   function showArticle($id){
  
-    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id  WHERE titre.id = '$id' ");
+    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id  WHERE article.id = '$id' ");
     $request->execute([$id]);
-    $articleExist = $request->fetchAll(PDO::FETCH_ASSOC);
+    $articleExist = $request->fetch(PDO::FETCH_ASSOC);
   
     return $articleExist;
   }
@@ -94,47 +95,7 @@ class Shop extends Database{
     return $userExist;
   }
 
-//GETID
-function getId()
-{
-    return $this->id;
-}
 
-//GETLOGIN
- function getIdentifiant()
-{
-    return $this->identifiant;
-}
-
-
-
-//GET ZIP
-
- function getZip()
-{
-
-    return $this->zip;
-
-}
-
-
-//GET EMAIL
-
- function getMail()
-{
-
-    return $this->mail;
-
-}
-
-//GET EMAIL
-
-function getDateInscription()
-{
-
-    return $this->date_inscription;
-
-}
 
 
 
