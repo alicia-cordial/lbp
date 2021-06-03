@@ -142,7 +142,7 @@ $(document).ready(function() {
                 let users = JSON.parse(data);
                 console.log(users);
                 for (let user of users) {
-                    $('#message').append('<a href="profilVendeur?user=' + user.id + '">' + user.identifiant + '</a></br>');
+                    $('#message').append('<a href="profilVendeur?id=' + user.id + '">' + user.identifiant + '</a></br>');
 
                 }
 
