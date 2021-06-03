@@ -19,19 +19,6 @@ if (isset($_GET['term'])) {
 
 
 
-
-  if(isset($_GET['titre'])){
-    $model = new Shop();
-
-    $titre = htmlspecialchars($_GET['titre']);
-    $getOnearticle = $model->get_oneArticle($titre);
-    $listArticle = array();
-    foreach($getOnearticle as $oneArticle){
-      $listArticle = $oneArticle;
-    }
-    echo json_encode($listArticle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-  }
-
 /*
   if(isset($_GET['searchone'])){
 

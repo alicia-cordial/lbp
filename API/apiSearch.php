@@ -60,44 +60,13 @@ if (isset($_GET['search']) ) {
 
   $search = htmlspecialchars($_GET['search']);
   $getUser = $model->get_seller($search);
-  
   $sellerList = array();
-  foreach($getUser as $sellers){
-    $sellerList = $sellers;
+
+  foreach($getUser as $user){
+    $sellerList = $user;
   }
   echo json_encode($sellerList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-  //require_once('../views/shop/profilVendeur.php');
-}
-
-
-
-if(isset($_GET['id'])){
-
-  $model = new Shop();
-
-  $id = htmlspecialchars($_GET['id']);
-  $getId = $model->seller($id);
-  //$IdList = array();
-
-  if($getId){
-    $count = $IdList->rowCount();
-    
-    echo json_encode($IdList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    
-  }
-
 
 }
-/*
-$id = $_GET['user'];
-$request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$$id%'");
-$request->execute();
 
-if ($result->num_rows > 0) {
-  while($row = $result->fetch_assoc()) {
-  echo $row["id"]. "\n";
- 
-  }
- } else {
-  echo "0 results";
- }*/
+

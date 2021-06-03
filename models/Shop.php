@@ -1,10 +1,25 @@
 <?php
 
-session_start();
+//session_start();
 
 require_once('Database.php');
 
 class Shop extends Database{
+
+  private $id;
+  private $identifiant;
+  private $mail;
+  private $zip;
+  private $date_inscription;
+  private $titre;
+  private $description;
+  private $date_ajout;
+  private $photo;
+  private $prix;
+  private $etat_objet;
+
+
+
 
 /*FORMULAIRE RECHERCHE */
   function selectObject($nom, $zip, $titre){
@@ -28,14 +43,6 @@ class Shop extends Database{
     }
 
 
-    function get_oneArticle($titre){
-      $request = $this->pdo->prepare("SELECT * FROM `article` WHERE titre = ?");
-      $request->execute([$titre]);
-      $article[] = $request->fetchAll(PDO::FETCH_ASSOC);
-      
-      return $article;
-    }
-
 
     /*AUTOCOMPLETION RECHERCHE OBJET*/
 
@@ -50,51 +57,93 @@ class Shop extends Database{
     }
 
 
+
+  /*PROFIL ARTICLE*/
+
+  function showArticle($id){
+ 
+    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id  WHERE titre.id = '$id' ");
+    $request->execute([$id]);
+    $articleExist = $request->fetchAll(PDO::FETCH_ASSOC);
+  
+    return $articleExist;
+  }
+
+
+
+
     /*AUTOCOMPLETION RECHERCHE VENDEUR */
 
   function get_seller($search){
     $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$search%'");
-    $request->execute();
+    $request->execute([$search]);
     $getseller[] = $request->fetchAll(PDO::FETCH_ASSOC);
 
     return $getseller;
 
   }
 
-  function seller($id){
+  /*PROFIL VENDEUR*/
+
+  function showVendeur($id){
+ 
     $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE utilisateur.id = '$id' ");
     $request->execute([$id]);
     $userExist = $request->fetchAll(PDO::FETCH_ASSOC);
- 
+  
     return $userExist;
   }
 
-
-  /*
-
-function get_cat(){
-  $request = $this->pdo->prepare("SELECT * FROM `categorie`");
-  $request->execute();
-  $getcat[] = $request->fetchAll(PDO::FETCH_ASSOC);
+//GETID
+function getId()
+{
+    return $this->id;
 }
-*/
+
+//GETLOGIN
+ function getIdentifiant()
+{
+    return $this->identifiant;
+}
 
 
 
-/*RECHERCHE PRICE RANGE */
+//GET ZIP
 
-function price_range(){
-  $query = $this->pdo->prepare("SELECT * FROM article ORDER BY prix DESC");
-  $query->execute();
-  $price[] = $query->fetchAll(PDO::FETCH_ASSOC);
-  
-  return $price;
+ function getZip()
+{
 
-  }
+    return $this->zip;
+
+}
+
+
+//GET EMAIL
+
+ function getMail()
+{
+
+    return $this->mail;
+
+}
+
+//GET EMAIL
+
+function getDateInscription()
+{
+
+    return $this->date_inscription;
+
+}
+
+
+
+
+
 
 }
 //$model = new Shop();
-//var_dump($model->seller('1'));
+//var_dump($model->showVendeur('1'));
 
 
 //ÇA MARCHE LIER À CONTROLLER

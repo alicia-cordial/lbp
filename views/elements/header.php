@@ -5,7 +5,7 @@
 <section id="mainAutocompletion">
 <div class="form_recherche">
 
-<form id="form_autocomplete" class="form_autocomplete"  method="get">
+<form id="form_autocomplete" class="form_autocomplete"  method="get" action="article.php">
         <input type="text" name="search" class="input_index" id="article_search" placeholder="Que recherchez-vous ?">
       </form>
 </div>

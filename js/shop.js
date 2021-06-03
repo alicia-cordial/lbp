@@ -48,35 +48,18 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#result').append('<a href="article?article=' + article.id + '">' + article.titre + '</a></br>');
+                    $('#result').append('<a href="article?article=' + article.id + '">' + article.titre + "</a>");
+
                 }
             },
         );
 
     });
 
-    /*
-        ('body').on('click', '#login', function() {
 
-            //$('#sectionArticle').empty();
-            $('#message').empty();
-            event.preventDefault()
 
-            if ($(this).is('#sectionArticle')) {
-                $.get(
-                    'API/apiAutocompletion', { titre: resultat },
-                    function(data) {
-                        let resultat = JSON.parse(data);
-                        console.log(resultat)
-                        for (let resultat of resultats) {
-                            if (message === "success")
-                                $('#recherche_titre').append("<tr id='" + resultat.id + "'><td>" + resultat.titre + "</td></tr>")
-                        }
-                    }
-                );
-            };
 
-        });*/
+
     /***********************BARRE DE RECHERCHE AVANCÉE************************/
 
     //FORMULAIRE RECHERCHE OBJET
@@ -97,7 +80,7 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 for (let article of articles) {
                     if (article === "success") {
-                        $('#message_form').append('<a href="resultatArticles' + article.id + '" > ' + article.zip + ' </a></br > ');
+                        $('#message_form').append('<a href="resultatArticles?article' + article.id + '" > ' + article.zip + ' </a></br > ');
                     }
                 }
             },
@@ -119,11 +102,13 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#message_form').append('<a href="resultatArticles?article=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
+                    $('#message_form').append('<a href="resultatArticles?resultatArticles=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
                 }
             },
         );
     });
+
+
     /*
         //PRICE RANGE
 
@@ -135,7 +120,6 @@ $(document).ready(function() {
             output.innerHTML = this.value;
         }
     */
-
 
 
 
@@ -158,10 +142,9 @@ $(document).ready(function() {
                 let users = JSON.parse(data);
                 console.log(users);
                 for (let user of users) {
-                    $('#message').append('<a href="profilVendeur?vendeur=' + user.id + '">' + user.identifiant + '</a></br>');
-                    //$('#input-id').bind('autocompleteSelect', function(event, node) });
-                }
+                    $('#message').append('<a href="profilVendeur?id=' + user.id + '">' + user.identifiant + '</a></br>');
 
+                }
 
 
             },
@@ -169,15 +152,6 @@ $(document).ready(function() {
         );
 
     });
-
-
-
-    /*
-        jQuery(function() {
-            $("#user").autocomplete("API/apiSearch");
-        });
-    */
-
 
 
 })
