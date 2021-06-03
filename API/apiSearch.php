@@ -5,34 +5,6 @@ require_once('../models/Shop.php');
 
 //$model = new Shop();
 
-
-
-//FORMULAIRE RECHERCHE PRÉCISE
-
-if(isset($_POST['form'])){
-
-
-  $model = new Shop();
-
-
-  if(!empty($_POST['nom']) OR !empty($_POST['zip']) OR !empty($_POST['titre'])){
-    $nom = htmlspecialchars($_POST['nom']);
-    $zip = htmlspecialchars($_POST['zip']);
-    $titre = htmlspecialchars($_POST['titre']);
-
-    $objectExists = $model->selectObject($nom, $zip, $titre);
-    $articleList = array();
-
-    foreach($objectExists as $article){
-      $articleList = $article;
-    }
-
-
-  }
-  echo json_encode($articleList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-}
-
   //RECHERCHE ARTICLES
 
 

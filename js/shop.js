@@ -62,30 +62,6 @@ $(document).ready(function() {
 
     /***********************BARRE DE RECHERCHE AVANCÉE************************/
 
-    //FORMULAIRE RECHERCHE OBJET
-
-    $('body').on('submit', '#form_objet', function(event) {
-        $('#message_form').empty();
-        event.preventDefault()
-        $.post(
-            'API/apiSearch.php', {
-                form: 'home',
-                nom: $('#nom').val(),
-                zip: $('#zip').val(),
-                titre: $('#titre').val(),
-
-            },
-            function(data) {
-                console.log(data);
-                let articles = JSON.parse(data);
-                for (let article of articles) {
-                    if (article === "success") {
-                        $('#message_form').append('<a href="resultatArticles?article' + article.id + '" > ' + article.zip + ' </a></br > ');
-                    }
-                }
-            },
-        );
-    });
 
     //RECHERCHE TITRE AVEC CATEGORIE
 
@@ -102,7 +78,7 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#message_form').append('<a href="resultatArticles?resultatArticles=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
+                    $('#message_form').append('<a href="resultatArticles?id=' + article.id + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
                 }
             },
         );
