@@ -48,7 +48,7 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#result').append('<a href="article?article=' + article.id + '">' + article.titre + "</a>");
+                    $('#result').append('<a href="article?id=' + article.id + '">' + article.titre + "</a>");
 
                 }
             },

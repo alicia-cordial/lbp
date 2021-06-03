@@ -24,16 +24,14 @@ if(isset($_GET['id'])){
     </thead>
 
     <tbody>
-    <?php foreach ($users as $user) {
-        ?>
+   
         <tr>
-            <td><?= $user['identifiant']; ?></td>
-            <td><?= $user['mail']; ?></td>
-            <td><?= $user['zip']; ?></td>
-            <td><?= $user['date_inscription']; ?></td>
+            <td><?= $users['identifiant']; ?></td>
+            <td><?= $users['mail']; ?></td>
+            <td><?= $users['zip']; ?></td>
+            <td><?= $users['date_inscription']; ?></td>
         </tr>
 
-    <?php } ?>
-
+  
     </tbody>
 </table>

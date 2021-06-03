@@ -5,7 +5,7 @@ if(isset($_GET['id'])){
   
     $id = htmlspecialchars($_GET['id']);
     $objets = $model->showArticle($id);
-    //var_dump($users);
+    var_dump($objets);
     }
     ?>
 

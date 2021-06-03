@@ -89,7 +89,7 @@ class Shop extends Database{
  
     $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE utilisateur.id = '$id' ");
     $request->execute([$id]);
-    $userExist = $request->fetchAll(PDO::FETCH_ASSOC);
+    $userExist = $request->fetch(PDO::FETCH_ASSOC);
   
     return $userExist;
   }
