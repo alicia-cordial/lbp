@@ -21,3 +21,12 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteUser') {
         echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
+
+if (isset($_POST['action']) && $_POST['action'] === 'showModeration') {
+    $articles = $model->showModeration($_POST['choice']);
+    if (!empty($articles)) {
+        echo json_encode($articles, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode('none', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}

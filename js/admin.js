@@ -4,8 +4,8 @@ $(document).ready(function () {
     $('body').on('click', '.navAdmin', function () {
         $('#sectionAdmin').empty();
 
-        if ($(this).is('#navAdminUsers')) {
-            callSectionAdmin('adminUsers')
+        if ($(this).is('#navAdminarticles')) {
+            callSectionAdmin('adminarticles')
         } else if ($(this).is('#navAdminMessagerie')) {
             callSectionAdmin('adminMessagerie')
         } else if ($(this).is('#navAdminModeration')) {
@@ -16,26 +16,26 @@ $(document).ready(function () {
     })
 
 
-    $('body').on('click', '.showUsers', function () {
+    $('body').on('click', '.showarticles', function () {
         let choice = $(this).attr('value');
-        $('#listeUsersTries').empty()
+        $('#listearticlesTries').empty()
         console.log(choice)
         $.post(
             'API/apiAdmin', {
-                action: 'showUsers',
+                action: 'showarticles',
                 choice: choice
             },
             function (data) {
                 // console.log(data);
-                let users = JSON.parse(data);
-                if (users === 'none') {
-                    $('#listeUsersTries').append("<p>Rien</p>")
+                let articles = JSON.parse(data);
+                if (articles === 'none') {
+                    $('#listearticlesTries').append("<p>Rien</p>")
                 } else {
-                    for (let user of users) {
-                        if (user.status == 'vendeur') {
-                            $('#listeUsersTries').append("<tr id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                    for (let article of articles) {
+                        if (article.status == 'vendeur') {
+                            $('#listearticlesTries').append("<tr value='" + article.identifiant + "' id='" + article.id + "'><td><a href='profilVendeur?id=" + article.id + "'>" + article.identifiant + "</a></td><td>" + article.status + "</td><td>Inscription : " + article.date_inscription + "</td><td><button class='contactarticle'>Contacter</button></td><td><button class='deletearticle'>Supprimer</button></td></tr>")
                         } else {
-                            $('#listeUsersTries').append("<tr id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                            $('#listearticlesTries').append("<tr value='" + article.identifiant + "' id='" + article.id + "'><td>" + article.identifiant + "</td><td>" + article.status + "</td><td>Inscription : " + article.date_inscription + "</td><td><button class='contactarticle'>Contacter</button></td><td><button class='deletearticle'>Supprimer</button></td></tr>")
                         }
                     }
                 }
@@ -43,23 +43,78 @@ $(document).ready(function () {
         )
     })
 
-
-    $('body').on('click', '.deleteUser', function () {
+    //BOUTON SUPPRIMER article
+    $('body').on('click', '.deletearticle', function () {
         let row = $(this).parents('tr')
-        let idUser = row.attr('id')
-        $('#infoUser').empty()
-        $(this).html('<button id="confirmSupprUser">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
-        $('#infoUser').append("<p>Si l'utilisateur est un vendeur, ses articles en vente seront aussi supprimés. Procéder avec prudence.</p>")
-        $('body').on('click', '#confirmSupprUser', function () {
+        let idarticle = row.attr('id')
+        $('#infoAdmin').empty()
+        $(this).html('<button id="confirmSupprarticle">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
+        $('#infoAdmin').append("<p>Si l'utilisateur est un vendeur, ses articles en vente seront aussi supprimés. Procéder avec prudence.</p>")
+        $('body').on('click', '#confirmSupprarticle', function () {
             $.post(
-                'API/apiAdmin', {action: 'deleteUser', id: idUser},
+                'API/apiAdmin', {action: 'deletearticle', id: idarticle},
                 function (data) {
                     let message = JSON.parse(data);
                     row.hide()
-                    $('#infoUser').append('<p>Utilisateur.ice supprimé.e.</p>')
+                    $('#infoAdmin').html('<p>Utilisateur.ice supprimé.e.</p>')
                 },
             );
         });
+    })
+
+    //BOUTON CONTACT article
+    $('body').on('click', '.contactarticle', function (event) {
+        $('#newMessage').remove()
+        let row = $(this).parents('tr')
+        let idDestinataire = row.attr('id')
+        let loginDestinataire = row.attr('value')
+        let form = "<form id='newMessage'><input placeholder='votre message' required><button type='submit'>Envoyer</button></form>"
+        event.preventDefault()
+        row.after(form)
+
+        $('body').on('submit', '#newMessage', function (event) {
+            event.preventDefault()
+            $.post(
+                'API/apiMessagerie', {
+                    action: 'sendNewMessage',
+                    idDestinataire: idDestinataire,
+                    messageContent: $('#newMessage input').val()
+                },
+                function (data) {
+                    let message = JSON.parse(data);
+                    $('#newMessage').remove()
+                    console.log(data);
+                    $('#infoAdmin').append("<p>Message envoyé !</p>")
+                }
+            )
+        })
+    });
+
+
+    //MODERATION
+    $('body').on('click', '.showModeration', function () {
+        let choice = $(this).attr('value');
+        $('#moderationTriees').empty()
+        console.log(choice)
+        $.post(
+            'API/apiAdmin', {
+                action: 'showModeration',
+                choice: choice
+            },
+            function (data) {
+                // console.log(data);
+                let articles = JSON.parse(data);
+                if (articles === 'none') {
+                    $('#moderationTriees').append("<p>Rien</p>")
+                } else {
+                    for (let articles of article) {
+                        if (article.signal != 0 || article.signal != 'NULL' || article.signal.lenght != 0) {
+                            $('#moderationTriees').append("<tr value='" + article.titre + "' id='" + article.id + "'><td><a href='profilVendeur?id=" + id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.status + "</td><td>Date création : " + article.date_ajout + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='updateArticle'>Modifier</button><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                        }
+                    }
+                }
+            }
+        )
     })
 })
 

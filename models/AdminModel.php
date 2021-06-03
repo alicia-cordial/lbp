@@ -24,6 +24,20 @@ class AdminModel extends Database
         return true;
     }
 
+
+    public function showModeration($choice)
+    {
+        if (empty($choice)) {
+            $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE droit = 0 and status != 'supprimé' ");
+            $request->execute();
+        } else {
+            $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE status = ? AND droit = 0");
+            $request->execute([$choice]);
+        }
+        $articles = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $articles;
+    }
+
 }
 //$model = new AdminModel();
 //var_dump($model->showUsers('vendeur'));

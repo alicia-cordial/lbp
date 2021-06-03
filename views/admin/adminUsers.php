@@ -1,6 +1,6 @@
 <article>
     <h3>UTILISATEURS</h3>
-    <p>Nombre d'inscrit.es : </p>
+<!--    <p>Nombre d'inscrit.es : </p>-->
     <div>
         <p class="showUsers" value="">Tous</p>
         <p class="showUsers" value="client" ">Client.es</p>
@@ -12,6 +12,6 @@
 
 </article>
 
-<article id="infoUser">
+<article id="infoAdmin">
 
 </article>
