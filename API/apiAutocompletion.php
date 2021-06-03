@@ -10,6 +10,7 @@ if (isset($_GET['term'])) {
     $term = htmlspecialchars($_GET['term']);
     $getArticle = $model->get_article($term);
     $articleList = array();
+    
     foreach($getArticle as $article){
       $articleList = $article;
     }
