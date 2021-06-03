@@ -76,18 +76,17 @@ if(isset($_GET['id'])){
   $model = new Shop();
 
   $id = htmlspecialchars($_GET['id']);
-  $getId = $model->seller($id);
+  $users = $model->showVendeur($id);
   //$IdList = array();
 
-  if($getId){
-    $count = $IdList->rowCount();
-    
-    echo json_encode($IdList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    require_once('../views/shop/profilVendeur.php');
+    //header("Location: ../views/profilVendeur.php");
+    //echo json_encode($showVendeur, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     
   }
 
 
-}
+
 /*
 $id = $_GET['user'];
 $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$$id%'");

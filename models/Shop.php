@@ -1,10 +1,21 @@
 <?php
 
-session_start();
+//session_start();
 
 require_once('Database.php');
 
 class Shop extends Database{
+
+  private $id;
+  private $identifiant;
+
+  private $mail;
+
+  private $zip;
+  private $date_inscription;
+
+
+
 
 /*FORMULAIRE RECHERCHE */
   function selectObject($nom, $zip, $titre){
@@ -61,14 +72,56 @@ class Shop extends Database{
 
   }
 
-  function seller($id){
+  function showVendeur($id){
+ 
     $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE utilisateur.id = '$id' ");
     $request->execute([$id]);
     $userExist = $request->fetchAll(PDO::FETCH_ASSOC);
- 
+  
     return $userExist;
   }
 
+//GETID
+function getId()
+{
+    return $this->id;
+}
+
+//GETLOGIN
+ function getIdentifiant()
+{
+    return $this->identifiant;
+}
+
+
+
+//GET ZIP
+
+ function getZip()
+{
+
+    return $this->zip;
+
+}
+
+
+//GET EMAIL
+
+ function getMail()
+{
+
+    return $this->mail;
+
+}
+
+//GET EMAIL
+
+function getDateInscription()
+{
+
+    return $this->date_inscription;
+
+}
 
   /*
 
@@ -93,8 +146,8 @@ function price_range(){
   }
 
 }
-//$model = new Shop();
-//var_dump($model->seller('1'));
+$model = new Shop();
+//var_dump($model->showVendeur('1'));
 
 
 //ÇA MARCHE LIER À CONTROLLER
