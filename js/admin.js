@@ -102,20 +102,63 @@ $(document).ready(function () {
                 choice: choice
             },
             function (data) {
-                // console.log(data);
+                console.log(data);
                 let articles = JSON.parse(data);
                 if (articles === 'none') {
                     $('#moderationTriees').append("<p>Rien</p>")
                 } else {
-                    for (let articles of article) {
-                        if (article.signal != 0 || article.signal != 'NULL' || article.signal.lenght != 0) {
-                            $('#moderationTriees').append("<tr value='" + article.titre + "' id='" + article.id + "'><td><a href='profilVendeur?id=" + id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.status + "</td><td>Date création : " + article.date_ajout + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='updateArticle'>Modifier</button><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                    for (let article of articles) {
+                        if (article.categorie_suggeree != null) {
+                            console.log("cat")
+                            $('#moderationTriees').append("<tr id='" + article.id + "'><td>" + article.titre + "</td><td><a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>Date création : " + article.date_ajout + "</td><td>Catégorie suggérée : <input value='" + article.categorie_suggeree + "'></td><td>" + article.description + "</td><td><button class='acceptArticleNewCat'>Accepter</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                        } else if (article.signal == 2 && article.categorie_suggeree == null && article.nom != null ) {
+                            console.log('signal')
+                            $('#moderationTriees').append("<tr id='" + article.id + "'><td>" + article.titre + "</td><td class='categorie' id='"+ article.id_categorie +"'>" + article.nom + "</td><td><a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>Date création : " + article.date_ajout + "</td><td>" + article.description + "</td><td><button class='acceptArticleSignal'>Accepter</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
                         }
                     }
                 }
-            }
-        )
+            })
     })
+
+
+    /*SUPPRIMER UN ARTICLE*/
+    $('body').on('click', '.deleteArticle', function () {
+        let row = $(this).parents('tr')
+        let idArticle = row.attr('id')
+        $('#infoAdmin').empty()
+        $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
+        $('body').on('click', '#confirmSupprArticle', function () {
+            $.post(
+                'API/apiAdmin', {action: 'deleteArticle', id: idArticle},
+                function (data) {
+                    let message = JSON.parse(data);
+                    row.hide()
+                    $('#infoAdmin').html('<p>Article supprimé.</p>')
+                },
+            );
+        });
+    })
+
+    //ACCEPTER UN ARTICLE
+    $('body').on('click', '.acceptArticleNewCat', function () {
+        let row = $(this).parents('tr')
+        let idArticle = row.attr('id')
+        let categoryName = row.children('input').attr('id')
+        console.log(categoryName)
+        $('#infoAdmin').empty()
+            $.post(
+                'API/apiAdmin', {action: 'acceptArticleNewCat', id: idArticle, categoryName: categoryName},
+                function (data) {
+                    let article = JSON.parse(data);
+                    if (article === "fail") {
+                        $('#infoAdmin').html("<p>Un problème est survenu.</p>")
+                    } else {
+                        row.hide()
+                        $('#infoAdmin').html("<p><a href='article?id="+ article.id +"'>Article en ligne !</a></p>")
+                    }
+                },
+            );
+        });
 })
 
 /*FUNCTIONS*/

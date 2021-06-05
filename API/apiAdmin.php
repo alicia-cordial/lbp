@@ -30,3 +30,20 @@ if (isset($_POST['action']) && $_POST['action'] === 'showModeration') {
         echo json_encode('none', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
+
+if (isset($_POST['action']) && $_POST['action'] === 'deleteArticle') {
+    $suppr = $model->deleteArticle($_POST['id']);
+    if ($suppr) {
+        echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'acceptArticleNewCat') {
+
+        $article = $model->acceptArticleNewCat($_POST['id']);
+    if (!empty($article)) {
+        echo json_encode($article, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode("fail", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
