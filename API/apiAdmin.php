@@ -40,10 +40,46 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteArticle') {
 
 if (isset($_POST['action']) && $_POST['action'] === 'acceptArticleNewCat') {
 
-        $article = $model->acceptArticleNewCat($_POST['id']);
-    if (!empty($article)) {
-        echo json_encode($article, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $success = $model->acceptArticleNewCat($_POST['categoryName'], $_POST['id'], $_POST['idVendeur']);
+    if ($success) {
+        echo json_encode("success", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
         echo json_encode("fail", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'acceptArticleSignal') {
+
+    $success = $model->acceptArticleSignal($_POST['id']);
+    if ($success) {
+        echo json_encode("success", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode("fail", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'selectCategories') {
+
+    $categories = $model->selectCategories();
+    if (!empty($categories)) {
+        echo json_encode($categories, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode("none", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'showArticlesCategorie') {
+
+    $articles = $model->showArticlesCategorie($_POST['idCategory']);
+    if (!empty($articles)) {
+        echo json_encode($articles, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'updateCat') {
+
+    $newCat = $model->updateCat($_POST['idCategory'], $_POST['newName']);
+    if ($newCat) {
+        echo json_encode("success", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }

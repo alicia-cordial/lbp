@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     //
     $('body').on('click', '.navAdmin', function () {
         $('#sectionAdmin').empty();
@@ -12,7 +11,63 @@ $(document).ready(function () {
             callSectionAdmin('adminModeration')
         } else if ($(this).is('#navAdminCategorie')) {
             callSectionAdmin('adminShop')
+            $.post(
+                'API/apiAdmin', {
+                    action: 'selectCategories',
+                },
+                function (data) {
+                    console.log(data);
+                    let categories = JSON.parse(data);
+                    if (categories === 'none') {
+                        $('#categories').append("<p>Rien</p>")
+                    } else {
+                        for (let cat of categories) {
+                            $('#categories').append("<tr value='" + cat.nom + "' id='" + cat.id + "'><td><td class='rowCategorie'>" + cat.nom + "</td><td><button class='updateCat'>Modifier le nom</button></tr>")
+                        }
+                    }
+                }
+            )
         }
+    })
+
+    $('body').on('click', '.rowCategorie', function () {
+        let row = $(this).parents('tr')
+        let idCategory = row.attr('id');
+        console.log(idCategory)
+        $('#articlesTries').empty()
+        $.post(
+            'API/apiAdmin', {action: 'showArticlesCategorie', idCategory: idCategory},
+            function (data) {
+                console.log(data);
+                let articles = JSON.parse(data);
+                for (let article of articles) {
+                    $('#articlesTries').append("<tr id='" + article.id + "'><td><a href='article?id=" + article.id + "'>" + article.titre + "</a></td><td>Mise en vente : " + article.date_ajout + "</td><td>Vendeur.se : " + article.identifiant + "</td><td><button id ='" + article.id_vendeur + "' class='contactUser'>Contacter le vendeur</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                }
+
+            }
+        )
+    })
+
+    $('body').on('click', '.updateCat', function () {
+        let row = $(this).parents('tr')
+        let idCategory = row.attr('id');
+        let categoryName = row.attr('value');
+        if ($('#newName').length == 0) {
+            $(this).before("<input id='newName' value='" + categoryName + "'>")
+        }
+     $('body').on('click', '.updateCat', function () {
+            $.post(
+                'API/apiAdmin', {action: 'updateCat', idCategory: idCategory, newName : $('#newName').val()},
+                function (data) {
+                    console.log(data);
+                    $('#infoAdmin').html('<p>Nom de la catégorie updatée !</p>')
+                    setTimeout(
+                        function () {
+                            $("#mainAdmin").load(location.href + " #mainAdmin")
+                        }, 2000);
+                }
+            )
+        })
     })
 
 
@@ -26,13 +81,13 @@ $(document).ready(function () {
                 choice: choice
             },
             function (data) {
-                // console.log(data);
+                console.log(data);
                 let users = JSON.parse(data);
                 if (users === 'none') {
                     $('#listeUsersTries').append("<p>Rien</p>")
                 } else {
                     for (let user of users) {
-                        if (users.status == 'vendeur') {
+                        if (user.status == 'vendeur') {
                             $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
                         } else {
                             $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
@@ -62,7 +117,7 @@ $(document).ready(function () {
         });
     })
 
-    //BOUTON CONTACT article
+    //BOUTON CONTACT user
     $('body').on('click', '.contactUser', function (event) {
         $('#newMessage').remove()
         let row = $(this).parents('tr')
@@ -110,10 +165,10 @@ $(document).ready(function () {
                     for (let article of articles) {
                         if (article.categorie_suggeree != null) {
                             console.log("cat")
-                            $('#moderationTriees').append("<tr id='" + article.id + "'><td>" + article.titre + "</td><td><a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>Date création : " + article.date_ajout + "</td><td>Catégorie suggérée : <input value='" + article.categorie_suggeree + "'></td><td>" + article.description + "</td><td><button class='acceptArticleNewCat'>Accepter</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
-                        } else if (article.signal == 2 && article.categorie_suggeree == null && article.nom != null ) {
+                            $('#moderationTriees').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td><a id='" + article.id_vendeur + "' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>Date création : " + article.date_ajout + "</td><td>Catégorie suggérée : <input value='" + article.categorie_suggeree + "'></td><td>" + article.description + "</td><td><button class='acceptArticleNewCat'>Accepter</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                        } else if (article.signal == 2 && article.categorie_suggeree == null && article.nom != null) {
                             console.log('signal')
-                            $('#moderationTriees').append("<tr id='" + article.id + "'><td>" + article.titre + "</td><td class='categorie' id='"+ article.id_categorie +"'>" + article.nom + "</td><td><a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>Date création : " + article.date_ajout + "</td><td>" + article.description + "</td><td><button class='acceptArticleSignal'>Accepter</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                            $('#moderationTriees').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td class='categorie' id='" + article.id_categorie + "'>" + article.nom + "</td><td><a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>Date création : " + article.date_ajout + "</td><td>" + article.description + "</td><td><button class='acceptArticleSignal'>Accepter</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
                         }
                     }
                 }
@@ -139,26 +194,53 @@ $(document).ready(function () {
         });
     })
 
-    //ACCEPTER UN ARTICLE
+    //ACCEPTER UN ARTICLE AVEC CREATION D'UNE NOUVELLE CATEGORIE
     $('body').on('click', '.acceptArticleNewCat', function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
-        let categoryName = row.children('input').attr('id')
-        console.log(categoryName)
+        let categoryName = row.find('input').val()
+        let idVendeur = row.find('a').val()
+        console.log(idArticle)
         $('#infoAdmin').empty()
-            $.post(
-                'API/apiAdmin', {action: 'acceptArticleNewCat', id: idArticle, categoryName: categoryName},
-                function (data) {
-                    let article = JSON.parse(data);
-                    if (article === "fail") {
-                        $('#infoAdmin').html("<p>Un problème est survenu.</p>")
-                    } else {
-                        row.hide()
-                        $('#infoAdmin').html("<p><a href='article?id="+ article.id +"'>Article en ligne !</a></p>")
-                    }
-                },
-            );
-        });
+        $.post(
+            'API/apiAdmin', {
+                action: 'acceptArticleNewCat',
+                id: idArticle,
+                categoryName: categoryName,
+                idVendeur: idVendeur
+            },
+            function (data) {
+                let result = JSON.parse(data);
+                if (result === "fail") {
+                    $('#infoAdmin').html("<p>Un problème est survenu.</p>")
+                } else {
+                    row.hide()
+                    $('#infoAdmin').html("<p><a href='article?id=" + idArticle + "'>Article en ligne !</a></p>")
+                }
+            },
+        );
+    });
+
+
+    //ACCEPTER UN ARTICLE SIGNALE
+    $('body').on('click', '.acceptArticleSignal', function () {
+        let row = $(this).parents('tr')
+        let idArticle = row.attr('id')
+        console.log(idArticle)
+        $('#infoAdmin').empty()
+        $.post(
+            'API/apiAdmin', {action: 'acceptArticleSignal', id: idArticle},
+            function (data) {
+                let result = JSON.parse(data);
+                if (result === "fail") {
+                    $('#infoAdmin').html("<p>Un problème est survenu.</p>")
+                } else {
+                    row.hide()
+                    $('#infoAdmin').html("<p><a href='article?id=" + idArticle + "'>Article en ligne !</a></p>")
+                }
+            },
+        );
+    });
 })
 
 /*FUNCTIONS*/
