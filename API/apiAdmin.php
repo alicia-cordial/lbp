@@ -83,3 +83,17 @@ if (isset($_POST['action']) && $_POST['action'] === 'updateCat') {
         echo json_encode("success", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
+
+if (isset($_POST['action']) && $_POST['action'] === 'deleteCat') {
+    $suppr = $model->deleteCat($_POST['id']);
+    if ($suppr) {
+        echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'addNewCat') {
+    $add = $model->createNewCategory($_POST['name']);
+    if ($add) {
+        echo json_encode($add, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}

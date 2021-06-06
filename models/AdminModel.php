@@ -44,7 +44,7 @@ class AdminModel extends Database
 
     public function deleteArticle($id)
     {
-        $request = $this->pdo->prepare("DELETE from article WHERE id = ?");
+        $request = $this->pdo->prepare("DELETE article, utilisateur_article from article INNER JOIN utilisateur_article on article.id = utilisateur_article.id_article WHERE article.id = ?");
         $request->execute([$id]);
         return true;
     }
@@ -55,21 +55,22 @@ class AdminModel extends Database
         $request = $this->pdo->prepare("INSERT into categorie (nom) values (?)");
         $request->execute([$categoryName]);
         $id = $this->pdo->lastInsertId();
-        return $id;
+        return ['id' => $id, 'nom' => $categoryName];
     }
 
 
     public function selectCategories()
     {
-        $request = $this->pdo->prepare("SELECT categorie.id, categorie.nom from categorie INNER JOIN article on article.id_categorie = categorie.id");
+        $request = $this->pdo->prepare("SELECT categorie.id, categorie.nom, article.titre from categorie LEFT JOIN article on article.id_categorie = categorie.id ORDER BY categorie.nom");
         $request->execute();
         $categories = $request->fetchAll(PDO::FETCH_ASSOC);
         return $categories;
     }
 
+
     public function showArticlesCategorie($idCategory)
     {
-        $request = $this->pdo->prepare("SELECT * from categorie INNER JOIN article on article.id_categorie = categorie.id INNER JOIN utilisateur on utilisateur.id = article.id_vendeur WHERE categorie.id = ?");
+        $request = $this->pdo->prepare("SELECT *, article.id as article_id from categorie INNER JOIN article on article.id_categorie = categorie.id INNER JOIN utilisateur on utilisateur.id = article.id_vendeur WHERE categorie.id = ? ORDER BY article.date_ajout");
         $request->execute([$idCategory]);
         $categories = $request->fetchAll(PDO::FETCH_ASSOC);
         return $categories;
@@ -80,6 +81,13 @@ class AdminModel extends Database
     {
         $request = $this->pdo->prepare("UPDATE categorie SET nom = ? WHERE id = ?");
         $request->execute([$newName, $idCategory]);
+        return true;
+    }
+
+    public function deleteCat($id)
+    {
+        $request = $this->pdo->prepare("DELETE from categorie WHERE id = ?");
+        $request->execute([$id]);
         return true;
     }
 
