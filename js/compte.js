@@ -47,6 +47,9 @@ $(document).ready(function () {
                     } else {
                         $.each(contacts, function (key, value) {
                             contactList.append("<p class='individualConversation' id='" + value.id + "'>" + value.identifiant + "</p>")
+                            if (value.status == 'supprimé') {
+                                $('#'+value.id).addClass('supprimé')
+                            }
                         })
                     }
                 }
@@ -60,11 +63,16 @@ $(document).ready(function () {
         // console.log(idDestinataire)
         let conversation = $('#conversation')
         conversation.empty()
+        if ($(this).is('.supprimé')) {
+            $('#formNewMessage').css('display', 'none')
+        } else {
+            $('#formNewMessage').css('display', 'block')
+        }
+        $('#formNewMessage').attr('value', idDestinataire)
         $.post(
             'API/apiMessagerie', {action: 'showConversation', idDestinataire: idDestinataire},
             function (data) {
-                $('#formNewMessage').css('display', 'block')
-                $('#formNewMessage').attr('value', idDestinataire)
+
                 let messages = JSON.parse(data);
                 console.log(messages);
                 for (let message of messages) {

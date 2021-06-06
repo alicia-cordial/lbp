@@ -94,7 +94,7 @@ class UserModel extends Database
 
     public function selectContacts($id)
     {
-        $request = $this->pdo->prepare("SELECT DISTINCT utilisateur.identifiant, utilisateur.id FROM utilisateur JOIN message INNER JOIN utilisateur_message on utilisateur_message.id_message = message.id WHERE (id_expediteur = $id AND id_destinataire = utilisateur.id) OR (id_destinataire =  $id AND id_expediteur = utilisateur.id) AND utilisateur.id !=  $id AND droit = 0");
+        $request = $this->pdo->prepare("SELECT DISTINCT utilisateur.identifiant, utilisateur.id, utilisateur.status FROM utilisateur JOIN message INNER JOIN utilisateur_message on utilisateur_message.id_message = message.id WHERE (id_expediteur = $id AND id_destinataire = utilisateur.id) OR (id_destinataire = $id AND id_expediteur = utilisateur.id) AND droit = 0 AND utilisateur.id != $id");
         $request->execute();
         $contacts = $request->fetchAll(PDO::FETCH_ASSOC);
         return $contacts;

@@ -2,6 +2,9 @@
     <p>Header</p>
     <a href="home">Home</a>
     <a href="compte">Compte</a>
+    <?php if (isset($_SESSION['user']['id'])) : ?>
+    <a href="sessiondestroy.php">Déconnexion</a>
+    <?php endif; ?>
 <section id="mainAutocompletion">
 <div class="form_recherche">
 

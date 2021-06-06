@@ -7,6 +7,21 @@ $(document).ready(function () {
             callSectionAdmin('adminUsers')
         } else if ($(this).is('#navAdminMessagerie')) {
             callSectionAdmin('adminMessagerie')
+            $.post(
+                'API/apiMessagerie', {action: 'selectContacts'},
+                function (data) {
+                    let contacts = JSON.parse(data);
+                    let contactList = $('#contacts')
+                    console.log(data);
+                    if (contacts == 'none') {
+                        contactList.append("Aucune conversation");
+                    } else {
+                        $.each(contacts, function (key, value) {
+                            contactList.append("<p class='individualConversation' id='" + value.id + "'>" + value.identifiant + "</p>")
+                        })
+                    }
+                }
+            );
         } else if ($(this).is('#navAdminModeration')) {
             callSectionAdmin('adminModeration')
         } else if ($(this).is('#navAdminCategorie')) {
@@ -37,6 +52,52 @@ $(document).ready(function () {
         }
     })
 
+    //MESSAGERIE
+    $('body').on('click', '.individualConversation', function (event) {
+        let idDestinataire = $(this).attr('id')
+        // console.log(idDestinataire)
+        let conversation = $('#conversation')
+        conversation.empty()
+        $.post(
+            'API/apiMessagerie', {action: 'showConversation', idDestinataire: idDestinataire},
+            function (data) {
+                $('#formNewMessage').css('display', 'block')
+                $('#formNewMessage').attr('value', idDestinataire)
+                let messages = JSON.parse(data);
+                console.log(messages);
+                for (let message of messages) {
+                    conversation.append("<p id='message" + message.id + "'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
+                    if (message.id_expediteur == idDestinataire) {
+                        $('#message' + message.id).addClass('messageDestinataire')
+                    } else {
+                        $('#message' + message.id).addClass('messageUtilisateur')
+                    }
+                }
+            })
+    })
+
+    //NEW MESSAGE IN CONVERSATION
+    $('body').on('submit', '#formNewMessage', function (event) {
+        let idDestinataire = $(this).attr('value')
+        event.preventDefault()
+        let conversation = $('#conversation')
+        console.log(idDestinataire)
+        console.log($('#newMessage').val())
+        $.post(
+            'API/apiMessagerie', {
+                action: 'sendNewMessage',
+                idDestinataire: idDestinataire,
+                messageContent: $('#newMessage').val()
+            },
+            function (data) {
+                let message = JSON.parse(data);
+                $('#newMessage').val('')
+                console.log(data);
+                conversation.append("<p id='message" + message.id + "' class='messageUtilisateur'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
+            }
+        )
+    })
+
     $('body').on('click', '.rowCategorie', function () {
         let row = $(this).parents('tr')
         let idCategory = row.attr('id');
@@ -48,7 +109,7 @@ $(document).ready(function () {
                 console.log(data);
                 let articles = JSON.parse(data);
                 for (let article of articles) {
-                    $('#articlesTries').append("<tr id='" + article.article_id + "'><td><a href='article?id=" + article.id + "'>" + article.titre + "</a></td><td>Mise en vente : " + article.date_ajout + "</td><td>Vendeur.se : " + article.identifiant + "</td><td><button id ='" + article.id_vendeur + "' class='contactUser'>Contacter le vendeur</button></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                    $('#articlesTries').append("<tr id='" + article.article_id + "'><td><a href='article?id=" + article.id + "'>" + article.titre + "</a></td><td>Mise en vente : " + article.date_ajout + "</td><td>Vendeur.se : " + article.identifiant + "</td><td><a id ='" + article.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
                 }
 
             }
@@ -130,9 +191,9 @@ $(document).ready(function () {
                 } else {
                     for (let user of users) {
                         if (user.status == 'vendeur') {
-                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
                         } else {
-                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><button class='contactUser'>Contacter</button></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
                         }
                     }
                 }
@@ -159,17 +220,18 @@ $(document).ready(function () {
         });
     })
 
+
+
     //BOUTON CONTACT user
     $('body').on('click', '.contactUser', function (event) {
-        $('#newMessage').remove()
+        $('#nameDestinataire').empty()
         let row = $(this).parents('tr')
         let idDestinataire = row.attr('id')
         let loginDestinataire = row.attr('value')
-        let form = "<form id='newMessage'><input placeholder='votre message' required><button type='submit'>Envoyer</button></form>"
-        event.preventDefault()
-        row.after(form)
-
+        $('#nameDestinataire').append('<p>'+loginDestinataire+'</p>')
         $('body').on('submit', '#newMessage', function (event) {
+
+            console.log($('#newMessage input').val())
             event.preventDefault()
             $.post(
                 'API/apiMessagerie', {
@@ -179,9 +241,8 @@ $(document).ready(function () {
                 },
                 function (data) {
                     let message = JSON.parse(data);
-                    $('#newMessage').remove()
                     console.log(data);
-                    $('#infoAdmin').append("<p>Message envoyé !</p>")
+                    $('#infoMessage').append("<p>Message envoyé !</p>")
                 }
             )
         })
@@ -293,3 +354,5 @@ function callSectionAdmin(page) {
             $('#sectionAdmin').html(data);
         });
 }
+
+

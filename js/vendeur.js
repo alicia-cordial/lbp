@@ -28,7 +28,9 @@ $(document).ready(function () {
                                     select.append("<option>Aucun contact</option>");
                                 } else {
                                     $.each(contacts, function (key, value) {
-                                        select.append("<option value='" + value.id + "'>" + value.identifiant + "</option>")
+                                        if (value.status != 'supprimé') {
+                                            select.append("<option value='" + value.id + "'>" + value.identifiant + "</option>")
+                                        }
                                     })
                                 }
                             },
@@ -196,7 +198,7 @@ $(document).ready(function () {
                 let message = JSON.parse(data);
                 if (message === "success") {
                     $("#message").append("<p>Update réussie !</p>");
-                    $('#'+idArticle).find('a').text($('#titre').val())
+                    $('#' + idArticle).find('a').text($('#titre').val())
                 } else {
                     $('#message').append("<p>" + message + "</p>");
                 }
