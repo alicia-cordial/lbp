@@ -42,3 +42,21 @@ if (isset($_GET['search']) ) {
 }
 
 
+//RECHERCHE VENDEURS
+/*
+if (isset($_GET['research']) ) {
+
+  $model = new Shop();
+
+  $research = htmlspecialchars($_GET['research']);
+  $getObject = $model->selectResearch($research);
+  $objList = array();
+
+  foreach($getObject as $objet){
+    $objList = $objet;
+  }
+  echo json_encode($objList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+}
+*/
+
