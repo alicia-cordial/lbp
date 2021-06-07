@@ -1,51 +1,60 @@
 <?php
+
+require_once('../../models/Shop.php');
+
 if(isset($_GET['id'])){
-$model = new Shop();
 
 
-if(!empty($_GET['nom']) OR !empty($_GET['zip']) OR !empty($_GET['titre'])){
-  $nom = htmlspecialchars($_GET['nom']);
-  $zip = htmlspecialchars($_GET['zip']);
-  $titre = htmlspecialchars($_GET['titre']);
+    $id = htmlspecialchars($_GET['id']);
+    $nom = htmlspecialchars($_GET['nom']);
+    $titre = htmlspecialchars($_GET['titre']);    
+    $zip = htmlspecialchars($_GET['zip']);
 
-  $objectExists = $model->selectObject($nom, $zip, $titre);
+    $model = new Shop();
 
-    }
+    //$articles = $model->selectObject($nom, $zip, $titre);
+    //$articles = $model->selectResearch($research);
     echo '<pre>';
-var_dump($_GET['id']);
-echo '</pre>';
-}
-?>
-<main id="mainRecherche">
+    var_dump($articles);
+ 
+    echo'</pre>';
+    }
 
-    <h2>Résultats Articles</h2>
 
-    <table>
+    ?>
+
+</section> 
+<h1>Fiche Produit</h1>
+
+<table>
     <thead>
     <tr>
-        <th>titre</th>
-        <th>description</th>
-        <th>prix</th>
-        <th>categorie</th>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Date Ajout</th>
+        <th>Prix</th>
+        <th>Etat objet</th>
+        <th>Ouvert à négociation</th>
+      
     </tr>
     </thead>
 
     <tbody>
-        <?php foreach ($objectExists as $article) {
 
-
-            ?>
-   
         <tr>
-            <td><?= $article['titre']; ?></td>
-            <td><?= $article['description']; ?></td>
-            <td><?= $article['prix']; ?></td>
-            <td><?= $article['categorie']; ?></td>
+            <td><?= $articles['titre']; ?></td>
+            <td><?= $articles['description']; ?></td>
+            <td><?= $articles['date_ajout']; ?></td>
+            <td><?= $articles['prix']; ?></td>
+            <td><?= $articles['etat_objet']; ?></td>
+            <td><?= $articles['ouvert_negociation']; ?></td>
+            <td><?= $articles['zip']; ?></td>
+            <td><?= $articles['nom']; ?></td>
+          
         </tr>
 
-        <?php } ?>
-  
+
+
+
     </tbody>
 </table>
-
-</main>

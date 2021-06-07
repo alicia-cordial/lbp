@@ -12,7 +12,7 @@ class Shop extends Database{
 /*AUTOCOMPLETION HEADER */
   function get_article($term){
   
-    $request = $this->pdo->prepare("SELECT * FROM `article` where `titre` LIKE '%$term%' ORDER BY `titre` ASC LIMIT 8");
+    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE article.visible = '1' AND titre LIKE '%$term%' ORDER BY `titre` ASC LIMIT 8");
     $request->execute([$term]);
     $articles[] = $request->fetchAll(PDO::FETCH_ASSOC);
   
@@ -25,7 +25,7 @@ class Shop extends Database{
 
   function showArticle($id){
  
-    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id  WHERE article.id = '$id' ");
+    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur` ON utilisateur.id = article.id_vendeur WHERE article.visible = '1' AND article.id = '$id' ");
     $request->execute([$id]);
     $articleExist = $request->fetch(PDO::FETCH_ASSOC);
   
@@ -56,16 +56,35 @@ class Shop extends Database{
   
     return $userExist;
   }
+/*ARTICLES VENDEUR */
+  function showAllarticles($id){
+
+    $request = $this->pdo->prepare("SELECT * FROM `article` where id_vendeur = '$id' ");
+    $request->execute();
+    $result = $request->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result;
+  }
 
 
 /*FORMULAIRE RECHERCHE */
-function selectObject($nom, $zip, $titre){
-  $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id WHERE $nom = ? OR $zip = ? OR $titre = ?");
-  $request->execute();
+function selectObject($id){
+  $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id  WHERE article.id = '$id'");
+  $request->execute([$id]);
   $result = $request->fetchAll(PDO::FETCH_ASSOC);
 
   return $result;
 }
+
+/*RECHERCHE PRÉCISE */
+/*function selectResearch($research){
+  $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id  WHERE article.titre LIKE '%$research%' OR categorie.nom LIKE '%$research%' OR utilisateur.zip LIKE '%$research%'");
+  $request->execute([$research]);
+  $result[] = $request->fetchAll(PDO::FETCH_ASSOC);
+
+  return $result;
+}
+*/
 
 
 
@@ -82,11 +101,17 @@ function selectObject($nom, $zip, $titre){
   }
 
 
+  function get_Cat(){
+    $request = $this->pdo->prepare("SELECT * FROM `categorie` ");
+    $request->execute();
+    $result = $request->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result;
+
+  }
 
 
 }
 //$model = new Shop();
-//var_dump($model->showVendeur('1'));
+//var_dump($model->selectResearch('?', '?', '69006'));
 
-
-//ÇA MARCHE LIER À CONTROLLER

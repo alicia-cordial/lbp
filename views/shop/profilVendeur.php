@@ -8,8 +8,6 @@ if(isset($_GET['id'])){
     //var_dump($users);
     }
     ?>
-
-
    
 <h1>Profil Vendeur</h1>
 
@@ -20,6 +18,9 @@ if(isset($_GET['id'])){
         <th>Mail</th>
         <th>Zip</th>
         <th>Date Inscription</th>
+        <th>Titre</th>
+   
+
     </tr>
     </thead>
 
@@ -30,6 +31,12 @@ if(isset($_GET['id'])){
             <td><?= $users['mail']; ?></td>
             <td><?= $users['zip']; ?></td>
             <td><?= $users['date_inscription']; ?></td>
+            <td>       
+                        <?php foreach ($model->showAllarticles($id) as $art): ?>
+                            <p value="<?= $art['id'] ?>"><?= $art['titre'] ?></p>
+                        <?php endforeach; ?>
+                    </select></td>
+            
         </tr>
 
   
