@@ -60,12 +60,11 @@ var_dump($model->addSignal($id, $signal));
                     <input type='submit' name='submit' value='submit'>
                 </form>
             </td>
+
             <td><?= $articles['nom']; ?></td>
             <td><a href='profilVendeur?id=<?= $articles['id']; ?>'><?= $articles['identifiant']; ?></a></td>
             <td><?= $articles['zip']; ?></td>
-            <td><a id =" <?= $articles['id'] ?>" class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a>
-
- </td>
+            <td><a id =" <?= $articles['id'] ?>" class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a> </td>
     
           
         </tr>
@@ -78,17 +77,13 @@ var_dump($model->addSignal($id, $signal));
 
 
 <div id="ex1" class="modal">
-                <div id="idDestinataire" value="<?= $articles['id']; ?>"></div>
-                <div id="nameDestinataire" value="<?= $articles['identifiant']; ?>"></div>
-                     <form id='newMessage'>
-                            <input placeholder='votre message' required>
-                            <button type='submit'>Envoyer</button>
-                    </form>
-                <div id="infoMessage"></div>
-                 <a href="#" rel="modal:close">Close</a>
-                </div>
+    <div id="idDestinataire" value="<?= $articles['id']; ?>"></div>
+    <div id="nameDestinataire" value="<?= $articles['identifiant']; ?>"></div>
+            <form id='newMessage'>
+                <input placeholder='votre message' required>
+                <button type='submit'>Envoyer</button>
+        </form>
+    <div id="infoMessage"></div>
+        <a href="#" rel="modal:close">Close</a>
+    </div>
 
-                <?php
-var_dump($articles['id']);
-var_dump($articles['identifiant']);
-                ?>
