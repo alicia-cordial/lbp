@@ -1,7 +1,7 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     //TOGGLE inscription / connexion
-    $('body').on('click', '.callForm', function () {
+    $('body').on('click', '.callForm', function() {
         if ($(this).is('#callFormInscription')) {
             callform('inscription')
         } else {
@@ -11,15 +11,15 @@ $(document).ready(function () {
 
     /*INSCRIPTION*/
     //Display inscription blocks
-    $('body').on('click', 'input[name=status]', function () {
+    $('body').on('click', 'input[name=status]', function() {
         $('#bloc2').css('display', 'block')
     });
-    $('body').on('change', '#password2', function () {
+    $('body').on('change', '#password2', function() {
         $('#bloc3').css('display', 'block')
     });
 
     //Submit inscription
-    $('body').on('submit', '#formInscription', function (event) {
+    $('body').on('submit', '#formInscription', function(event) {
         $('#message').empty();
         event.preventDefault()
         $.post(
@@ -32,7 +32,7 @@ $(document).ready(function () {
                 email: $('#email').val(),
                 zip: $('#zip').val()
             },
-            function (data) {
+            function(data) {
                 console.log(data);
                 let messages = JSON.parse(data);
                 for (let message of messages) {
@@ -48,12 +48,12 @@ $(document).ready(function () {
 
     /*CONNEXION*/
     //Display 2d block
-    $('body').on('click', '#login', function () {
+    $('body').on('click', '#login', function() {
         $('#bloc2').css('display', 'block')
     });
 
     //Submit connexion
-    $('body').on('submit', '#formConnexion', function (event) {
+    $('body').on('submit', '#formConnexion', function(event) {
         $('#message').empty();
         event.preventDefault()
         $.post(
@@ -62,7 +62,7 @@ $(document).ready(function () {
                 login: $('#login').val(),
                 password: $('#password').val(),
             },
-            function (data) {
+            function(data) {
                 console.log(data);
                 let messages = JSON.parse(data);
                 for (let message of messages) {
@@ -78,7 +78,7 @@ $(document).ready(function () {
 
     function callform(page) {
         $.get('views/user/' + page + '.php',
-            function (data) {
+            function(data) {
                 $('#mainCompte').html(data);
             });
     };
