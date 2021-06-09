@@ -8,7 +8,7 @@ $(document).ready(function () {
         if ($(this).is('#navArticleSelling')) {
             callSectionUser('vendeurArticlesEnVente')
             $.post(
-                'API/apiVendeur', {action: 'articlesSelling'},
+                'API/apiVendeur.php', {action: 'articlesSelling'},
                 function (data) {
                     let articles = JSON.parse(data);
                     console.log(articles)
@@ -41,7 +41,7 @@ $(document).ready(function () {
             //Créer nouvelle annonce
         } else if ($(this).is('.navNewArticle')) {
             $.post(
-                'API/apiVendeur', {action: 'afficherNewArticle'},
+                'API/apiVendeur.php', {action: 'afficherNewArticle'},
                 function (data) {
                     if (data === 'maximum') {
                         $('#sectionVendeur').html('Vous avez atteint le maximum d\'annonces en ligne.');
@@ -56,7 +56,7 @@ $(document).ready(function () {
             callSectionUser('vendeurArticlesVendus')
             console.log($(this))
             $.post(
-                'API/apiVendeur', {action: 'articlesSold'},
+                'API/apiVendeur.php', {action: 'articlesSold'},
                 function (data) {
                     let articles = JSON.parse(data);
                     console.log(data);
@@ -89,7 +89,7 @@ $(document).ready(function () {
     $('body').on('submit', '#formNewArticle', function (event) {
         event.preventDefault()
         $.post(
-            'API/apiVendeur', {
+            'API/apiVendeur.php', {
                 form: 'newArticle',
                 titre: $('#titre').val(),
                 description: $('#description').val(),
@@ -122,7 +122,7 @@ $(document).ready(function () {
         $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.e ? </button><button class="navUser">Non.</button>')
         $('body').on('click', '#confirmSupprArticle', function () {
             $.post(
-                'API/apiVendeur', {action: 'supprimerArticle', id: idArticle},
+                'API/apiVendeur.php', {action: 'supprimerArticle', id: idArticle},
                 function (data) {
                     let message = JSON.parse(data);
                     row.hide()
@@ -167,7 +167,7 @@ $(document).ready(function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
         $.post(
-            'API/apiVendeur', {
+            'API/apiVendeur.php', {
                 action: 'afficherDetails',
                 idArticle: idArticle,
             },
@@ -183,7 +183,7 @@ $(document).ready(function () {
         event.preventDefault()
         idArticle = ($('.formUpdateArticle').attr('id'))
         $.post(
-            'API/apiVendeur', {
+            'API/apiVendeur.php', {
                 form: 'updateArticle',
                 idArticle: idArticle,
                 titre: $('#titre').val(),

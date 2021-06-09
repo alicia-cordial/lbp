@@ -23,7 +23,7 @@ $(document).ready(function () {
         $('#message').empty();
         event.preventDefault()
         $.post(
-            'API/apiModule', {
+            'API/apiModule.php', {
                 form: 'inscription',
                 status: $("input[name='status']:checked").val(),
                 login: $('#login').val(),
@@ -57,7 +57,7 @@ $(document).ready(function () {
         $('#message').empty();
         event.preventDefault()
         $.post(
-            'API/apiModule', {
+            'API/apiModule.php', {
                 form: 'connexion',
                 login: $('#login').val(),
                 password: $('#password').val(),

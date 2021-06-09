@@ -27,7 +27,7 @@ $(document).ready(function () {
         } else if ($(this).is('#navAdminCategorie')) {
             callSectionAdmin('adminShop')
             $.post(
-                'API/apiAdmin', {
+                'API/apiAdmin.php', {
                     action: 'selectCategories',
                 },
                 function (data) {
@@ -84,7 +84,7 @@ $(document).ready(function () {
         console.log(idDestinataire)
         console.log($('#newMessage').val())
         $.post(
-            'API/apiMessagerie', {
+            'API/apiMessagerie.php', {
                 action: 'sendNewMessage',
                 idDestinataire: idDestinataire,
                 messageContent: $('#newMessage').val()
@@ -104,7 +104,7 @@ $(document).ready(function () {
         console.log(idCategory)
         $('#articlesTries').empty()
         $.post(
-            'API/apiAdmin', {action: 'showArticlesCategorie', idCategory: idCategory},
+            'API/apiAdmin.php', {action: 'showArticlesCategorie', idCategory: idCategory},
             function (data) {
                 console.log(data);
                 let articles = JSON.parse(data);
@@ -143,7 +143,7 @@ $(document).ready(function () {
         let row = $(this).parents('tr')
         let idCategory = row.attr('id');
         $.post(
-            'API/apiAdmin', {action: 'deleteCat', id: idCategory},
+            'API/apiAdmin.php', {action: 'deleteCat', id: idCategory},
             function (data) {
                 console.log(data);
                 let message = JSON.parse(data);
@@ -161,7 +161,7 @@ $(document).ready(function () {
         }
         $('body').on('click', '#addNewCat', function () {
             $.post(
-                'API/apiAdmin', {action: 'addNewCat', name: $('#newCatName').val()},
+                'API/apiAdmin.php', {action: 'addNewCat', name: $('#newCatName').val()},
                 function (data) {
                     console.log(data);
                     let cat = JSON.parse(data);
@@ -210,7 +210,7 @@ $(document).ready(function () {
         $('#infoAdmin').append("<p>Si l'utilisateur est un vendeur, ses articles en vente seront aussi supprimés. Procéder avec prudence.</p>")
         $('body').on('click', '#confirmSupprUser', function () {
             $.post(
-                'API/apiAdmin', {action: 'deleteUser', id: idUser},
+                'API/apiAdmin.php', {action: 'deleteUser', id: idUser},
                 function (data) {
                     let message = JSON.parse(data);
                     row.hide()
@@ -234,7 +234,7 @@ $(document).ready(function () {
             console.log($('#newMessage input').val())
             event.preventDefault()
             $.post(
-                'API/apiMessagerie', {
+                'API/apiMessagerie.php', {
                     action: 'sendNewMessage',
                     idDestinataire: idDestinataire,
                     messageContent: $('#newMessage input').val()
@@ -255,7 +255,7 @@ $(document).ready(function () {
         $('#moderationTriees').empty()
         console.log(choice)
         $.post(
-            'API/apiAdmin', {
+            'API/apiAdmin.php', {
                 action: 'showModeration',
                 choice: choice
             },
@@ -288,7 +288,7 @@ $(document).ready(function () {
         $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
         $('body').on('click', '#confirmSupprArticle', function () {
             $.post(
-                'API/apiAdmin', {action: 'deleteArticle', id: idArticle},
+                'API/apiAdmin.php', {action: 'deleteArticle', id: idArticle},
                 function (data) {
                     let message = JSON.parse(data);
                     row.hide()
@@ -307,7 +307,7 @@ $(document).ready(function () {
         console.log(idArticle)
         $('#infoAdmin').empty()
         $.post(
-            'API/apiAdmin', {
+            'API/apiAdmin.php', {
                 action: 'acceptArticleNewCat',
                 id: idArticle,
                 categoryName: categoryName,
@@ -333,7 +333,7 @@ $(document).ready(function () {
         console.log(idArticle)
         $('#infoAdmin').empty()
         $.post(
-            'API/apiAdmin', {action: 'acceptArticleSignal', id: idArticle},
+            'API/apiAdmin.php', {action: 'acceptArticleSignal', id: idArticle},
             function (data) {
                 let result = JSON.parse(data);
                 if (result === "fail") {
