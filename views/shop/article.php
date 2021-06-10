@@ -10,8 +10,19 @@ if(isset($_GET['id'])){
     //var_dump($articles);
     //echo'</pre>';
 
-}
 
+if($_POST['submit']){
+
+    $model = new Shop();
+
+    $id = htmlspecialchars($_GET['id']);
+    $signal = htmlspecialchars($_POST['signal']);
+
+        $model->addSignal($id, $signal);
+        $success = "SUCCESS";
+    }
+}
+var_dump($model->addSignal($id, $signal));
     ?>
 
 <h1>Fiche Produit</h1>
@@ -42,7 +53,14 @@ if(isset($_GET['id'])){
             <td><?= $articles['prix'].'€'; ?></td>
             <td><?= $articles['etat_objet']; ?></td>
             <td><?= $articles['ouvert_negociation']; ?></td>
-            <td><?= $articles['signal'] ?></br><a id =" <?= $articles['id'] ?>" class='signalObjet' href='#ex2' rel='modal:open'>Signaler objet</a> </td>
+            <td> 
+                <form method='post' action='article.php'>
+                    <input type="hidden" value="<?= $articles['id']; ?>" name="id">
+                    <input type="text" value="<?= $articles['signal']; ?>" name="signal">
+                    <input type='submit' name='submit' value='submit'>
+                </form>
+            </td>
+
             <td><?= $articles['nom']; ?></td>
             <td><a href='profilVendeur?id=<?= $articles['id']; ?>'><?= $articles['identifiant']; ?></a></td>
             <td><?= $articles['zip']; ?></td>
