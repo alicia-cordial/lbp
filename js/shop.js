@@ -29,35 +29,6 @@ $(document).ready(function() {
 
     /*************************AUTOCOMPLETION HEADER************************/
 
-    //RECHERCHE ARTICLE
-
-
-    //$('#sectionArticle').empty();
-    /*
-        $('body').on('click', '.navSearch', function() {
-            $('#sectionSearch').empty();
-
-            if ($(this).is('#navSearchSeller')) {
-                callSectionSearch('profilVendeur')
-            } else if ($(this).is('#navSearchObject')) {
-                callSectionSearch('resultatArticles')
-                $.post(
-                    'API/apiSearch', {action: 'SelectResearch'},
-                    function(data){
-                        let research = JSON.parse(data);
-                        let researchList = $('#result')
-                        console.log(data);
-                        if(research == 'none'){
-                            researchList.append('Aucun résultat');
-                        } else {
-
-                        }
-                    }
-                )
-            }
-        })
-    */
-
 
     $('#article_search').keyup(function() {
         $('#result').html('');
@@ -144,60 +115,37 @@ $(document).ready(function() {
     });
 
 
+    $('body').on('click', '.updateStatus', function() {
+        let row = $(this).parents('tr')
+        let idArticle = row.attr('id');
+        let articleName = row.attr('value');
 
-    /*
-        $('#rechercher').keyup(function() {
-            $('#message_form').html('');
-            var recherche = $(this).val();
-            console.log(recherche);
+        if ($('newName').length == 0) {
 
-            $.get(
-                'API/apiSearch.php', {
-                    research: recherche,
+        }
+    })
 
-                },
-                function(data) {
-                    let recherches = JSON.parse(data);
-                    console.log(recherches);
-
-                    for (let recherche of recherches) {
-                        $('#message_form').append('<a href="resultatArticles?id=' + recherche.id + '">' + recherche.titre + recherche.nom + recherche.zip + '</a></br>');
-                    }
-                },
-
-            );
-
-
-        });
-    */
-
-
-
-    //RECHERCHE TITRE AVEC CATEGORIE
-    /*
-        $('#titre').keyup(function() {
-            $('#message_form').html('');
-            var article = $(this).val();
-            console.log(article);
-            $.get(
-                'API/apiSearch.php', {
-                    term: article,
-                },
-                function(data) {
-                    console.log(data)
-                    let articles = JSON.parse(data);
-                    console.log(articles);
-                    for (let article of articles) {
-                        $('#message_form').append('<a href="resultatArticles?research=' + article.titre + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
-                    }
-                },
-            );
-        });
-
-    */
-
-
-
+    /* $('body').one('click', '.updateCat', function () {
+        let row = $(this).parents('tr')
+        let idCategory = row.attr('id');
+        let categoryName = row.attr('value');
+        if ($('#newName').length == 0) {
+            $(this).after("<input id='newName' value='" + categoryName + "'>")
+        }
+        $('body').on('click', '.updateCat', function () {
+            $.post(
+                'API/apiAdmin', {action: 'updateCat', idCategory: idCategory, newName: $('#newName').val()},
+                function (data) {
+                    console.log(data);
+                    $('#infoAdmin').html('<p>Nom de la catégorie updatée !</p>')
+                    setTimeout(
+                        function () {
+                            $("#mainAdmin").load(location.href + " #mainAdmin")
+                        }, 2000);
+                }
+            )
+        })
+    }) */
     /*******************RECHERCHE COMPLETE**********************/
 
     $('#form_objet').submit(function(e) {
@@ -206,12 +154,10 @@ $(document).ready(function() {
         //.serialize à la place des var va chercher dans POST
         //function filter_data() {
         $('#message_form').html('');
-        var action = 'apiSearch'; //je sais pas d'où ça vient
-        //var minimum_price = $('#hidden_minimum_price').val();
-        //var maximum_price = $('#hidden_maximum_price').val();
-        var nom = $('nom').val();
-        var titre = $('titre').val();
-        var zip = $('zip').val();
+
+        var nom = $('nom').attr('value');
+        var titre = $('titre').attr('value');
+        var zip = $('zip').attr('value');
         $.ajax({
             url: "API/apiSearch.php",
             method: "POST",
@@ -243,5 +189,10 @@ $(document).ready(function() {
                     }
                 });*/
     });
+
+
+
+
+
 
 })
