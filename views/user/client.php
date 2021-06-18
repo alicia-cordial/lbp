@@ -1,4 +1,3 @@
-
 <main id="mainCompte">
     <article>
         <h2>ESPACE PERSONNEL - Acheteur</h2>
