@@ -76,17 +76,35 @@ function selectObject($id){
   return $result;
 }
 
-/*RECHERCHE PRÉCISE */
-/*function selectResearch($research){
-  $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id  WHERE article.titre LIKE '%$research%' OR categorie.nom LIKE '%$research%' OR utilisateur.zip LIKE '%$research%'");
-  $request->execute([$research]);
-  $result[] = $request->fetchAll(PDO::FETCH_ASSOC);
+/*****************************RECHERCHE PRÉCISE*********************/
+function selectResearch($research){
 
-  return $result;
+if(isset($_POST["submit"])){
+ $query = "SELECT * `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id WHERE article.visible = '1'";
+
+  //if(isset($_POST["minimum_price"], $_POST["maximum_price"]) && !empty($_POST["minimum_price"]) && !empty($_POST["maximum_price"])){
+    //$query .= " AND prix BETWEEN '".$_POST["minimum_price"]."' AND '".$_POST["maximum_price"]."' ";
+ // }
+
+
+    if(isset($_POST["nom"])){
+      $query .= "AND categorie.nom LIKE '%$research%' ";
+    }
+
+      if(isset($_POST["titre"])){
+        $query .= " AND article.titre LIKE '%$research%' ";
+      }
+
+        if(isset($_POST["zip"])){
+          $query .= "AND utilisateur.zip LIKE '%$research%' ";
+        }
+
+ $statement = $this->pdo->prepare($query);
+ $statement->execute([$research]);
+ $result[] = $statement->fetchAll(PDO::FETCH_ASSOC);
+  }
+
 }
-*/
-
-
 
   /*AUTOCOMPLETION RECHERCHE OBJET*/
 
@@ -108,6 +126,18 @@ function selectObject($id){
 
     return $result;
 
+  }
+
+
+  /****************SIGNALER UN OBJET**************/
+
+  function addSignal($id, $signal){
+    $request = $this->pdo->prepare("UPDATE `article`SET `signal` = '?' WHERE article.id =  $id");
+    $update = $request->execute(array(
+    'signal' => $signal,
+    'id' => $id,
+    ));
+return $update;
   }
 
 

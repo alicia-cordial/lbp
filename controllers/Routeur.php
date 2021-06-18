@@ -10,7 +10,8 @@ class Routeur
         "article" => "Article",
         "resultatArticles" => "ResultatArticles",
         "profilVendeur" => "ProfilVendeur",
-        "admin" => "Admin"
+        "admin" => "Admin",
+        
     ];
 
 //    controller sélectionné

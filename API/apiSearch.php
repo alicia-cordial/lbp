@@ -41,22 +41,20 @@ if (isset($_GET['search']) ) {
 
 }
 
+/*********RECHERCHE PRÉCISE*/
 
-//RECHERCHE VENDEURS
-/*
+ 
 if (isset($_GET['research']) ) {
 
   $model = new Shop();
 
   $research = htmlspecialchars($_GET['research']);
-  $getObject = $model->selectResearch($research);
-  $objList = array();
+  $getArticle = $model->get_seller($research);
+  $articleList = array();
 
-  foreach($getObject as $objet){
-    $objList = $objet;
+  foreach($getArticle as $article){
+    $articleList = $article;
   }
-  echo json_encode($objList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  echo json_encode($articlerList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 }
-*/
-

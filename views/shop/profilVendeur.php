@@ -15,11 +15,11 @@ if(isset($_GET['id'])){
     <thead>
     <tr>
         <th>Identifiant</th>
-        <th>Mail</th>
+
         <th>Zip</th>
         <th>Date Inscription</th>
         <th>Titre</th>
-   
+        <th>Mail</th>
 
     </tr>
     </thead>
@@ -28,7 +28,7 @@ if(isset($_GET['id'])){
    
         <tr>
             <td><?= $users['identifiant']; ?></td>
-            <td><?= $users['mail']; ?></td>
+            
             <td><?= $users['zip']; ?></td>
             <td><?= $users['date_inscription']; ?></td>
             <td>       
@@ -36,9 +36,18 @@ if(isset($_GET['id'])){
                             <p value="<?= $art['id'] ?>"><?= $art['titre'] ?></p>
                         <?php endforeach; ?>
                     </select></td>
-            
+                    <td><a id =" <?= $users['id'] ?>" class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a> </td>
         </tr>
 
   
     </tbody>
-</table>
+</table><div id="ex1" class="modal">
+    <div id="idDestinataire" value="<?= $users['id']; ?>"></div>
+    <div id="nameDestinataire" value="<?= $users['identifiant']; ?>"></div>
+            <form id='newMessage'>
+                <input placeholder='votre message' required>
+                <button type='submit'>Envoyer</button>
+        </form>
+    <div id="infoMessage"></div>
+        <a href="#" rel="modal:close">Close</a>
+    </div>
