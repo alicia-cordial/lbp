@@ -3,7 +3,7 @@
 if(isset($_GET['id'])){
 
     $model = new Shop();
-  
+
     $id = htmlspecialchars($_GET['id']);
     $articles = $model->showArticle($id);
     //echo '<pre>';
@@ -45,7 +45,7 @@ var_dump($model->addSignal($id, $signal));
     </thead>
 
     <tbody>
-   
+
         <tr>
             <td><?= $articles['titre']; ?></td>
             <td><?= $articles['description']; ?></td>
@@ -53,7 +53,7 @@ var_dump($model->addSignal($id, $signal));
             <td><?= $articles['prix'].'€'; ?></td>
             <td><?= $articles['etat_objet']; ?></td>
             <td><?= $articles['ouvert_negociation']; ?></td>
-            <td> 
+            <td>
                 <form method='post' action='article.php'>
                     <input type="hidden" value="<?= $articles['id']; ?>" name="id">
                     <input type="text" value="<?= $articles['signal']; ?>" name="signal">
@@ -64,9 +64,10 @@ var_dump($model->addSignal($id, $signal));
             <td><?= $articles['nom']; ?></td>
             <td><a href='profilVendeur?id=<?= $articles['id']; ?>'><?= $articles['identifiant']; ?></a></td>
             <td><?= $articles['zip']; ?></td>
-            <td><a id =" <?= $articles['id'] ?>" class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a> </td>
-    
-          
+
+            <td><a id =" <?= $articles['id'] ?>" class='contactUser <?php if (!(isset($_SESSION['user']))) {echo "disabled";} ?>' href='#ex1' rel='modal:open'>Contacter le vendeur</a> </td>
+
+
         </tr>
 
 

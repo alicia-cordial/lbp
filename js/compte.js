@@ -57,7 +57,7 @@ $(document).ready(function () {
         }
     })
 
-    //MESSAGERIE
+    //MESSAGERIE CONVERSATION INDIVIDUELLE
     $('body').on('click', '.individualConversation', function (event) {
         let idDestinataire = $(this).attr('id')
         // console.log(idDestinataire)
@@ -145,7 +145,7 @@ $(document).ready(function () {
 })
 
 
-/*FUNCTIONS*/
+/*FUNCTION*/
 function callSectionUser(page) {
     $.get('views/user/' + page + '.php',
         function (data) {

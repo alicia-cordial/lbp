@@ -1,13 +1,9 @@
 <?php
 
-session_start();
-require_once('../models/Database.php');
-require_once('../models/AdminModel.php');
-$model = new AdminModel();
-
+require_once ("apiAutoloader.php");
 
 if (isset($_POST['action']) && $_POST['action'] === 'showUsers') {
-    $users = $model->showUsers($_POST['choice']);
+    $users = $adminModel->showUsers($_POST['choice']);
     if (!empty($users)) {
         echo json_encode($users, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
@@ -16,14 +12,14 @@ if (isset($_POST['action']) && $_POST['action'] === 'showUsers') {
 }
 
 if (isset($_POST['action']) && $_POST['action'] === 'deleteUser') {
-    $suppr = $model->deleteUser($_POST['id']);
+    $suppr = $adminModel->deleteUser($_POST['id']);
     if ($suppr) {
         echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
 
 if (isset($_POST['action']) && $_POST['action'] === 'showModeration') {
-    $articles = $model->showModeration($_POST['choice']);
+    $articles = $adminModel->showModeration($_POST['choice']);
     if (!empty($articles)) {
         echo json_encode($articles, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
@@ -32,7 +28,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'showModeration') {
 }
 
 if (isset($_POST['action']) && $_POST['action'] === 'deleteArticle') {
-    $suppr = $model->deleteArticle($_POST['id']);
+    $suppr = $adminModel->deleteArticle($_POST['id']);
     if ($suppr) {
         echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
@@ -40,7 +36,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteArticle') {
 
 if (isset($_POST['action']) && $_POST['action'] === 'acceptArticleNewCat') {
 
-    $success = $model->acceptArticleNewCat($_POST['categoryName'], $_POST['id'], $_POST['idVendeur']);
+    $success = $adminModel->acceptArticleNewCat($_POST['categoryName'], $_POST['id'], $_POST['idVendeur']);
     if ($success) {
         echo json_encode("success", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
@@ -50,7 +46,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'acceptArticleNewCat') {
 
 if (isset($_POST['action']) && $_POST['action'] === 'acceptArticleSignal') {
 
-    $success = $model->acceptArticleSignal($_POST['id']);
+    $success = $adminModel->acceptArticleSignal($_POST['id']);
     if ($success) {
         echo json_encode("success", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
@@ -60,7 +56,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'acceptArticleSignal') {
 
 if (isset($_POST['action']) && $_POST['action'] === 'selectCategories') {
 
-    $categories = $model->selectCategories();
+    $categories = $adminModel->selectCategories();
     if (!empty($categories)) {
         echo json_encode($categories, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
@@ -70,7 +66,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'selectCategories') {
 
 if (isset($_POST['action']) && $_POST['action'] === 'showArticlesCategorie') {
 
-    $articles = $model->showArticlesCategorie($_POST['idCategory']);
+    $articles = $adminModel->showArticlesCategorie($_POST['idCategory']);
     if (!empty($articles)) {
         echo json_encode($articles, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
@@ -78,21 +74,21 @@ if (isset($_POST['action']) && $_POST['action'] === 'showArticlesCategorie') {
 
 if (isset($_POST['action']) && $_POST['action'] === 'updateCat') {
 
-    $newCat = $model->updateCat($_POST['idCategory'], $_POST['newName']);
+    $newCat = $adminModel->updateCat($_POST['idCategory'], $_POST['newName']);
     if ($newCat) {
         echo json_encode("success", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
 
 if (isset($_POST['action']) && $_POST['action'] === 'deleteCat') {
-    $suppr = $model->deleteCat($_POST['id']);
+    $suppr = $adminModel->deleteCat($_POST['id']);
     if ($suppr) {
         echo json_encode('suppressed', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
 
 if (isset($_POST['action']) && $_POST['action'] === 'addNewCat') {
-    $add = $model->createNewCategory($_POST['name']);
+    $add = $adminModel->createNewCategory($_POST['name']);
     if ($add) {
         echo json_encode($add, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }

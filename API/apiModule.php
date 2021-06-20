@@ -1,10 +1,8 @@
 <?php
-session_start();
-require_once('../models/Database.php');
-require_once('../models/UserModel.php');
-$model = new UserModel();
 
-/*VARIABLES INSCRIPTION/UPDATE*/
+require_once("apiAutoloader.php");
+
+/*INSCRIPTION/UPDATE*/
 if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form'] === 'updateProfil')) {
     if (!empty($_POST['status']) && !empty($_POST['login']) && !empty($_POST['zip']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['password2'])) {
         $status = htmlspecialchars($_POST['status']);
@@ -14,7 +12,7 @@ if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form']
         $password = htmlspecialchars($_POST['password']);
         $password2 = htmlspecialchars($_POST['password2']);
         $errors = [];
-        $userExists = $model->userExists($login, $email);
+        $userExists = $userModel->userExists($login, $email);
         $formIsFilled = true;
     } else {
         $errors = ['Veuillez remplir tous les champs SVP'];
@@ -23,7 +21,7 @@ if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form']
 
     if (isset($formIsFilled)) {
         if ($_POST['form'] === 'updateProfil') {
-            $userIsAvailable = $model->userIsAvailable($email, $login, $_SESSION['user']['id']);
+            $userIsAvailable = $userModel->userIsAvailable($email, $login, $_SESSION['user']['id']);
             if (!$userIsAvailable) {
                 $errors[] = 'Cet email ou ce login est/sont déjà liés à un autre compte.';
             }
@@ -46,11 +44,11 @@ if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form']
             $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
 
             if ($_POST['form'] === 'inscription') {
-                $insert = $model->insertUser($status, $login, $zip, $email, $hashedpassword);
+                $insert = $userModel->insertUser($status, $login, $zip, $email, $hashedpassword);
             } else if ($_POST['form'] === 'updateProfil') {
-                $insert = $model->updateUser($status, $login, $zip, $email, $hashedpassword, $_SESSION['user']['id']);
+                $insert = $userModel->updateUser($status, $login, $zip, $email, $hashedpassword, $_SESSION['user']['id']);
                 if ($insert) {
-                    $_SESSION['user'] = $model->selectUserData($_SESSION['user']['id']);
+                    $_SESSION['user'] = $userModel->selectUserData($_SESSION['user']['id']);
                 }
             }
             if ($insert) {
@@ -71,7 +69,7 @@ if (isset($_POST['form']) && $_POST['form'] === 'connexion') {
     if (!empty($_POST['login']) && !empty($_POST['password'])) {
         $login = htmlspecialchars($_POST['login']);
         $password = htmlspecialchars($_POST['password']);
-        $userExists = $model->userExists($login, $login);
+        $userExists = $userModel->userExists($login, $login);
 
         if (!empty($userExists)) {
             $userExists = $userExists[0];

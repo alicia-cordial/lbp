@@ -1,11 +1,12 @@
 $(document).ready(function () {
-    //
+
+    //NAVIGATION
     $('body').on('click', '.navAdmin', function () {
         $('#sectionAdmin').empty();
 
         if ($(this).is('#navAdminUsers')) {
             callSectionAdmin('adminUsers')
-        } else if ($(this).is('#navAdminMessagerie')) {
+        } else if ($(this).is('#navAdminMessagerie')) { //MESSAGERIE CONVERSATION
             callSectionAdmin('adminMessagerie')
             $.post(
                 'API/apiMessagerie', {action: 'selectContacts'},
@@ -24,12 +25,10 @@ $(document).ready(function () {
             );
         } else if ($(this).is('#navAdminModeration')) {
             callSectionAdmin('adminModeration')
-        } else if ($(this).is('#navAdminCategorie')) {
+        } else if ($(this).is('#navAdminCategorie')) { //CATEGORIES
             callSectionAdmin('adminShop')
             $.post(
-                'API/apiAdmin.php', {
-                    action: 'selectCategories',
-                },
+                'API/apiAdmin.php', {action: 'selectCategories'},
                 function (data) {
                     console.log(data);
                     let categories = JSON.parse(data);
@@ -52,7 +51,7 @@ $(document).ready(function () {
         }
     })
 
-    //MESSAGERIE
+    //MESSAGERIE CONVERSATION INDIVIDUELLE
     $('body').on('click', '.individualConversation', function (event) {
         let idDestinataire = $(this).attr('id')
         // console.log(idDestinataire)
@@ -98,6 +97,7 @@ $(document).ready(function () {
         )
     })
 
+    //CATEGORIES
     $('body').on('click', '.rowCategorie', function () {
         let row = $(this).parents('tr')
         let idCategory = row.attr('id');
@@ -116,6 +116,7 @@ $(document).ready(function () {
         )
     })
 
+    //UPDATE CATEGORIE
     $('body').one('click', '.updateCat', function () {
         let row = $(this).parents('tr')
         let idCategory = row.attr('id');
@@ -138,7 +139,7 @@ $(document).ready(function () {
         })
     })
 
-
+    //SUPPRIMER CATEGORIE
     $('body').one('click', '.deleteCat', function () {
         let row = $(this).parents('tr')
         let idCategory = row.attr('id');
@@ -174,15 +175,13 @@ $(document).ready(function () {
         })
     })
 
+    //SHOW UTILISATEURS
     $('body').on('click', '.showUsers', function () {
         let choice = $(this).attr('value');
         $('#listeUsersTries').empty()
         console.log(choice)
         $.post(
-            'API/apiAdmin', {
-                action: 'showUsers',
-                choice: choice
-            },
+            'API/apiAdmin.php', {action: 'showUsers', choice: choice},
             function (data) {
                 console.log(data);
                 let users = JSON.parse(data);
@@ -221,14 +220,13 @@ $(document).ready(function () {
     })
 
 
-
     //BOUTON CONTACT user
     $('body').on('click', '.contactUser', function (event) {
         $('#nameDestinataire').empty()
         let row = $(this).parents('tr')
         let idDestinataire = row.attr('id')
         let loginDestinataire = row.attr('value')
-        $('#nameDestinataire').append('<p>'+loginDestinataire+'</p>')
+        $('#nameDestinataire').append('<p>' + loginDestinataire + '</p>')
         $('body').on('submit', '#newMessage', function (event) {
 
             console.log($('#newMessage input').val())

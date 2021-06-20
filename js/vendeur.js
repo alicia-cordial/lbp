@@ -18,7 +18,7 @@ $(document).ready(function () {
                         for (let article of articles) {
                             $('#articlesSelling').append("<tr id ='" + article.id_article + "'><td><a href='article?id=" + article.id_article + "'>" + article.titre + "</a></td><td>Annonce créee le : " + article.date_ajout + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
-                        let select = $('.marquerCommeVendu')
+                        let select = $('.marquerCommeVendu') //MENU DEROULANT
                         $.post(
                             'API/apiMessagerie', {action: 'selectContacts'},
                             function (data) {
