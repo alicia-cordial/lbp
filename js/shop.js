@@ -1,5 +1,10 @@
 $(document).ready(function() {
 
+    //MATERIALIZE
+    $('.sidenav').sidenav();
+
+
+
     // PAGE INDEX TOGGLE
     var objet = $('#objet'); // formulaire recherche objet
     var vendeur = $('#vendeur'); // formulaire recherche vendeur

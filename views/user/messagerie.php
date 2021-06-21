@@ -1,5 +1,4 @@
-<section id="sectionVendeur">
-    <article id="contacts">
+ <article id="contacts">
 
     </article>
     <article>
@@ -9,4 +8,3 @@
             <input id="newMessage" placeholder="écrivez un message ..." required>
         </form>
     </article>
-</section>

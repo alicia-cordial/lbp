@@ -11,3 +11,69 @@
     color: blue;
     text-align: right;
 }
+
+
+.callForm {
+    cursor: pointer;
+}
+
+.callForm:hover {
+    transition: 0.5s;
+    color: #c2ac71;
+}
+
+.form .input-field input[type], .materialize-textarea:focus:not([readonly]) {
+    color: #c2ac71;
+    border-bottom: 1px solid #c2ac71 !important;
+    box-shadow: 0 1px 0 0 #1a237e !important;
+}
+
+
+.form  .input-field input[type]:focus, .materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #c2ac71 !important;
+    box-shadow: 0 1px 0 0 #c2ac71 !important;
+}
+
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
+    background-color:#c2ac71;;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before,
+[type="radio"].with-gap:checked+span:after {
+    border: 2px solid #c2ac71;
+}
+
+#bloc2 .btn, #bloc3 .btn {
+    margin-top: 30px;
+}
+
+.tabs {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.tab {
+    transition: 0.5s;
+    flex-grow: 1;
+}
+
+
+.tab:hover {
+    background-color: #f8e9bf;
+}
+
+.activeTab {
+    background-color: #c2ac71;
+}
+
+
+@media screen and (max-width: 640px) {
+   .tabs {
+       flex-direction: column;
+       height: auto;
+   }
+
+    .tab {
+        height: auto;
+    }
+}

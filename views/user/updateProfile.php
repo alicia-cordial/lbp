@@ -1,5 +1,4 @@
 <?php session_start(); ?>
-<section id="sectionVendeur">
     <article id="articleForm">
         <h3>VOTRE PROFIL</h3>
         <h4>IDENTIFIANT : <?= $_SESSION['user']['identifiant'] ?></h4>
@@ -38,5 +37,3 @@
     <div class="formInfo">
         <div id="message"></div>
     </div>
-
-</section>

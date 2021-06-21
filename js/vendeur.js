@@ -2,6 +2,8 @@ $(document).ready(function () {
 
     /*NAVIGATION*/
     $('body').on('click', '.navUser', function () {
+        $('.navUser').removeClass('activeTab');
+        $(this).addClass('activeTab');
         $('#sectionVendeur').empty();
 
         //Articles en vente
@@ -13,10 +15,10 @@ $(document).ready(function () {
                     let articles = JSON.parse(data);
                     console.log(articles)
                     if (articles == 'none') {
-                        $("#articlesSelling").append("<tr><td>Il n'y a rien ici.</td><td class='navUser navNewArticle'> + Déposer une annonce</td></tr>");
+                        $("#articlesSelling tbody").append("<tr><td>Il n'y a rien ici.</td><td class='navUser navNewArticle'> + Déposer une annonce</td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesSelling').append("<tr id ='" + article.id_article + "'><td><a href='article?id=" + article.id_article + "'>" + article.titre + "</a></td><td>Annonce créee le : " + article.date_ajout + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                            $('#articlesSelling tbody').append("<tr id ='" + article.id_article + "'><td><a href='article?id=" + article.id_article + "'>" + article.titre + "</a></td><td>" + article.date_ajout + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
                         let select = $('.marquerCommeVendu') //MENU DEROULANT
                         $.post(

@@ -7,7 +7,13 @@ require_once('Database.php');
 class Shop extends Database{
 
 
-
+/*SELECTION ARTICLE RANDOM HOME*/
+    function selectArticlesRandom(){
+        $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE status = 'disponible' and article.visible = '1' ORDER BY RAND() LIMIT 10");
+        $request->execute();
+        $articles = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $articles;
+    }
 
 /*AUTOCOMPLETION HEADER */
   function get_article($term){

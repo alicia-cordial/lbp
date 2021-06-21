@@ -1,10 +1,16 @@
+/*GENERAL*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    border: 1px solid black;
+    cursor: default;
+    /*border: 1px solid black;*/
 }
 
+a {
+    color: inherit;
+    cursor: pointer;
+}
 .disabled {
     pointer-events: none;
 }
@@ -13,10 +19,88 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background-color: #fffdf4;
 }
 
 main {
     flex: 1 0 auto;
     flex-grow: 1;
-    background-color: lightblue;
+    background-color: #fffdf4;
+}
+
+/*NAV*/
+header {
+    padding-top: 30px;
+}
+.nav-center  {
+    display:flex;
+    justify-content: center;
+}
+
+.brand-logo {
+    width: 100%;
+}
+
+.liNav {
+    width: 20%;
+    text-align: center;
+    background-color: #303f9f;
+}
+
+nav .input-field input[type=text] {
+    text-align: center;
+    color: white;
+}
+
+nav .input-field input[type=text]:focus {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.liNav:hover {
+    background-color: #283593;
+}
+
+nav::-webkit-input-placeholder {
+    text-align: center;
+}
+
+nav:-moz-placeholder {
+    text-align: center;
+}
+
+#secondNav {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#secondNav a {
+    font-size: 300%;
+    color: #c2ac71;
+}
+
+#secondNav p {
+    text-align: right;
+}
+
+.sidenav .form_recherche {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#article_search {
+    color: #c2ac71;
+}
+#article_search:focus {
+    background: none;
+    color: #c2ac71;
+}
+
+#mobile-demo {
+    background-color: #303f9f;
+    color: #c2ac71;
+}
+
+#mobile-demo a {
+    color: #c2ac71;
 }

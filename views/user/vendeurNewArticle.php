@@ -1,5 +1,4 @@
-<section id="sectionVendeur">
-    <article>
+ <article>
         <h3>Déposer une nouvelle annonce</h3>
         <form id="formNewArticle">
             <input type="text" id="titre" name="titre" placeholder="titre">
@@ -39,4 +38,3 @@
         </div>
 
     </article>
-</section>
