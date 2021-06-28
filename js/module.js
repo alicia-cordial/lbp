@@ -37,7 +37,9 @@ $(document).ready(function() {
                 let messages = JSON.parse(data);
                 for (let message of messages) {
                     if (message === "success") {
-                        $("#message").append("<p>Inscription réussie !</p>");
+                        $('#formConnexion button').fadeOut("fast", function() {
+                            $("#message").append("<p>Inscription réussie !</p> <a href='compte'>Voir votre profil</a>");
+                        })
                     } else {
                         $('#message').append("<p>" + message + "</p>");
                     }
@@ -67,11 +69,28 @@ $(document).ready(function() {
                 let messages = JSON.parse(data);
                 for (let message of messages) {
                     if (message === "success") {
-                        $("#message").append("<p>Connexion réussie !</p> <a href='compte'>Voir votre profil</a>");
+                        $('#formConnexion button').fadeOut("fast", function() {
+                            $("#message").append("<p>Connexion réussie !</p> <a href='compte'>Voir votre profil</a>");
+                        })
                     } else {
                         $('#message').append("<p>" + message + "</p>");
                     }
                 }
+            },
+        );
+    });
+
+/*DECONNEXION*/
+    $('body').on('click', '.logoutButton', function(event) {
+        event.preventDefault()
+        console.log("logout");
+        $.post(
+            'API/apiModule.php', {
+                action: 'deconnexion',
+            },
+            function(data) {
+                console.log(data);
+                location.reload();
             },
         );
     });

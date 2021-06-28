@@ -89,3 +89,8 @@ if (isset($_POST['form']) && $_POST['form'] === 'connexion') {
         echo json_encode($errors, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
+
+/*DECONNEXION*/
+if (isset($_POST['action']) && $_POST['action'] === 'deconnexion') {
+    session_destroy();
+}

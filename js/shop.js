@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     //MATERIALIZE
-    $('.sidenav').sidenav();
+    M.AutoInit();
 
 
 

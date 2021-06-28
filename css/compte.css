@@ -1,18 +1,40 @@
+header {
+    z-index: 0;
+    position: relative;
+}
+
 #bloc2, #bloc3, #statusInfo, #formNewMessage {
     display: none;
 }
-
-.messageDestinataire {
-    color: pink;
-    text-align: left;
+#message a {
+    color: #c2ac71;
 }
 
-.messageUtilisateur {
-    color: blue;
-    text-align: right;
+select {
+    display: inline-block;
 }
 
+#articlesSelling {
+    width: 100%;
+    overflow-x: auto;
+}
+.titleArticle {
+    border-top: 1px solid rgba(0,0,0,0);
+}
 
+.titleArticle:hover {
+    border-top: 1px solid black;
+}
+#confirmerVente {
+    margin-top: 5px;
+}
+.btn-flat, .btn {
+    color: white;
+    background-color: #424242;
+}
+.btn-small:hover {
+    background-color: #616161;
+}
 .callForm {
     cursor: pointer;
 }
@@ -22,6 +44,7 @@
     color: #c2ac71;
 }
 
+/*INPUTS*/
 .form .input-field input[type], .materialize-textarea:focus:not([readonly]) {
     color: #c2ac71;
     border-bottom: 1px solid #c2ac71 !important;
@@ -43,36 +66,144 @@
     border: 2px solid #c2ac71;
 }
 
-#bloc2 .btn, #bloc3 .btn {
+.formBloc .btn {
     margin-top: 30px;
 }
+
+/*TABS*/
 
 .tabs {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
 }
-.tab {
+.tab, .titleArticle {
     transition: 0.5s;
     flex-grow: 1;
 }
 
 
 .tab:hover {
-    background-color: #f8e9bf;
+    background-color: #eeeeee;
 }
 
 .activeTab {
-    background-color: #c2ac71;
+    background-color: #e0e0e0;
 }
 
+/*MESSAGERIE*/
 
+#infoConvo {
+    text-align: center;
+}
+
+.individualConversation {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    transition: 0.5s;
+    border-radius: 25px;
+}
+
+.individualConversation span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.individualConversation:hover {
+    background-color: #f8e9bf;
+}
+
+#sectionMessagerie, #articleMessagerie {
+display: flex;
+}
+
+#sectionMessagerie {
+    justify-content: space-between;
+}
+#conversation, #contacts {
+    height: 50vh;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+#articleMessagerie {
+    flex-direction: column;
+    width: 70%;
+    padding: 20px;
+}
+
+.dateMessage {
+    text-align: center;
+}
+.pIndividualMessage {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.individualMessage {
+    border-radius : 15px;
+    padding: 10px;
+    width: auto;
+}
+
+.messageDestinataire {
+    align-items: flex-start;
+}
+.messageDestinataire .individualMessage{
+
+    background-color: lightgray;
+}
+.messageUtilisateur {
+    align-items: flex-end;
+}
+.messageUtilisateur .individualMessage{
+    background-color: #c2ac71;
+
+}
+
+/*MODALE UPDATE ARTICLE*/
+#detailsArticle {
+    margin-top: 10px;
+    z-index: 100 !important;
+    display: none;
+    font-size: 80%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    left: 0;
+    max-width: 80%;
+    max-height: 80%;
+    top: 0;
+}
+
+/*FORM UPLOAD IMAGE*/
+.preview{
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    margin: 0 auto;
+    background: white no-repeat center;
+    /*background: url("../img/articles/2021-06-27.png") no-repeat center;*/
+    background-size: cover;
+}
+
+/*QUERIES*/
 @media screen and (max-width: 640px) {
    .tabs {
        flex-direction: column;
        height: auto;
    }
-
+#articlesSelling {
+    display: block;
+}
     .tab {
         height: auto;
     }

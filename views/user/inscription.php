@@ -24,10 +24,6 @@
                                 </label>
                             </p>
 
-                         <!--   <input type="radio" name="status" value="vendeur">
-                            <label for="vendeur">vendeur.se</label>
-                            <input type="radio" name="status" value="client">
-                            <label for="client">acheteur.se</label>-->
                         </div>
                     </div>
                 </div>

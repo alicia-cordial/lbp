@@ -26,7 +26,7 @@ $(document).ready(function () {
                     let articles = JSON.parse(data);
                     console.log(data);
                     if (articles == 'none') {
-                        $("#articlesAchetes").append("<tr><td>Il n'y a rien ici.</td></tr>");
+                        $("#articlesAchetes").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a href=''>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
                             $('#articlesAchetes').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td> Vendeur : <a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td> Acheté le : " + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
@@ -48,7 +48,7 @@ $(document).ready(function () {
                         contactList.append("Aucune conversation");
                     } else {
                         $.each(contacts, function (key, value) {
-                            contactList.append("<p class='individualConversation' id='" + value.id + "'>" + value.identifiant + "</p>")
+                            contactList.append("<p class='individualConversation' id='" + value.id + "'><a href='profilVendeur?id="+ value.id +"'><span>"+ value.initial +"</span></a> " + value.identifiant + "</p>")
                             if (value.status == 'supprimé') {
                                 $('#'+value.id).addClass('supprimé')
                             }
@@ -62,6 +62,8 @@ $(document).ready(function () {
     //MESSAGERIE CONVERSATION INDIVIDUELLE
     $('body').on('click', '.individualConversation', function (event) {
         let idDestinataire = $(this).attr('id')
+        $('.individualConversation').removeClass('activeTab')
+        $(this).addClass('activeTab')
         // console.log(idDestinataire)
         let conversation = $('#conversation')
         conversation.empty()
@@ -77,8 +79,15 @@ $(document).ready(function () {
 
                 let messages = JSON.parse(data);
                 console.log(messages);
+                let dates = []
                 for (let message of messages) {
-                    conversation.append("<p id='message" + message.id + "'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
+
+                    if (!dates.includes(message.day)) {
+                        conversation.append("<p id='+message.day+' class='dateMessage'>"+ message.day + "</p>")
+                        dates.push(message.day)
+                    }
+
+                    conversation.append("<p class='pIndividualMessage' id='message" + message.id + "'><span class='individualMessage'>" + message.contenu + "</span><span>"+ message.time +"</span></p>")
                     if (message.id_expediteur == idDestinataire) {
                         $('#message' + message.id).addClass('messageDestinataire')
                     } else {
@@ -105,7 +114,10 @@ $(document).ready(function () {
                 let message = JSON.parse(data);
                 $('#newMessage').val('')
                 console.log(data);
-                conversation.append("<p id='message" + message.id + "' class='messageUtilisateur'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
+                if ($('#'+message.day).length === 0) {
+                    conversation.append("<p id='+message.day+' class='dateMessage'>"+ message.day + "</p>")
+                }
+                conversation.append("<p class='pIndividualMessage messageUtilisateur' id='message" + message.id + "'><span class='individualMessage'>" + message.contenu + "</span><span>"+ message.time +"</span></p>")
             }
         )
     })
@@ -134,7 +146,7 @@ $(document).ready(function () {
                         setTimeout(
                             function () {
                                 $("#mainCompte").load(location.href + " #mainCompte")
-                            }, 3000);
+                            }, 1000);
                     } else {
                         $('#message').append("<p>" + message + "</p>");
                     }

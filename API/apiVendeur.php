@@ -68,23 +68,47 @@ if (isset($_POST['action']) && $_POST['action'] === 'afficherNewArticle') {
 }
 
 if (isset($_POST['form']) && $_POST['form'] === 'newArticle') {
-    if (!empty($_POST['titre']) && !empty($_POST['description']) && !empty($_POST['prix']) && !empty($_POST['etat']) && !empty($_POST['negociation']) && !empty($_POST['categorie'])) {
+    if (!empty($_POST['titre']) && !empty($_POST['description']) && !empty($_POST['prix']) && !empty($_POST['etat']) && !empty($_POST['negociation']) && !empty($_POST['categorie']  && !empty($_POST['picture']))) {
         $titre = htmlspecialchars($_POST['titre']);
         $description = htmlspecialchars($_POST['description']);
         $prix = htmlspecialchars($_POST['prix']);
         $etat = htmlspecialchars($_POST['etat']);
         $categorie = htmlspecialchars($_POST['categorie']);
         $negociation = htmlspecialchars($_POST['negociation']);
+        $image = htmlspecialchars($_POST['picture']);
         if (empty($_POST['catSuggeree'])) {
-            $insert = $userModel->insertArticle($titre, $description, $prix, $etat, $categorie, $negociation, $_SESSION['user']['id']);
+            $insert = $userModel->insertArticle($titre, $description, $prix, $etat, $categorie, $negociation, $image, $_SESSION['user']['id']);
             echo json_encode('success', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         } else {
             $catSuggeree = htmlspecialchars($_POST['catSuggeree']);
             $visible = 0;
-            $insert = $userModel->insertArticleAModerer($titre, $description, $prix, $etat, $negociation, $catSuggeree, $_SESSION['user']['id'], $visible);
+            $insert = $userModel->insertArticleAModerer($titre, $description, $prix, $etat, $negociation, $image, $catSuggeree, $_SESSION['user']['id'], $visible);
             echo json_encode('moderation', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
     } else {
         echo json_encode('Veuillez remplir tous les champs SVP', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+}
+
+/*UPLOAD IMAGE*/
+if (isset($_FILES['file']['name']) && isset($_POST['action'])) {
+
+    $allowed_ext = array("jpg", "png", "jpeg", "gif");
+    $ext = explode(".", $_FILES['file']['name']);
+    $end = end($ext);
+    if (in_array($end, $allowed_ext)) {
+        if ($_FILES['file']['size'] < 1048576) {
+            if($_POST['action'] === "update") {
+                $name = $_POST['src'];
+            } else {
+                $nbArticles = count($userModel->selectVendeurArticles($_SESSION['user']['id']));
+                $thisArticleNb = $nbArticles + 1;
+                $name = $_SESSION['user']['id']."_".$thisArticleNb."_".date("dmy").".".$end;
+            }
+            $path = "../img/articles/".$name;
+            if (move_uploaded_file($_FILES['file']['tmp_name'], $path)) {
+                echo $name;
+            }
+        }
     }
 }

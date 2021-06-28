@@ -75,27 +75,29 @@ if (isset($_POST['submit'])) {
     <article>
         <div class="row">
             <?php foreach ($articlesRandom as $articleRandom) : ?>
-                <div class=" col l4 m6 s12 card medium">
+                <div class=" col l4 m6 s12 card medium z-depth-0">
                     <div class="card-image waves-effect waves-block waves-light">
-                        <!--                            <img class="activator" src="img/-->
-                        <? //= $articleRandom['photo'] ?><!--">-->
-                        <img class="activator" src="img/sample.png">
+                        <img class="activator" src="img/articles/<?= $articleRandom['photo'] ?>">
                     </div>
                     <div class="card-content">
                         <span class="card-title activator grey-text text-darken-4"><?= $articleRandom['titre'] ?>
+                              <div class="section"></div>
                             <p><?= $articleRandom['prix'] ?> €</p>
                             <p>in <em> <?= $articleRandom['nom'] ?></em></p>
                     </div>
                     <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4"><?= $articleRandom['titre'] ?><i
-                                    class="material-icons right">close</i></span>
-                        <p><?= $articleRandom['description'] ?></p>
-                        <p>Ajouté le : <?= date( 'd m Y', strtotime($articleRandom['date_ajout'])) ?></p>
-                        <p><a href="article?id=<?= $articleRandom['id'] ?>">Voir +</a></p>
+
+                        <span class="card-title grey-text text-darken-4"><b><?= $articleRandom['titre'] ?></b><i class="material-icons right">close</i></span>
+                            <p><?= $articleRandom['description'] ?></p>
+                            <p>Ajouté le : <?= date('d-m-Y', strtotime($articleRandom['date_ajout'])) ?></p>
+
+                        <div class="section"></div>
+                            <p><a href="article?id=<?= $articleRandom['id'] ?>">Voir +</a></p>
+
                     </div>
                 </div>
-                <?php endforeach; ?>
-            </div>
+            <?php endforeach; ?>
+        </div>
         </div>
 
     </article>

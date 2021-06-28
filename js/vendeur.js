@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    $('select').formSelect();
     /*NAVIGATION*/
     $('body').on('click', '.navUser', function () {
         $('.navUser').removeClass('activeTab');
@@ -18,7 +18,15 @@ $(document).ready(function () {
                         $("#articlesSelling tbody").append("<tr><td>Il n'y a rien ici.</td><td class='navUser navNewArticle'> + Déposer une annonce</td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesSelling tbody').append("<tr id ='" + article.id_article + "'><td><a href='article?id=" + article.id_article + "'>" + article.titre + "</a></td><td>" + article.date_ajout + "</td><td><button class='afficherDetails' >Modifier</button></td><td><select class='marquerCommeVendu'><option value=''>Vendu à : </option></select></td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                            d = new Date();
+                            $('#articlesSelling tbody').append("<tr id ='" + article.id_article
+                                + "'><td><a class='titleArticle' href='article?id=" + article.id_article + "'>" + article.titre + "</a></td><td>" +
+                                "<img height='100' width='100' src='img/articles/" + article.photo + '?' + d.getTime() + "'>" +
+                                "</td><td>" + article.date + "</td><td>" +
+                                "    <select class='marquerCommeVendu'>" +
+                                "      <option selected value=''>Vendu à : </option>" +
+                                "    </select></td><td><a href='#detailsArticle' rel='modal:open' class='btn-flat afficherDetails' >Modifier</a></td>" +
+                                "<td><a class='btn-flat supprimerArticle' >Supprimer</a></td></tr>");
                         }
                         let select = $('.marquerCommeVendu') //MENU DEROULANT
                         $.post(
@@ -66,7 +74,10 @@ $(document).ready(function () {
                         $("#articlesVendus").append("<tr><td>Il n'y a rien ici.</td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesVendus').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td> Acheté par : " + article.identifiant + "</td><td> Vendu le : " + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                            $('#articlesVendus').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td>" +
+                                "<img height='100' width='100' src='img/articles/" + article.photo + "'>" +
+                                "</td>" +
+                                "<td> Acheté par : " + article.identifiant + "</td><td> Vendu le : " + article.date + "</td><td><a class='btn-flat supprimerArticle' >Supprimer</a></td></tr>");
                         }
                     }
                 });
@@ -78,7 +89,7 @@ $(document).ready(function () {
     $('body').on('click', 'select[name="categorie"] option', function (event) {
         if ($(this).is('#autreCat')) {
             if ($('#infoCat').length === 0) {
-                $('<input id="catSuggeree" placeholder="categorie suggérée">').insertAfter('select[name="categorie"]')
+                $('<input type="text" id="catSuggeree" placeholder="categorie suggérée">').insertAfter('select[name="categorie"]')
                 $("#message").append("<p id='infoCat'>La création d'une nouvelle catégorie envoie votre article en modération</p>");
             }
         } else {
@@ -99,7 +110,8 @@ $(document).ready(function () {
                 etat: $('select[name="etat"] option:selected').val(),
                 categorie: $('select[name="categorie"] option:selected').val(),
                 negociation: $('#negociation input:checked').val(),
-                catSuggeree: $('#catSuggeree').val()
+                catSuggeree: $('#catSuggeree').val(),
+                picture: $('#uploadPicNew').attr('value')
             },
             function (data) {
                 $('#message').empty();
@@ -121,7 +133,8 @@ $(document).ready(function () {
     $('body').on('click', '.supprimerArticle', function () {
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
-        $(this).html('<button id="confirmSupprArticle">Êtes-vous sûr.e ? </button><button class="navUser">Non.</button>')
+        $(this).css('background', 'none')
+        $(this).html('<a class="btn-flat btn-small" id="confirmSupprArticle">Oui</a> <a class="btn-flat btn-small navUser">Non</a>')
         $('body').on('click', '#confirmSupprArticle', function () {
             $.post(
                 'API/apiVendeur.php', {action: 'supprimerArticle', id: idArticle},
@@ -137,7 +150,8 @@ $(document).ready(function () {
 //Quand un acheteur est sélectionné, append le bouton confirmer
     $('body').on('click', '.marquerCommeVendu option:selected', function () {
         if (($('option:selected').val().length > 0 && $('#confirmerVente').length === 0)) {
-            $('<button id ="confirmerVente">Confirmer la vente</button>').insertAfter('.marquerCommeVendu')
+            let thisSelect = $(this).closest('.marquerCommeVendu')
+            $('<br><a class="btn-flat" id ="confirmerVente">Confirmer</a>').insertAfter(thisSelect)
         } else if ($('option:selected').val().length === 0) {
             $('#confirmerVente').remove()
         }
@@ -165,7 +179,7 @@ $(document).ready(function () {
 
     //Afficher formulaire modification article
     $('body').on('click', '.afficherDetails', function () {
-        $('#detailsArticles').empty()
+        $('#detailsArticle').empty()
         let row = $(this).parents('tr')
         let idArticle = row.attr('id')
         $.post(
@@ -174,7 +188,10 @@ $(document).ready(function () {
                 idArticle: idArticle,
             },
             function (data) {
-                $('#detailsArticles').append(data)
+                console.log(data)
+                $('#detailsArticle').append(data)
+                let src = $('.preview').attr('value')
+                $('.preview').css("background-image", "url('img/articles/" + src + "')")
             },
         );
     });
@@ -183,7 +200,7 @@ $(document).ready(function () {
     $('body').on('submit', '.formUpdateArticle', function (event) {
         $('#message').empty();
         event.preventDefault()
-        idArticle = ($('.formUpdateArticle').attr('id'))
+        let idArticle = ($('.formUpdateArticle').attr('id'))
         $.post(
             'API/apiVendeur.php', {
                 form: 'updateArticle',
@@ -200,11 +217,56 @@ $(document).ready(function () {
                 let message = JSON.parse(data);
                 if (message === "success") {
                     $("#message").append("<p>Update réussie !</p>");
-                    $('#' + idArticle).find('a').text($('#titre').val())
+                    $('#' + idArticle + ' a').first().text($('#titre').val())
+                    d = new Date();
+                    $('#' + idArticle).find('img').css("background-image", "url('img/articles/" + $('#uploadPicUpdate').attr('value') + '?' + d.getTime() + "')")
                 } else {
                     $('#message').append("<p>" + message + "</p>");
                 }
             },
         );
     });
+
+    /*FICHIER PHOTO*/
+    $('body').on('click', '.uploadPic', function (event) {
+            let button = $(this)
+            console.log($(this))
+            $('#messageFile').empty()
+            var fd = new FormData();
+            var files = $('#file')[0].files;
+            if (button.is('uploadPicUpdate')) {
+                var action = "update"
+            } else if (button.is('uploadPicNew')) {
+                var action = "newArticle"
+            }
+            var src = button.attr('value')
+
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('file', files[0]);
+                fd.append('action', action);
+                fd.append('src', src);
+
+                $.ajax({
+                    url: 'API/apiVendeur.php',
+                    type: 'post',
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        console.log(response)
+                        if (response != 0) {
+                            d = new Date();
+                            $(".preview").css("background-image", "url('img/articles/" + response + '?' + d.getTime() + "')")
+                            button.attr('value', response)
+                        } else {
+                            $('#messageFile').html("Le fichier ne s'est pas envoyé")
+                        }
+                    },
+                });
+            } else {
+                $('#messageFile').html("Sélectionnez un fichier SVP");
+            }
+        }
+    );
 });

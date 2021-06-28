@@ -1,10 +1,11 @@
-<table id="articlesSelling" class="highlight">
+<table id="articlesSelling" class="highlight centered">
     <thead>
     <tr>
         <th>Titre</th>
+        <th>Photo</th>
         <th>Date de création</th>
-        <th>Modifier</th>
         <th>Marquer comme vendu</th>
+        <th>Modifier</th>
         <th>Supprimer</th>
     </tr>
     </thead>
@@ -12,4 +13,6 @@
 
     </tbody>
 </table>
-<div id="detailsArticles"></div>
+<div id="detailsArticle" class="modal">
+    <a href="#" rel="modal:close">Close</a>
+</div>

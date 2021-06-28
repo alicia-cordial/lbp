@@ -8,7 +8,11 @@ class UserModel extends Database
         $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE mail = ? OR identifiant = ?");
         $request->execute([$email, $login]);
         $userExists = $request->fetchAll(PDO::FETCH_ASSOC);
-        return $userExists;
+        if ($userExists) {
+            return $userExists;
+        } else {
+            return false;
+        }
     }
 
     public function userIsAvailable($email, $login, $id)
@@ -47,6 +51,7 @@ class UserModel extends Database
         ));
         return $insert;
     }
+
     public function updateUser($status, $login, $zip, $email, $hashedpassword, $id)
     {
         $request = $this->pdo->prepare("UPDATE utilisateur SET identifiant = :identifiant, mdp = :password, mail = :email, status = :status, zip = :zip WHERE id = $id ");
@@ -62,7 +67,7 @@ class UserModel extends Database
 
     public function selectVendeurArticles($id)
     {
-        $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article AS ua on art.id = id_article WHERE ua.id_vendeur = ? AND art.status = 'disponible' ");
+        $request = $this->pdo->prepare("SELECT *, DATE_FORMAT(date_ajout, '%b %d, %Y') as date FROM article AS art INNER JOIN utilisateur_article AS ua on art.id = id_article WHERE ua.id_vendeur = ? AND art.status = 'disponible' ");
         $request->execute([$id]);
         $articlesVendeur = $request->fetchAll(PDO::FETCH_ASSOC);
         return $articlesVendeur;
@@ -71,7 +76,7 @@ class UserModel extends Database
 
     public function selectVendeurArticlesSold($id)
     {
-        $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article as ua ON art.id = ua.id_article INNER JOIN utilisateur AS u ON art.id_acheteur = u.id WHERE ua.id_vendeur = ? AND art.status = 'vendu'  ");
+        $request = $this->pdo->prepare("SELECT *, DATE_FORMAT(date_vente, '%b %d, %Y') as date FROM article AS art INNER JOIN utilisateur_article as ua ON art.id = ua.id_article INNER JOIN utilisateur AS u ON art.id_acheteur = u.id WHERE ua.id_vendeur = ? AND art.status = 'vendu'  ");
         $request->execute([$id]);
         $articlesVendeur = $request->fetchAll(PDO::FETCH_ASSOC);
         return $articlesVendeur;
@@ -94,7 +99,7 @@ class UserModel extends Database
 
     public function selectContacts($id)
     {
-        $request = $this->pdo->prepare("SELECT DISTINCT utilisateur.identifiant, utilisateur.id, utilisateur.status FROM utilisateur JOIN message INNER JOIN utilisateur_message on utilisateur_message.id_message = message.id WHERE (id_expediteur = $id AND id_destinataire = utilisateur.id) OR (id_destinataire = $id AND id_expediteur = utilisateur.id) AND droit = 0 AND utilisateur.id != $id");
+        $request = $this->pdo->prepare("SELECT DISTINCT utilisateur.identifiant, utilisateur.id, utilisateur.status, UPPER(SUBSTRING(`identifiant`, 1, 1)) as initial FROM utilisateur JOIN message INNER JOIN utilisateur_message on utilisateur_message.id_message = message.id WHERE (id_expediteur = $id AND id_destinataire = utilisateur.id) OR (id_destinataire = $id AND id_expediteur = utilisateur.id) AND droit = 0 AND utilisateur.id != $id");
         $request->execute();
         $contacts = $request->fetchAll(PDO::FETCH_ASSOC);
         return $contacts;
@@ -116,26 +121,26 @@ class UserModel extends Database
         return true;
     }
 
-    public function insertArticle($titre, $description, $prix, $etat, $categorie, $negociation, $idUser)
+    public function insertArticle($titre, $description, $prix, $etat, $categorie, $negociation, $image, $idUser)
     {
-        $request = $this->pdo->prepare("INSERT into article (titre, description, prix, etat_objet, id_categorie, ouvert_negociation, id_vendeur) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $request->execute([$titre, $description, $prix, $etat, $categorie, $negociation, $idUser]);
+        $request = $this->pdo->prepare("INSERT into article (titre, description, prix, etat_objet, id_categorie, ouvert_negociation, photo, id_vendeur) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $request->execute([$titre, $description, $prix, $etat, $categorie, $negociation, $image, $idUser]);
         $idArticle = $this->pdo->lastInsertId();
         $request2 = $this->pdo->prepare("INSERT into utilisateur_article (id_article, id_vendeur) VALUES (?, ?)");
         $request2->execute([$idArticle, $idUser]);
         return true;
     }
 
-    public function insertArticleAModerer($titre, $description, $prix, $etat, $negociation, $catSuggeree, $idUser, $visible)
+    public function insertArticleAModerer($titre, $description, $prix, $etat, $negociation, $image, $catSuggeree, $idUser, $visible)
     {
-        $request = $this->pdo->prepare("INSERT into article (titre, description, prix, etat_objet, ouvert_negociation, categorie_suggeree, id_vendeur, visible) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $request->execute([$titre, $description, $prix, $etat, $negociation, $catSuggeree, $idUser, $visible]);
+        $request = $this->pdo->prepare("INSERT into article (titre, description, prix, etat_objet, ouvert_negociation, photo, categorie_suggeree, id_vendeur, visible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $request->execute([$titre, $description, $prix, $etat, $negociation,  $image, $catSuggeree, $idUser, $visible]);
         return true;
     }
 
     public function selectMessagesConversation($idDestinataire, $idUser)
     {
-        $request = $this->pdo->prepare("SELECT * FROM message as m INNER JOIN utilisateur_message as um on id_message = m.id WHERE (id_expediteur = $idDestinataire AND id_destinataire = $idUser) OR (id_expediteur = $idUser AND id_destinataire = $idDestinataire)");
+        $request = $this->pdo->prepare("SELECT *, DATE_FORMAT(date, '%b %d, %Y') as day,  DATE_FORMAT(date, '%h:%i %p') as time FROM message as m INNER JOIN utilisateur_message as um on id_message = m.id WHERE (id_expediteur = $idDestinataire AND id_destinataire = $idUser) OR (id_expediteur = $idUser AND id_destinataire = $idDestinataire)");
         $request->execute();
         $messages = $request->fetchAll(PDO::FETCH_ASSOC);
         return $messages;

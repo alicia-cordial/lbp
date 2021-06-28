@@ -19,19 +19,26 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    background-color: #fffdf4;
+}
+
+body, main {
+    background-color: #f5f5f5;
 }
 
 main {
     flex: 1 0 auto;
     flex-grow: 1;
-    background-color: #fffdf4;
+    z-index: 1;
 }
 
 /*NAV*/
 header {
-    padding-top: 30px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 2;
 }
+
 .nav-center  {
     display:flex;
     justify-content: center;
@@ -44,7 +51,6 @@ header {
 .liNav {
     width: 20%;
     text-align: center;
-    background-color: #303f9f;
 }
 
 nav .input-field input[type=text] {
@@ -58,7 +64,7 @@ nav .input-field input[type=text]:focus {
 }
 
 .liNav:hover {
-    background-color: #283593;
+    color: white;
 }
 
 nav::-webkit-input-placeholder {
@@ -70,17 +76,25 @@ nav:-moz-placeholder {
 }
 
 #secondNav {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #secondNav a {
     font-size: 300%;
-    color: #c2ac71;
+    color: white;
+    opacity: 0.6;
+    transition: 0.5s;
 }
 
-#secondNav p {
+#secondNav p, footer a, footer span {
+    opacity: 0.6;
     text-align: right;
+    transition: 0.5s;
+}
+
+#secondNav a:hover, footer a:hover {
+    opacity: 1;
 }
 
 .sidenav .form_recherche {
@@ -89,18 +103,38 @@ nav:-moz-placeholder {
 }
 
 #article_search {
-    color: #c2ac71;
+    color: #fafafa;
 }
 #article_search:focus {
     background: none;
-    color: #c2ac71;
+    color: white;
 }
 
 #mobile-demo {
-    background-color: #303f9f;
-    color: #c2ac71;
+    background-color: #212121;
+    color: white;
+}
+
+#mobile-demo li {
+    transition: 0.2s;
+}
+#mobile-demo li:hover {
+    background-color: #424242;
 }
 
 #mobile-demo a {
-    color: #c2ac71;
+    color: white;
+}
+
+
+@media screen and (max-width: 640px) {
+    #secondNav {
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
+
+    header {
+        position: relative;
+    }
+
 }

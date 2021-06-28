@@ -36,7 +36,7 @@ if(isset($_GET['id'])){
                             <p value="<?= $art['id'] ?>"><?= $art['titre'] ?></p>
                         <?php endforeach; ?>
                     </select></td>
-                    <td><a id =" <?= $users['id'] ?>" class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a> </td>
+                    <td><a id ="<?= $users['id'] ?>" class='contactUser <?php if (!isset($_SESSION['user'])){echo "disabled";}?>' href='#ex1' rel='modal:open'>Contacter le vendeur</a> </td>
         </tr>
 
   

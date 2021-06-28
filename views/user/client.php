@@ -1,13 +1,19 @@
 <main id="mainCompte">
     <article>
-        <h2>ESPACE PERSONNEL - Acheteur</h2>
-        <ul>
-            <li class="navUser" id="navBoughtArticle">Historique d'achat</li>
-            <li class="navUser" id="navMessagerie">Messagerie</li>
-            <li class="navUser" id="navUpdateProfil">Modifier le profil</li>
-        </ul>
+        <article class="center-align row">
+            <h2><a href="compte">ESPACE PERSONNEL</a></h2>
+            <h3><?= $_SESSION['user']['identifiant'] ?> ~ Acheteur.se</h3>
+        </article>
+
+        <article class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="navUser tab" id="navBoughtArticle">Historique d'achat</li>
+                    <li class="navUser tab" id="navMessagerie">Messagerie</li>
+                    <li class="navUser tab" id="navUpdateProfil">Modifier le profil</li>
+                </ul>
+        </article>
     </article>
     <section id="sectionVendeur">
-        <h3>...</h3>
     </section>
 </main>
