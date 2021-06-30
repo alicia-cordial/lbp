@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $('body').on('click', '.navUser', function () {
         $('.navUser').removeClass('activeTab');
         $(this).addClass('activeTab');

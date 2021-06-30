@@ -9,7 +9,7 @@ class Shop extends Database{
 
 /*SELECTION ARTICLE RANDOM HOME*/
     function selectArticlesRandom(){
-        $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE status = 'disponible' and article.visible = '1' ORDER BY RAND() LIMIT 10");
+        $request = $this->pdo->prepare("SELECT *, article.id as article_id FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE status = 'disponible' and article.visible = '1' ORDER BY RAND() LIMIT 10");
         $request->execute();
         $articles = $request->fetchAll(PDO::FETCH_ASSOC);
         return $articles;
@@ -18,11 +18,9 @@ class Shop extends Database{
 /*AUTOCOMPLETION HEADER */
   function get_article($term){
   
-    $request = $this->pdo->prepare("SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE article.visible = '1' AND titre LIKE '%$term%' ORDER BY `titre` ASC LIMIT 8");
+    $request = $this->pdo->prepare("SELECT *, article.id as article_id FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE article.visible = '1' AND titre LIKE '%$term%' ORDER BY `titre` ASC LIMIT 8");
     $request->execute([$term]);
-    $articles[] = $request->fetchAll(PDO::FETCH_ASSOC);
-  
-  
+    $articles = $request->fetchAll(PDO::FETCH_ASSOC);
   return $articles;
   
     }
@@ -44,9 +42,9 @@ class Shop extends Database{
     /*AUTOCOMPLETION RECHERCHE VENDEUR */
 
   function get_seller($search){
-    $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE `identifiant` LIKE '%$search%'");
+    $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE status = 'vendeur' AND `identifiant` LIKE '%$search%'");
     $request->execute([$search]);
-    $getseller[] = $request->fetchAll(PDO::FETCH_ASSOC);
+    $getseller = $request->fetchAll(PDO::FETCH_ASSOC);
 
     return $getseller;
 

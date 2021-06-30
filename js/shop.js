@@ -1,10 +1,5 @@
 $(document).ready(function() {
 
-    //MATERIALIZE
-    M.AutoInit();
-
-
-
     // PAGE INDEX TOGGLE
     var objet = $('#objet'); // formulaire recherche objet
     var vendeur = $('#vendeur'); // formulaire recherche vendeur
@@ -35,8 +30,11 @@ $(document).ready(function() {
     /*************************AUTOCOMPLETION HEADER************************/
 
 
-    $('#article_search').keyup(function() {
-        $('#result').html('');
+    $('body').on('keyup', '#article_search', function(e) {
+
+        // console.log('coucou')
+        e.preventDefault()
+        $('#result').empty();
         var article = $(this).val();
         console.log(article);
         $.get(
@@ -48,16 +46,13 @@ $(document).ready(function() {
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#result').append('<a href="article?id=' + article.id + '">' + article.titre + ' dans ' + article.nom + "</a></br>");
+                    $('#result').append('<li><a href="article?id=' + article.article_id + '">' + article.titre + ' <em>dans ' + article.nom + "</em></a></li>");
 
                 }
             },
         );
 
     });
-
-
-
 
 
     /***********************BARRE DE RECHERCHE AVANCÉE************************/
@@ -68,7 +63,7 @@ $(document).ready(function() {
         $('#message').html('');
         var user = $(this).val();
         console.log(user);
-        $.get(
+        $.post(
             'API/apiSearch.php', {
                 search: user,
             },
@@ -83,11 +78,9 @@ $(document).ready(function() {
 
 
             },
-
         );
 
     });
-
 
 
     /**************MESSAGERIE**********/
@@ -118,8 +111,6 @@ $(document).ready(function() {
             )
         })
     });
-
-
 
 
 

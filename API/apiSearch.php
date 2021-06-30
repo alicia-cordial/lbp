@@ -22,13 +22,12 @@ require_once('../models/Shop.php');
 
 //RECHERCHE VENDEURS
 
-if (isset($_GET['search']) ) {
+if (isset($_POST['search']) ) {
 
   $model = new Shop();
 
-  $search = htmlspecialchars($_GET['search']);
+  $search = htmlspecialchars($_POST['search']);
   $getUser = $model->get_seller($search);
-
 
   echo json_encode($getUser, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
