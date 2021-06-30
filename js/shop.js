@@ -34,35 +34,6 @@ $(document).ready(function() {
 
     /*************************AUTOCOMPLETION HEADER************************/
 
-    //RECHERCHE ARTICLE
-
-
-    //$('#sectionArticle').empty();
-    /*
-        $('body').on('click', '.navSearch', function() {
-            $('#sectionSearch').empty();
-
-            if ($(this).is('#navSearchSeller')) {
-                callSectionSearch('profilVendeur')
-            } else if ($(this).is('#navSearchObject')) {
-                callSectionSearch('resultatArticles')
-                $.post(
-                    'API/apiSearch', {action: 'SelectResearch'},
-                    function(data){
-                        let research = JSON.parse(data);
-                        let researchList = $('#result')
-                        console.log(data);
-                        if(research == 'none'){
-                            researchList.append('Aucun résultat');
-                        } else {
-
-                        }
-                    }
-                )
-            }
-        })
-    */
-
 
     $('#article_search').keyup(function() {
         $('#result').html('');
@@ -150,57 +121,6 @@ $(document).ready(function() {
 
 
 
-    /*
-        $('#rechercher').keyup(function() {
-            $('#message_form').html('');
-            var recherche = $(this).val();
-            console.log(recherche);
-
-            $.get(
-                'API/apiSearch.php', {
-                    research: recherche,
-
-                },
-                function(data) {
-                    let recherches = JSON.parse(data);
-                    console.log(recherches);
-
-                    for (let recherche of recherches) {
-                        $('#message_form').append('<a href="resultatArticles?id=' + recherche.id + '">' + recherche.titre + recherche.nom + recherche.zip + '</a></br>');
-                    }
-                },
-
-            );
-
-
-        });
-    */
-
-
-
-    //RECHERCHE TITRE AVEC CATEGORIE
-    /*
-        $('#titre').keyup(function() {
-            $('#message_form').html('');
-            var article = $(this).val();
-            console.log(article);
-            $.get(
-                'API/apiSearch.php', {
-                    term: article,
-                },
-                function(data) {
-                    console.log(data)
-                    let articles = JSON.parse(data);
-                    console.log(articles);
-                    for (let article of articles) {
-                        $('#message_form').append('<a href="resultatArticles?research=' + article.titre + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
-                    }
-                },
-            );
-        });
-
-    */
-
 
 
     /*******************RECHERCHE COMPLETE**********************/
@@ -219,7 +139,7 @@ $(document).ready(function() {
         var zip = $('zip').val();
         $.ajax({
             url: "API/apiSearch.php",
-            method: "POST",
+            method: "GET",
             data: { nom: nom, titre: titre, zip: zip },
             dataType: "json",
             encode: true,

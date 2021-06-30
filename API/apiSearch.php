@@ -14,12 +14,8 @@ require_once('../models/Shop.php');
 
     $term = htmlspecialchars($_GET['term']);
     $getArticle = $model->get_articleCat($term);
-    $articleList = array();
-
-    foreach($getArticle as $article){
-      $articleList = $article;
-    }
-    echo json_encode($articleList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+ 
+    echo json_encode($getArticle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
   }
 
@@ -32,29 +28,19 @@ if (isset($_GET['search']) ) {
 
   $search = htmlspecialchars($_GET['search']);
   $getUser = $model->get_seller($search);
-  $sellerList = array();
 
-  foreach($getUser as $user){
-    $sellerList = $user;
-  }
-  echo json_encode($sellerList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+  echo json_encode($getUser, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 }
 
 /*********RECHERCHE PRÉCISE*/
 
  
-if (isset($_GET['research']) ) {
-
-  $model = new Shop();
-
-  $research = htmlspecialchars($_GET['research']);
-  $getArticle = $model->get_seller($research);
-  $articleList = array();
-
-  foreach($getArticle as $article){
-    $articleList = $article;
-  }
-  echo json_encode($articlerList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
+if (isset($_GET['action']) && $_GET['action'] === 'Research') {
+   $model = new Shop();
+    $research = $model->Research($_GET['research']);
+    if ($research) {
+        echo json_encode($research, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
 }
