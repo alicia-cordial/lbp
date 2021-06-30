@@ -1,8 +1,8 @@
 <?php session_start(); ?>
 <section class="container center">
     <article>
-        <h3>VOTRE PROFIL</h3>
-        <h4>Bienvenue <?= $_SESSION['user']['identifiant'] ?></h4>
+        <h4><?= $_SESSION['user']['identifiant'] ?></h4>
+        <p>inscription : <?= date("d-m-Y", strtotime($_SESSION['user']['date_inscription'])) ?> </p>
     </article>
     <article class="form row">
         <form id="formUpdateUser">
@@ -48,7 +48,7 @@
                            value="<?= $_SESSION['user']['mail'] ?>">
                     <input type="text" pattern="[0-9]{5}" id="zip" name="zip" placeholder="code postal"
                            value="<?= $_SESSION['user']['zip'] ?>">
-                    <button class="btn indigo darken-1 waves-effect waves-light" type="submit" name="action">Modifier
+                    <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Modifier
                         vos informations
                         <i class="material-icons right">send</i>
                     </button>
@@ -59,3 +59,4 @@
     <div class="formInfo">
         <div id="message"></div>
     </div>
+    <div class="section"></div>

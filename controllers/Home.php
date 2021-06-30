@@ -7,7 +7,7 @@ class Home
     {
         
         $title = "Home";
-        $css = "home.css";
+        $css = ["home.css"];
            $js = ['shop.js'];
 
         ob_start();

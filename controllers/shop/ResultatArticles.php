@@ -13,7 +13,7 @@ class ResultatArticles
 
         
         $title = "Resultats";
-        $css = "home.css";
+        $css = ["home.css"];
         $js = ["shop.js"];
         ob_start();
 

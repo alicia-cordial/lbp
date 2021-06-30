@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="formBloc input-field col s12" id="bloc2">
                         <input type="password" id="password" name="password" placeholder="mot de passe">
-                        <button class="btn indigo darken-1 waves-effect waves-light" type="submit" name="action">Se connecter
+                        <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Se connecter
                             <i class="material-icons right">send</i>
                         </button>
                     </div>

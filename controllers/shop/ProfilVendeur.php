@@ -7,7 +7,7 @@ class ProfilVendeur
     {
         
         $title = "ProfilVendeur";
-        $css = "home.css";
+        $css = ["home.css"];
         $js = ["shop.js" ];
 
         ob_start();

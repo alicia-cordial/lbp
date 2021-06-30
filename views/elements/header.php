@@ -27,9 +27,17 @@
                 <?php if (!isset($_SESSION['user'])) : ?>
                     <li class="liNav"><a class="grey-text" href="compte">COMPTE</a></li>
                 <?php else : ?>
-                    <li class="liNav"><a class="grey-text dropdown-trigger" href="" data-target='compteDropdown'>COMPTE</a></li>
+
+                    <li class="liNav"><a class="grey-text dropdown-trigger" href=""
+                                         data-target='compteDropdown'>COMPTE</a></li>
                     <ul id='compteDropdown' class='dropdown-content'>
-                        <li><a href="compte" class="grey-text">COMPTE</a></li>
+                        <?php if ($_SESSION['user']['droit'] === '1') : ?>
+                            <li><a href="compte" class="grey-text"> ESPACE ADMIN</a></li>
+                        <?php elseif ($_SESSION['user']['status'] === 'vendeur') : ?>
+                            <li><a href="compte" class="grey-text"> ESPACE VENDEUR</a></li>
+                        <?php elseif ($_SESSION['user']['status'] === 'client') : ?>
+                            <li><a href="compte" class="grey-text"> ESPACE CLIENT</a></li>
+                        <?php endif; ?>
                         <li><a href="" class="logoutButton grey-text">DECONNEXION</a></li>
                     </ul>
                 <?php endif; ?>

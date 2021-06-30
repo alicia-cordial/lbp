@@ -77,7 +77,7 @@ $(document).ready(function () {
                             $('#articlesVendus').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td>" +
                                 "<img height='100' width='100' src='img/articles/" + article.photo + "'>" +
                                 "</td>" +
-                                "<td> Acheté par : " + article.identifiant + "</td><td> Vendu le : " + article.date + "</td><td><a class='btn-flat supprimerArticle' >Supprimer</a></td></tr>");
+                                "<td>" + article.identifiant + "</td><td>" + article.date + "</td><td><a class='btn-flat supprimerArticle' >Supprimer</a></td></tr>");
                         }
                     }
                 });
@@ -117,11 +117,11 @@ $(document).ready(function () {
                 $('#message').empty();
                 console.log(data);
                 let message = JSON.parse(data);
+                $('#formNewArticle').empty();
                 if (message === "success") {
-                    $('#formNewArticle').empty();
-                    $("#message").append("<p>Annonce créée !</p>");
+                    M.toast({html: 'Annonce Créée !'})
                 } else if (message === "moderation") {
-                    $("#message").append("<p>Annonce en modération. Veuillez attendre 48 heures avant de contacter un.e administrateur.ice.</p>");
+                    M.toast({html: 'Annonce en modération. Veuillez attendre 48 heures avant de contacter un.e administrateur.ice.'})
                 } else {
                     $('#message').append("<p>" + message + "</p>");
                 }
@@ -216,7 +216,7 @@ $(document).ready(function () {
                 console.log(data);
                 let message = JSON.parse(data);
                 if (message === "success") {
-                    $("#message").append("<p>Update réussie !</p>");
+                    M.toast({html: 'Update réussie !'})
                     $('#' + idArticle + ' a').first().text($('#titre').val())
                     d = new Date();
                     $('#' + idArticle).find('img').css("background-image", "url('img/articles/" + $('#uploadPicUpdate').attr('value') + '?' + d.getTime() + "')")

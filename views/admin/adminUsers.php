@@ -1,27 +1,38 @@
 <article>
-    <h3>UTILISATEURS</h3>
     <!--    <p>Nombre d'inscrit.es : </p>-->
-    <div>
-        <p class="showUsers" value="">Tous</p>
-        <p class="showUsers" value="client" ">Client.es</p>
-        <p class="showUsers" value="vendeur">Vendeur.ses</p>
+    <div id="showUsersContainer">
+        <span class="showUsers" value="">Tous.tes</span>
+        <span class="showUsers" value="client" ">Acheteur.ses</span>
+        <span class="showUsers" value="vendeur">Vendeur.ses</span>
     </div>
 </article>
 
-<article id="listeUsersTries">
+<table id="listeUsersTries" class="center">
+    <thead>
+    <tr>
+        <th>Identifiant</th>
+        <th>Statut</th>
+        <th>Date d'inscription</th>
+        <th>Contact</th>
+        <th>Supprimer</th>
+    </tr>
+    </thead>
+    <tbody>
 
-</article>
+    </tbody>
+</table>
 
 <article id="infoAdmin">
 
 </article>
 
 <div id="ex1" class="modal">
-    <div id="nameDestinataire"></div>
-    <form id='newMessage'>
-        <input placeholder='votre message' required>
-        <button type='submit'>Envoyer</button>
+    <div id="nameDestinataire">A : </div>
+    <form id='newMessage' class="form">
+        <textarea class="materialize-textarea" required placeholder="Votre message"></textarea>
+        <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
+            <i class="material-icons right">send</i>
+        </button>
     </form>
     <div id="infoMessage"></div>
-    <a href="#" rel="modal:close">Close</a>
 </div>

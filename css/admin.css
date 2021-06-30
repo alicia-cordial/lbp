@@ -2,3 +2,27 @@
     display: none;
 }
 
+#showUsersContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.showUsers {
+    text-align: center;
+    display: block;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: #eeeeee;
+    transition: 0.5s;
+}
+
+
+.showUsers:hover {
+    background-color: #e0e0e0;
+}
+
+.toast, #toast-container {
+    z-index: 11001;
+}

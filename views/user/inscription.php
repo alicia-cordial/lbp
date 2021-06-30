@@ -43,7 +43,7 @@
                     <div class="formBloc input-field col s12" id="bloc3">
                         <input type="email" id="email" name="email" placeholder="email">
                         <input type="text" pattern="[0-9]{5}" id="zip" name="zip" placeholder="code postal">
-                        <button class="btn indigo darken-1 waves-effect waves-light" type="submit" name="action">S'inscrire
+                        <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">S'inscrire
                             <i class="material-icons right">send</i>
                         </button>
                     </div>

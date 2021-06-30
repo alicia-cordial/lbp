@@ -6,8 +6,8 @@ class Admin
     function __construct()
     {
         $title = "Admin";
-        $css = "admin.css";
-        $js = ["admin.js"];
+        $css = ["admin.css", "compte.css"];
+        $js = ["admin.js", "compte.js"];
         ob_start();
         require_once('views/admin/adminIndex.php');
         $main = ob_get_clean();

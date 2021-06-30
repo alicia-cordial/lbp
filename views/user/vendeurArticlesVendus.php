@@ -1,7 +1,14 @@
 <table id="articlesVendus">
     <thead>
     <tr>
-        <th>Articles vendus</th>
+        <th>Titre</th>
+        <th>Photo</th>
+        <th>Acheteur</th>
+        <th>Date de Vente</th>
+        <th>Supprimer</th>
     </tr>
     </thead>
+    <tbody>
+
+    </tbody>
 </table>

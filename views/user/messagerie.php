@@ -1,6 +1,6 @@
+<div id="menuContacts"><i class="material-icons">people</i></div>
 <section id="sectionMessagerie">
-    <article id="contacts">
-    </article>
+    <article id="contacts"></article>
     <article id="articleMessagerie">
         <div id="conversation">
             <p id="infoConvo">Veuillez sélectionner une conversation.</p>

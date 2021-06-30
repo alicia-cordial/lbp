@@ -14,5 +14,4 @@
     </tbody>
 </table>
 <div id="detailsArticle" class="modal">
-    <a href="#" rel="modal:close">Close</a>
 </div>

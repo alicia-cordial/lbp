@@ -140,7 +140,7 @@ class UserModel extends Database
 
     public function selectMessagesConversation($idDestinataire, $idUser)
     {
-        $request = $this->pdo->prepare("SELECT *, DATE_FORMAT(date, '%b %d, %Y') as day,  DATE_FORMAT(date, '%h:%i %p') as time FROM message as m INNER JOIN utilisateur_message as um on id_message = m.id WHERE (id_expediteur = $idDestinataire AND id_destinataire = $idUser) OR (id_expediteur = $idUser AND id_destinataire = $idDestinataire)");
+        $request = $this->pdo->prepare("SELECT *, DATE_FORMAT(date, '%d%m%Y') as shortday, DATE_FORMAT(date, '%b %d, %Y') as day,  DATE_FORMAT(date, '%h:%i %p') as time FROM message as m INNER JOIN utilisateur_message as um on id_message = m.id WHERE (id_expediteur = $idDestinataire AND id_destinataire = $idUser) OR (id_expediteur = $idUser AND id_destinataire = $idDestinataire)");
         $request->execute();
         $messages = $request->fetchAll(PDO::FETCH_ASSOC);
         return $messages;
@@ -154,7 +154,7 @@ class UserModel extends Database
         $idMessage = $this->pdo->lastInsertId();
         $request2 = $this->pdo->prepare("INSERT into utilisateur_message (id_destinataire, id_message) VALUES (?, ?)");
         $request2->execute([$idDestinataire, $idMessage]);
-        $request3 = $this->pdo->prepare("SELECT * FROM message WHERE id = $idMessage");
+        $request3 = $this->pdo->prepare("SELECT *, DATE_FORMAT(date, '%d%m%Y') as shortday, DATE_FORMAT(date, '%b %d, %Y') as day,  DATE_FORMAT(date, '%h:%i %p') as time FROM message WHERE id = $idMessage");
         $request3->execute();
         $message = $request3->fetch(PDO::FETCH_ASSOC);
         return $message;

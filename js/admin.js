@@ -1,7 +1,9 @@
 $(document).ready(function () {
-
+    $('.dropdown-trigger').dropdown();
     //NAVIGATION
     $('body').on('click', '.navAdmin', function () {
+        $('.navAdmin').removeClass('activeTab');
+        $(this).addClass('activeTab');
         $('#sectionAdmin').empty();
 
         if ($(this).is('#navAdminUsers')) {
@@ -18,11 +20,12 @@ $(document).ready(function () {
                         contactList.append("Aucune conversation");
                     } else {
                         $.each(contacts, function (key, value) {
-                            contactList.append("<p class='individualConversation' id='" + value.id + "'>" + value.identifiant + "</p>")
+                            contactList.append("<p class='individualConversation' id='" + value.id + "'><a href='profilVendeur?id=" + value.id + "'><span>" + value.initial + "</span></a> " + value.identifiant + "</p>")
                         })
                     }
                 }
             );
+
         } else if ($(this).is('#navAdminModeration')) {
             callSectionAdmin('adminModeration')
         } else if ($(this).is('#navAdminCategorie')) { //CATEGORIES
@@ -51,52 +54,6 @@ $(document).ready(function () {
         }
     })
 
-    //MESSAGERIE CONVERSATION INDIVIDUELLE
-    $('body').on('click', '.individualConversation', function (event) {
-        let idDestinataire = $(this).attr('id')
-        // console.log(idDestinataire)
-        let conversation = $('#conversation')
-        conversation.empty()
-        $.post(
-            'API/apiMessagerie', {action: 'showConversation', idDestinataire: idDestinataire},
-            function (data) {
-                $('#formNewMessage').css('display', 'block')
-                $('#formNewMessage').attr('value', idDestinataire)
-                let messages = JSON.parse(data);
-                console.log(messages);
-                for (let message of messages) {
-                    conversation.append("<p id='message" + message.id + "'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
-                    if (message.id_expediteur == idDestinataire) {
-                        $('#message' + message.id).addClass('messageDestinataire')
-                    } else {
-                        $('#message' + message.id).addClass('messageUtilisateur')
-                    }
-                }
-            })
-    })
-
-    //NEW MESSAGE IN CONVERSATION
-    $('body').on('submit', '#formNewMessage', function (event) {
-        let idDestinataire = $(this).attr('value')
-        event.preventDefault()
-        let conversation = $('#conversation')
-        console.log(idDestinataire)
-        console.log($('#newMessage').val())
-        $.post(
-            'API/apiMessagerie.php', {
-                action: 'sendNewMessage',
-                idDestinataire: idDestinataire,
-                messageContent: $('#newMessage').val()
-            },
-            function (data) {
-                let message = JSON.parse(data);
-                $('#newMessage').val('')
-                console.log(data);
-                conversation.append("<p id='message" + message.id + "' class='messageUtilisateur'>Envoyé le : " + message.date + " - " + message.contenu + "</p>")
-            }
-        )
-    })
-
     //CATEGORIES
     $('body').on('click', '.rowCategorie', function () {
         let row = $(this).parents('tr')
@@ -109,7 +66,7 @@ $(document).ready(function () {
                 console.log(data);
                 let articles = JSON.parse(data);
                 for (let article of articles) {
-                    $('#articlesTries').append("<tr id='" + article.article_id + "'><td><a href='article?id=" + article.id + "'>" + article.titre + "</a></td><td>Mise en vente : " + article.date_ajout + "</td><td>Vendeur.se : " + article.identifiant + "</td><td><a id ='" + article.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td><td><button class='deleteArticle'>Supprimer</button></td></tr>")
+                    $('#articlesTries').append("<tr id='" + article.article_id + "'><td><a href='article?id=" + article.id + "'>" + article.titre + "</a></td><td>Mise en vente : " + article.date_ajout + "</td><td>Vendeur.se : " + article.identifiant + "</td><td><a id ='" + article.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td><td><a class='btn-flat deleteArticle' >Supprimer</a></td></tr>")
                 }
 
             }
@@ -178,7 +135,7 @@ $(document).ready(function () {
     //SHOW UTILISATEURS
     $('body').on('click', '.showUsers', function () {
         let choice = $(this).attr('value');
-        $('#listeUsersTries').empty()
+        $('#listeUsersTries tbody').empty()
         console.log(choice)
         $.post(
             'API/apiAdmin.php', {action: 'showUsers', choice: choice},
@@ -190,9 +147,9 @@ $(document).ready(function () {
                 } else {
                     for (let user of users) {
                         if (user.status == 'vendeur') {
-                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                            $('#listeUsersTries tbody').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>" + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><button class='btn-flat deleteUser'>Supprimer</button></td></tr>")
                         } else {
-                            $('#listeUsersTries').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>Inscription : " + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td><td><button class='deleteUser'>Supprimer</button></td></tr>")
+                            $('#listeUsersTries tbody').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td>" + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><button class='btn-flat deleteUser'>Supprimer</button></td></tr>")
                         }
                     }
                 }
@@ -205,7 +162,7 @@ $(document).ready(function () {
         let row = $(this).parents('tr')
         let idUser = row.attr('id')
         $('#infoAdmin').empty()
-        $(this).html('<button id="confirmSupprUser">Êtes-vous sûr.e ? </button><button class="navAdmin">Non.</button>')
+        $(this).html('<a class="btn-flat btn-small" id="confirmSupprUser">Oui</a> <a class="btn-flat btn-small navUser">Non</a>')
         $('#infoAdmin').append("<p>Si l'utilisateur est un vendeur, ses articles en vente seront aussi supprimés. Procéder avec prudence.</p>")
         $('body').on('click', '#confirmSupprUser', function () {
             $.post(
@@ -223,6 +180,7 @@ $(document).ready(function () {
     //BOUTON CONTACT user
     $('body').on('click', '.contactUser', function (event) {
         $('#nameDestinataire').empty()
+        $('#newMessage textarea').val('')
         let row = $(this).parents('tr')
         let idDestinataire = row.attr('id')
         let loginDestinataire = row.attr('value')
@@ -235,12 +193,13 @@ $(document).ready(function () {
                 'API/apiMessagerie.php', {
                     action: 'sendNewMessage',
                     idDestinataire: idDestinataire,
-                    messageContent: $('#newMessage input').val()
+                    messageContent: $('#newMessage textarea').val()
                 },
                 function (data) {
                     let message = JSON.parse(data);
                     console.log(data);
-                    $('#infoMessage').append("<p>Message envoyé !</p>")
+                    $('#newMessage textarea').val('')
+                    M.toast({html: 'Message envoyé !'})
                 }
             )
         })

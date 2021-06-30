@@ -38,7 +38,7 @@ $(document).ready(function() {
                 for (let message of messages) {
                     if (message === "success") {
                         $('#formConnexion button').fadeOut("fast", function() {
-                            $("#message").append("<p>Inscription réussie !</p> <a href='compte'>Voir votre profil</a>");
+                            M.toast({html: 'Inscription réussie !'})
                         })
                     } else {
                         $('#message').append("<p>" + message + "</p>");
@@ -70,7 +70,8 @@ $(document).ready(function() {
                 for (let message of messages) {
                     if (message === "success") {
                         $('#formConnexion button').fadeOut("fast", function() {
-                            $("#message").append("<p>Connexion réussie !</p> <a href='compte'>Voir votre profil</a>");
+                            M.toast({html: 'Connexion réussie !'})
+                            $("#message").append("<p><a href='compte'>Voir votre profil</a>");
                         })
                     } else {
                         $('#message').append("<p>" + message + "</p>");
@@ -91,6 +92,7 @@ $(document).ready(function() {
             function(data) {
                 console.log(data);
                 location.reload();
+                M.toast({html: 'Déconnexion réussie !'})
             },
         );
     });

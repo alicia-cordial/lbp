@@ -5,7 +5,7 @@ class Compte
     function __construct()
     {
         $title = "Compte";
-        $css = "compte.css";
+        $css = ["compte.css"];
         $js = ['module.js', 'compte.js', 'vendeur.js', 'shop.js'];
         ob_start();
         $this->selectMain();

@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     $('body').on('click', '.navUser', function () {
         $('.navUser').removeClass('activeTab');
         $(this).addClass('activeTab');
@@ -48,9 +47,9 @@ $(document).ready(function () {
                         contactList.append("Aucune conversation");
                     } else {
                         $.each(contacts, function (key, value) {
-                            contactList.append("<p class='individualConversation' id='" + value.id + "'><a href='profilVendeur?id="+ value.id +"'><span>"+ value.initial +"</span></a> " + value.identifiant + "</p>")
+                            contactList.append("<p class='individualConversation' id='" + value.id + "'><a href='profilVendeur?id=" + value.id + "'><span>" + value.initial + "</span></a> " + value.identifiant + "</p>")
                             if (value.status == 'supprimé') {
-                                $('#'+value.id).addClass('supprimé')
+                                $('#' + value.id).addClass('supprimé')
                             }
                         })
                     }
@@ -82,12 +81,12 @@ $(document).ready(function () {
                 let dates = []
                 for (let message of messages) {
 
-                    if (!dates.includes(message.day)) {
-                        conversation.append("<p id='+message.day+' class='dateMessage'>"+ message.day + "</p>")
-                        dates.push(message.day)
+                    if (!dates.includes(message.shortday)) {
+                        conversation.append("<p id='" + message.shortday + "' class='dateMessage'>" + message.day + "</p>")
+                        dates.push(message.shortday)
                     }
 
-                    conversation.append("<p class='pIndividualMessage' id='message" + message.id + "'><span class='individualMessage'>" + message.contenu + "</span><span>"+ message.time +"</span></p>")
+                    conversation.append("<p class='pIndividualMessage' id='message" + message.id + "'><span class='individualMessage'>" + message.contenu + "</span><span>" + message.time + "</span></p>")
                     if (message.id_expediteur == idDestinataire) {
                         $('#message' + message.id).addClass('messageDestinataire')
                     } else {
@@ -114,12 +113,20 @@ $(document).ready(function () {
                 let message = JSON.parse(data);
                 $('#newMessage').val('')
                 console.log(data);
-                if ($('#'+message.day).length === 0) {
-                    conversation.append("<p id='+message.day+' class='dateMessage'>"+ message.day + "</p>")
+                if ($('#' + message.shortday).length === 0) {
+                    conversation.append("<p id='" + message.shortday + "' class='dateMessage'>" + message.day + "</p>")
                 }
-                conversation.append("<p class='pIndividualMessage messageUtilisateur' id='message" + message.id + "'><span class='individualMessage'>" + message.contenu + "</span><span>"+ message.time +"</span></p>")
+                conversation.append("<p class='pIndividualMessage messageUtilisateur' id='message" + message.id + "'><span class='individualMessage'>" + message.contenu + "</span><span>" + message.time + "</span></p>")
             }
         )
+    })
+
+
+    var x = window.matchMedia("(max-width: 640px)")
+    mediaQueryContact(x) // Call listener function at run time
+    x.addListener(mediaQueryContact)
+    $('body').on('click', '#menuContacts', function () {
+        $('#contacts').toggle()
     })
 
 
@@ -142,7 +149,8 @@ $(document).ready(function () {
                 let messages = JSON.parse(data);
                 for (let message of messages) {
                     if (message === "success") {
-                        $("#message").append("<p>Modification du profil réussie !</p>");
+                        M.toast({html: 'Modification du profil réussie !'})
+                        // $("#message").append("<p>Modification du profil réussie !</p>");
                         setTimeout(
                             function () {
                                 $("#mainCompte").load(location.href + " #mainCompte")
@@ -168,5 +176,12 @@ function callSectionUser(page) {
 }
 
 
+function mediaQueryContact(x) {
+    if (x.matches) { // If media query matches
+        $('#contacts').hide()
+    } else {
+        $('#contacts').show()
+    }
+}
 
 
