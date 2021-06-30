@@ -1,5 +1,5 @@
-$(document).ready(function () {
-    
+$(document).ready(function() {
+
     // PAGE INDEX TOGGLE
     var objet = $('#objet'); // formulaire recherche objet
     var vendeur = $('#vendeur'); // formulaire recherche vendeur
@@ -10,7 +10,7 @@ $(document).ready(function () {
     //fonctions pour qu'un seul formulaire ne s'affiche
     objet.hide();
 
-    formobj.click(function () {
+    formobj.click(function() {
         objet.show();
 
         if (objet.css('display') == 'block') {
@@ -18,7 +18,7 @@ $(document).ready(function () {
         }
     });
 
-    formvendeur.click(function () {
+    formvendeur.click(function() {
         vendeur.show();
 
         if (vendeur.css('display') == 'block') {
@@ -29,37 +29,8 @@ $(document).ready(function () {
 
     /*************************AUTOCOMPLETION HEADER************************/
 
-    //RECHERCHE ARTICLE
 
-
-    //$('#sectionArticle').empty();
-    /*
-        $('body').on('click', '.navSearch', function() {
-            $('#sectionSearch').empty();
-
-            if ($(this).is('#navSearchSeller')) {
-                callSectionSearch('profilVendeur')
-            } else if ($(this).is('#navSearchObject')) {
-                callSectionSearch('resultatArticles')
-                $.post(
-                    'API/apiSearch', {action: 'SelectResearch'},
-                    function(data){
-                        let research = JSON.parse(data);
-                        let researchList = $('#result')
-                        console.log(data);
-                        if(research == 'none'){
-                            researchList.append('Aucun résultat');
-                        } else {
-
-                        }
-                    }
-                )
-            }
-        })
-    */
-
-
-    $('body').on('keyup', '#article_search', function (e) {
+    $('body').on('keyup', '#article_search', function(e) {
 
         // console.log('coucou')
         e.preventDefault()
@@ -70,7 +41,7 @@ $(document).ready(function () {
             'API/apiAutocompletion.php', {
                 term: article,
             },
-            function (data) {
+            function(data) {
                 console.log(data)
                 let articles = JSON.parse(data);
                 console.log(articles);
@@ -88,7 +59,7 @@ $(document).ready(function () {
 
     //RECHERCHE VENDEUR
 
-    $('#user').keyup(function () {
+    $('#user').keyup(function() {
         $('#message').html('');
         var user = $(this).val();
         console.log(user);
@@ -96,7 +67,7 @@ $(document).ready(function () {
             'API/apiSearch.php', {
                 search: user,
             },
-            function (data) {
+            function(data) {
                 console.log(data)
                 let users = JSON.parse(data);
                 console.log(users);
@@ -115,14 +86,14 @@ $(document).ready(function () {
     /**************MESSAGERIE**********/
 
 
-    $('body').on('click', '.contactUser', function (event) {
+    $('body').on('click', '.contactUser', function(event) {
         $('#nameDestinataire').empty()
         let idDestinataire = $('#idDestinataire').attr('value'); //id 
         console.log(idDestinataire)
         let loginDestinataire = $('#nameDestinataire').attr('value'); //login
         console.log(loginDestinataire)
         $('#nameDestinataire').append('<p>' + loginDestinataire + '</p>')
-        $('body').on('submit', '#newMessage', function (event) {
+        $('body').on('submit', '#newMessage', function(event) {
 
             console.log($('#newMessage input').val())
             event.preventDefault()
@@ -132,7 +103,7 @@ $(document).ready(function () {
                     idDestinataire: idDestinataire,
                     messageContent: $('#newMessage input').val()
                 },
-                function (data) {
+                function(data) {
                     let message = JSON.parse(data);
                     console.log(data);
                     $('#infoMessage').append("<p>Message envoyé !</p>")
@@ -142,60 +113,10 @@ $(document).ready(function () {
     });
 
 
-    /*
-        $('#rechercher').keyup(function() {
-            $('#message_form').html('');
-            var recherche = $(this).val();
-            console.log(recherche);
-
-            $.get(
-                'API/apiSearch.php', {
-                    research: recherche,
-
-                },
-                function(data) {
-                    let recherches = JSON.parse(data);
-                    console.log(recherches);
-
-                    for (let recherche of recherches) {
-                        $('#message_form').append('<a href="resultatArticles?id=' + recherche.id + '">' + recherche.titre + recherche.nom + recherche.zip + '</a></br>');
-                    }
-                },
-
-            );
-
-
-        });
-    */
-
-
-    //RECHERCHE TITRE AVEC CATEGORIE
-    /*
-        $('#titre').keyup(function() {
-            $('#message_form').html('');
-            var article = $(this).val();
-            console.log(article);
-            $.get(
-                'API/apiSearch.php', {
-                    term: article,
-                },
-                function(data) {
-                    console.log(data)
-                    let articles = JSON.parse(data);
-                    console.log(articles);
-                    for (let article of articles) {
-                        $('#message_form').append('<a href="resultatArticles?research=' + article.titre + '">' + article.titre + ' dans ' + article.nom + '</a ></br> ');
-                    }
-                },
-            );
-        });
-
-    */
-
 
     /*******************RECHERCHE COMPLETE**********************/
 
-    $('#form_objet').submit(function (e) {
+    $('#form_objet').submit(function(e) {
         e.preventDefault();
 
         //.serialize à la place des var va chercher dans POST
@@ -209,11 +130,11 @@ $(document).ready(function () {
         var zip = $('zip').val();
         $.ajax({
             url: "API/apiSearch.php",
-            method: "POST",
-            data: {nom: nom, titre: titre, zip: zip},
+            method: "GET",
+            data: { nom: nom, titre: titre, zip: zip },
             dataType: "json",
             encode: true,
-            success: function (data) {
+            success: function(data) {
                 $('#message_form').append("<p>Message envoyé !</p>");
 
             }
