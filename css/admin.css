@@ -2,14 +2,14 @@
     display: none;
 }
 
-#showUsersContainer {
+#showUsersContainer, #showModerationContainer {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-around;
 }
 
-.showUsers {
+.showUsers, .showModeration {
     text-align: center;
     display: block;
     border-radius: 20px;
@@ -19,7 +19,7 @@
 }
 
 
-.showUsers:hover {
+.showUsers:hover, .showModeration:hover {
     background-color: #e0e0e0;
 }
 

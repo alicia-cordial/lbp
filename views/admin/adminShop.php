@@ -1,8 +1,17 @@
-<article>
-    <h3>CATEGORIES / Gestion des articles</h3>
-    <button id="addNewCat">Ajouter une catégorie</button>
-    <div id="categoriesVides"><h4>Catégories vides</h4></div>
-    <div id="categories"><h4>Catégories avec articles</h4></div>
+<article class="container center">
+    <a id="addNewCat" class="btn-floating btn-flat waves-effect waves-light"><i class="material-icons">add</i></a>
+</article>
+<article class="container">
+    <div class="center"><h4>Catégories Vides</h4></div>
+    <table id="categoriesVides" class="striped centered">
+        <thead><th>Nom</th><th>Supprimer</th></thead>
+        <tbody></tbody>
+    </table>
+    <div class="center"><h4>Catégories</h4></div>
+    <table id="categories" class="striped">
+        <thead><th>Catégories</th></thead>
+        <tbody></tbody>
+    </table>
 </article>
 
 <article id="articlesTries">

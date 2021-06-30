@@ -95,10 +95,10 @@ class AdminModel extends Database
     public function acceptArticleNewCat($categoryName, $id, $idVendeur)
     {
         $idCategory = $this->createNewCategory($categoryName);
-        $request = $this->pdo->prepare("UPDATE article SET categorie_suggeree = NULL, id_categorie = ?, visible = 1 WHERE id = ?");
-        $request->execute([$idCategory, $id]);
+        $request = $this->pdo->prepare("UPDATE article SET date_ajout = NOW(), categorie_suggeree = NULL, id_categorie = ?, visible = 1 WHERE id = ?");
+        $request->execute([$idCategory['id'], $id]);
         $request2 = $this->pdo->prepare("INSERT into utilisateur_article(id_article, id_vendeur) VALUES (?,?)");
-        $request->execute([$id, $idVendeur]);
+        $request2->execute([$id, $idVendeur]);
         return true;
     }
 
