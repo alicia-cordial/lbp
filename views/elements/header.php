@@ -43,16 +43,19 @@
                 <?php endif; ?>
                 <li><a href="compte"> + </a></li>
                 <li class="liNav">
-                    <form id="form_autocomplete" class="form_autocomplete" method="get">
-                        <div class="input-field">
-                            <input type="text" name="search" class="input_index" id="article_search"
+                        <div class="input-field" id="headerSearch">
+                            <input type="text" class="input_index" id="article_search"
                                    placeholder="RECHERCHE">
                         </div>
-                    </form>
+                    <ul id="result">
+<!--                        LALA-->
+                    </ul>
                 </li>
             </ul>
+
         </div>
     </nav>
+
 
     <ul class="sidenav" id="mobile-demo">
         <li><a href="home">Home</a></li>

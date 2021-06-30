@@ -1,4 +1,4 @@
-<table id="articlesVendus">
+<table id="articlesVendus" class="centered">
     <thead>
     <tr>
         <th>Titre</th>

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.dropdown-trigger').dropdown();
+
     //NAVIGATION
     $('body').on('click', '.navAdmin', function () {
         $('.navAdmin').removeClass('activeTab');

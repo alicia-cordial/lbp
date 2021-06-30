@@ -19,6 +19,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 body, main {
@@ -74,8 +75,22 @@ nav::-webkit-input-placeholder {
 nav:-moz-placeholder {
     text-align: center;
 }
+#headerSearch {
+height: auto;
+}
 
+#result {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 100;
+}
+#result li:hover {
+    background-color: rgba(0,0,0,0.2);
+}
 #secondNav {
+    z-index: 10;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -106,7 +121,7 @@ nav:-moz-placeholder {
     color: #fafafa;
 }
 #article_search:focus {
-    background: none;
+    background: rgba(0,0,0,0.2);
     color: white;
 }
 

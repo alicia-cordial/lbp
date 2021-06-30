@@ -1,10 +1,5 @@
-$(document).ready(function() {
-
-    //MATERIALIZE
-    M.AutoInit();
-
-
-
+$(document).ready(function () {
+    
     // PAGE INDEX TOGGLE
     var objet = $('#objet'); // formulaire recherche objet
     var vendeur = $('#vendeur'); // formulaire recherche vendeur
@@ -15,7 +10,7 @@ $(document).ready(function() {
     //fonctions pour qu'un seul formulaire ne s'affiche
     objet.hide();
 
-    formobj.click(function() {
+    formobj.click(function () {
         objet.show();
 
         if (objet.css('display') == 'block') {
@@ -23,7 +18,7 @@ $(document).ready(function() {
         }
     });
 
-    formvendeur.click(function() {
+    formvendeur.click(function () {
         vendeur.show();
 
         if (vendeur.css('display') == 'block') {
@@ -64,20 +59,23 @@ $(document).ready(function() {
     */
 
 
-    $('#article_search').keyup(function() {
-        $('#result').html('');
+    $('body').on('keyup', '#article_search', function (e) {
+
+        // console.log('coucou')
+        e.preventDefault()
+        $('#result').empty();
         var article = $(this).val();
         console.log(article);
         $.get(
             'API/apiAutocompletion.php', {
                 term: article,
             },
-            function(data) {
+            function (data) {
                 console.log(data)
                 let articles = JSON.parse(data);
                 console.log(articles);
                 for (let article of articles) {
-                    $('#result').append('<a href="article?id=' + article.id + '">' + article.titre + ' dans ' + article.nom + "</a></br>");
+                    $('#result').append('<li><a href="article?id=' + article.article_id + '">' + article.titre + ' <em>dans ' + article.nom + "</em></a></li>");
 
                 }
             },
@@ -86,22 +84,19 @@ $(document).ready(function() {
     });
 
 
-
-
-
     /***********************BARRE DE RECHERCHE AVANCÉE************************/
 
     //RECHERCHE VENDEUR
 
-    $('#user').keyup(function() {
+    $('#user').keyup(function () {
         $('#message').html('');
         var user = $(this).val();
         console.log(user);
-        $.get(
+        $.post(
             'API/apiSearch.php', {
                 search: user,
             },
-            function(data) {
+            function (data) {
                 console.log(data)
                 let users = JSON.parse(data);
                 console.log(users);
@@ -112,24 +107,22 @@ $(document).ready(function() {
 
 
             },
-
         );
 
     });
 
 
-
     /**************MESSAGERIE**********/
 
 
-    $('body').on('click', '.contactUser', function(event) {
+    $('body').on('click', '.contactUser', function (event) {
         $('#nameDestinataire').empty()
         let idDestinataire = $('#idDestinataire').attr('value'); //id 
         console.log(idDestinataire)
         let loginDestinataire = $('#nameDestinataire').attr('value'); //login
         console.log(loginDestinataire)
         $('#nameDestinataire').append('<p>' + loginDestinataire + '</p>')
-        $('body').on('submit', '#newMessage', function(event) {
+        $('body').on('submit', '#newMessage', function (event) {
 
             console.log($('#newMessage input').val())
             event.preventDefault()
@@ -139,7 +132,7 @@ $(document).ready(function() {
                     idDestinataire: idDestinataire,
                     messageContent: $('#newMessage input').val()
                 },
-                function(data) {
+                function (data) {
                     let message = JSON.parse(data);
                     console.log(data);
                     $('#infoMessage').append("<p>Message envoyé !</p>")
@@ -147,7 +140,6 @@ $(document).ready(function() {
             )
         })
     });
-
 
 
     /*
@@ -177,7 +169,6 @@ $(document).ready(function() {
     */
 
 
-
     //RECHERCHE TITRE AVEC CATEGORIE
     /*
         $('#titre').keyup(function() {
@@ -202,10 +193,9 @@ $(document).ready(function() {
     */
 
 
-
     /*******************RECHERCHE COMPLETE**********************/
 
-    $('#form_objet').submit(function(e) {
+    $('#form_objet').submit(function (e) {
         e.preventDefault();
 
         //.serialize à la place des var va chercher dans POST
@@ -220,10 +210,10 @@ $(document).ready(function() {
         $.ajax({
             url: "API/apiSearch.php",
             method: "POST",
-            data: { nom: nom, titre: titre, zip: zip },
+            data: {nom: nom, titre: titre, zip: zip},
             dataType: "json",
             encode: true,
-            success: function(data) {
+            success: function (data) {
                 $('#message_form').append("<p>Message envoyé !</p>");
 
             }

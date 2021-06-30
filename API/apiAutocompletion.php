@@ -1,21 +1,14 @@
 <?php
-
-require_once('../models/Database.php');
+require_once ("apiAutoloader.php");
 require_once('../models/Shop.php');
 
-if (isset($_GET['term'])) {
-    //var_dump($_GET['term']);
+if (isset($_GET['term']) && !(empty($_GET['term']))) {
+//    var_dump($_GET['term']);
     $model = new Shop();
 
     $term = htmlspecialchars($_GET['term']);
     $getArticle = $model->get_article($term);
-    $articleList = array();
-    
-    foreach($getArticle as $article){
-      $articleList = $article;
-    }
-    echo json_encode($articleList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
+    echo json_encode($getArticle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
 

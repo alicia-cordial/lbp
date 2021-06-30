@@ -26,18 +26,13 @@ require_once('../models/Shop.php');
 
 //RECHERCHE VENDEURS
 
-if (isset($_GET['search']) ) {
+if (isset($_POST['search']) ) {
 
   $model = new Shop();
 
-  $search = htmlspecialchars($_GET['search']);
+  $search = htmlspecialchars($_POST['search']);
   $getUser = $model->get_seller($search);
-  $sellerList = array();
-
-  foreach($getUser as $user){
-    $sellerList = $user;
-  }
-  echo json_encode($sellerList, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  echo json_encode($getUser, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 }
 

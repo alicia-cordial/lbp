@@ -4,28 +4,6 @@
 $model = new Shop();
 $articlesRandom = $model->selectArticlesRandom();
 
-//var_dump($model->get_cat());
-
-
-if (isset($_POST['submit'])) {
-    $model = new Shop();
-
-    $articles = $model->selectResearch($search);
-
-    $nom = htmlspecialchars($_POST['nom']);
-    $titre = htmlspecialchars($_POST['titre']);
-    $zip = htmlspecialchars($_POST['zip']);
-
-
-    //$articles = $model->selectObject($nom, $zip, $titre);
-
-
-    echo '<pre>';
-    var_dump($articles);
-
-    echo '</pre>';
-}
-
 
 ?>
 
@@ -36,7 +14,7 @@ if (isset($_POST['submit'])) {
         <p>BARRE NAVIGATION COMPLEXE</p>
         <section id="objet" class="form">
             <span id="formVendeur">Vendeur</span>
-            <form id="form_objet" class="form_index" method="post">
+            <form id="form_objet" class="form_index">
                 <label for="nom">Categories</label>
                 <select name="rechercher" id="nom">
                     <option value="">--Options--</option>
@@ -62,7 +40,7 @@ if (isset($_POST['submit'])) {
 
         <section id="vendeur">
             <span id="formObjet">Objet</span>
-            <form id="form_vendeur" class="form_index" method="get">
+            <form id="form_vendeur" class="form_index">
                 <input type="text" name="user" id="user" placeholder="Qui recherchez-vous ?">
             </form>
             <div>
@@ -92,7 +70,7 @@ if (isset($_POST['submit'])) {
                             <p>Ajouté le : <?= date('d-m-Y', strtotime($articleRandom['date_ajout'])) ?></p>
 
                         <div class="section"></div>
-                            <p><a href="article?id=<?= $articleRandom['id'] ?>">Voir +</a></p>
+                            <p><a href="article?id=<?= $articleRandom['article_id'] ?>">Voir +</a></p>
 
                     </div>
                 </div>
