@@ -48,9 +48,12 @@ $(document).ready(function () {
                         contactList.append("Aucune conversation");
                     } else {
                         $.each(contacts, function (key, value) {
-                            contactList.append("<p class='individualConversation' id='" + value.id + "'><a href='profilVendeur?id=" + value.id + "'><span>" + value.initial + "</span></a> " + value.identifiant + "</p>")
-                            if (value.status == 'supprimé') {
-                                $('#' + value.id).addClass('supprimé')
+                            contactList.append("<p class='individualConversation' id='" + value.id + "'><a href='profilVendeur?id=" + value.id + "'><span  class='initialIdentifiant'>" + value.initial + "</span></a> " + value.identifiant + "</p>")
+                            if (value.status != 'vendeur') {
+                                $('#' + value.id + ' a').addClass('disabled')
+                                if (value.status == 'supprimé') {
+                                    $('#' + value.id).addClass('supprimé')
+                                }
                             }
                         })
                     }

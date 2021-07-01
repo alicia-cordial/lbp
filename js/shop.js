@@ -84,29 +84,27 @@ $(document).ready(function() {
 
 
     /**************MESSAGERIE**********/
-
-
+    //BOUTON CONTACT user
     $('body').on('click', '.contactUser', function(event) {
-        $('#nameDestinataire').empty()
         let idDestinataire = $('#idDestinataire').attr('value'); //id 
         console.log(idDestinataire)
         let loginDestinataire = $('#nameDestinataire').attr('value'); //login
         console.log(loginDestinataire)
-        $('#nameDestinataire').append('<p>' + loginDestinataire + '</p>')
         $('body').on('submit', '#newMessage', function(event) {
-
             console.log($('#newMessage input').val())
             event.preventDefault()
             $.post(
                 'API/apiMessagerie.php', {
                     action: 'sendNewMessage',
                     idDestinataire: idDestinataire,
-                    messageContent: $('#newMessage input').val()
+                    messageContent: $('#newMessage textarea').val()
                 },
                 function(data) {
                     let message = JSON.parse(data);
                     console.log(data);
-                    $('#infoMessage').append("<p>Message envoyé !</p>")
+                    $('#newMessage textarea').val('')
+                    M.Toast.dismissAll();
+                    M.toast({html: 'Message envoyé !'})
                 }
             )
         })

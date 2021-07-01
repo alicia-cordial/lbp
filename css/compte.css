@@ -109,20 +109,6 @@ select {
     border-radius: 25px;
 }
 
-.individualConversation span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    width: 40px;
-    margin-right: 10px;
-    border-radius: 50%;
-    border: 1px solid black;
-}
-
-.individualConversation span:hover {
-    background-color: #eeeeee;
-}
 
 #contacts {
     border-right: 1px solid #212121;
@@ -139,6 +125,7 @@ display: flex;
 #sectionMessagerie {
     justify-content: space-between;
 }
+
 #conversation, #contacts {
     height: 50vh;
     overflow-y: auto;

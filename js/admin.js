@@ -54,7 +54,19 @@ $(document).ready(function () {
         }
     })
 
-    //CATEGORIES
+    //TOGGLE CAT
+    $('body').on('click', '.toggleCat', function () {
+        if ($(this).is('#toggleVide')) {
+            $("#categoriesVides").toggle("slow", function () {
+            });
+        } else {
+            $("#categories").toggle("slow", function () {
+            });
+        }
+
+    });
+
+    //CATEGORIES VOIR ARTICLES
     $('body').on('click', '.rowCategorie', function () {
         let row = $(this).parents('tr')
         let idCategory = row.attr('id');
@@ -112,7 +124,7 @@ $(document).ready(function () {
             }
         )
     })
-/*CHECK IF CATEGORIE EXISTS !!!!*/
+
     //Button nouvelle catégorie
     $('body').one('click', '#addNewCat', function () {
         if ($('#newCatName').length == 0) {
@@ -125,10 +137,13 @@ $(document).ready(function () {
                     function (data) {
                         console.log(data);
                         let cat = JSON.parse(data);
-                        $('#newCatName').val('')
-                        $('#categoriesVides').append("<tr value='" + cat.nom + "' id='" + cat.id + "'><td class='rowCategorie'>" + cat.nom + "</td><td><a class='btn-small btn-flat  deleteCat'>Supprimer</a></td></tr>")
-                        M.toast({html: 'Catégorie créée!'})
-
+                        if (cat == "same") {
+                            M.toast({html: 'Cette catégorie existe déjà'})
+                        } else {
+                            $('#newCatName').val('')
+                            $('#categoriesVides').append("<tr value='" + cat.nom + "' id='" + cat.id + "'><td class='rowCategorie'>" + cat.nom + "</td><td><a class='btn-small btn-flat  deleteCat'>Supprimer</a></td></tr>")
+                            M.toast({html: 'Catégorie créée!'})
+                        }
                     }
                 )
             } else {

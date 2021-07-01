@@ -32,6 +32,7 @@ var_dump($model->addSignal($id, $signal));
         <p>in <em><?= $articles['nom'] ?></em></p>
         <p><?= $articles['prix'] ?> €</p>
         <p><?= date("d/m/Y à H:i", strtotime($articles['date_ajout'])) ?></p>
+        <p><a href="profilVendeur?id=<?= $articles['id_vendeur'] ?>"><?= $articles['identifiant'] ?></a></p>
     </section>
     <!--  <table>
         <thead>

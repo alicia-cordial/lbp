@@ -117,10 +117,11 @@ $(document).ready(function () {
                 $('#message').empty();
                 console.log(data);
                 let message = JSON.parse(data);
-                $('#formNewArticle').empty();
                 if (message === "success") {
+                    $('#formNewArticle').empty();
                     M.toast({html: 'Annonce Créée !'})
                 } else if (message === "moderation") {
+                    $('#formNewArticle').empty();
                     M.toast({html: 'Annonce en modération. Veuillez attendre 48 heures avant de contacter un.e administrateur.ice.'})
                 } else {
                     $('#message').append("<p>" + message + "</p>");

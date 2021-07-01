@@ -51,11 +51,17 @@ class AdminModel extends Database
 
     //create new category
     public function createNewCategory($categoryName)
-    {
-        $request = $this->pdo->prepare("INSERT into categorie (nom) values (?)");
-        $request->execute([$categoryName]);
-        $id = $this->pdo->lastInsertId();
-        return ['id' => $id, 'nom' => $categoryName];
+    {   $check =  $this->pdo->prepare("SELECT LOWER(nom) from categorie WHERE nom = ?");
+        $check->execute([strtolower($categoryName)]);
+        $sameName = $check->fetch(PDO::FETCH_ASSOC);
+        if (!$sameName) {
+            $request = $this->pdo->prepare("INSERT into categorie (nom) values (?)");
+            $request->execute([$categoryName]);
+            $id = $this->pdo->lastInsertId();
+            return ['id' => $id, 'nom' => $categoryName];
+        } else {
+            return false;
+        }
     }
 
 

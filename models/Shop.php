@@ -54,8 +54,8 @@ class Shop extends Database{
 
   function showVendeur($id){
  
-    $request = $this->pdo->prepare("SELECT * FROM utilisateur INNER JOIN `article` ON utilisateur.id = article.id_vendeur WHERE utilisateur.id = '$id' ");
-    $request->execute([$id]);
+    $request = $this->pdo->prepare("SELECT *, utilisateur.status as userStatus FROM utilisateur LEFT JOIN `article` on article.id_vendeur = utilisateur.id WHERE utilisateur.id = ? AND utilisateur.status = ?");
+    $request->execute([$id, 'vendeur']);
     $userExist = $request->fetch(PDO::FETCH_ASSOC);
   
     return $userExist;

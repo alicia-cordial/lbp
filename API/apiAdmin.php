@@ -89,7 +89,9 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteCat') {
 
 if (isset($_POST['action']) && $_POST['action'] === 'addNewCat') {
     $add = $adminModel->createNewCategory($_POST['name']);
-    if ($add) {
+    if ($add != false) {
         echo json_encode($add, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode('same', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }

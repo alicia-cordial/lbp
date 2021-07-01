@@ -19,7 +19,8 @@
 }
 
 
-.showUsers:hover, .showModeration:hover {
+
+.showUsers:hover, .showModeration:hover, .toggleCat:hover {
     background-color: #e0e0e0;
 }
 

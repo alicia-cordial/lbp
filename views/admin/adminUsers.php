@@ -34,5 +34,4 @@
             <i class="material-icons right">send</i>
         </button>
     </form>
-    <div id="infoMessage"></div>
 </div>

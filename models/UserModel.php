@@ -107,7 +107,7 @@ class UserModel extends Database
 
     public function marquerCommeVendu($idAcheteur, $id)
     {
-        $request = $this->pdo->prepare("UPDATE article SET status = 'vendu', date_vente ='" . date('Y-m-d H:i:s') . "', id_acheteur = ? WHERE id = ? ");
+        $request = $this->pdo->prepare("UPDATE article SET status = 'vendu', visible = 0, date_vente ='" . date('Y-m-d H:i:s') . "', id_acheteur = ? WHERE id = ? ");
         $request->execute([$idAcheteur, $id]);
         $request2 = $this->pdo->prepare("UPDATE utilisateur_article SET id_client = ? WHERE id_article = ? ");
         $request2->execute([$idAcheteur, $id]);
