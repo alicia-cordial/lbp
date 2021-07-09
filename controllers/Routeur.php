@@ -11,7 +11,8 @@ class Routeur
         "resultatArticles" => "ResultatArticles",
         "profilVendeur" => "ProfilVendeur",
         "admin" => "Admin",
-        
+        "categorie" => "Categorie",
+
     ];
 
 //    controller sélectionné

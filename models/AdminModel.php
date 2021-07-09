@@ -76,7 +76,7 @@ class AdminModel extends Database
 
     public function showArticlesCategorie($idCategory)
     {
-        $request = $this->pdo->prepare("SELECT *, article.id as article_id from categorie INNER JOIN article on article.id_categorie = categorie.id INNER JOIN utilisateur on utilisateur.id = article.id_vendeur WHERE categorie.id = ? ORDER BY article.date_ajout");
+        $request = $this->pdo->prepare("SELECT *, article.id as article_id from categorie INNER JOIN article on article.id_categorie = categorie.id INNER JOIN utilisateur on utilisateur.id = article.id_vendeur WHERE categorie.id = ? AND article.visible ='1' ORDER BY article.date_ajout");
         $request->execute([$idCategory]);
         $categories = $request->fetchAll(PDO::FETCH_ASSOC);
         return $categories;

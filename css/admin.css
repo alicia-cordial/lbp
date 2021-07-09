@@ -15,10 +15,17 @@
     border-radius: 20px;
     padding: 10px;
     background-color: #eeeeee;
-    transition: 0.5s;
+
 }
 
 
+.toggleCat {
+    width: fit-content;
+}
+
+.toggleCat, .showUsers, .showModeration {
+    transition: 0.5s;
+}
 
 .showUsers:hover, .showModeration:hover, .toggleCat:hover {
     background-color: #e0e0e0;
@@ -26,4 +33,9 @@
 
 .toast, #toast-container {
     z-index: 11001;
+}
+
+
+#articlesTries {
+    width: 100%;
 }

@@ -1,14 +1,17 @@
 <?php
 
 if (isset($_GET['id'])) {
-
+    require_once('models/Shop.php');
     $model = new Shop();
 
     $id = htmlspecialchars($_GET['id']);
-    $articles = $model->showArticle($id);
-//    var_dump($articles);
+    $article = $model->showArticle($id);
+    if ($article['visible'] != '1') {
+        header('Location: home');
+    }
+//    var_dump($article);
     //echo '<pre>';
-    //var_dump($articles);
+    //var_dump($article);
     //echo'</pre>';
 }
 /*
@@ -27,70 +30,78 @@ var_dump($model->addSignal($id, $signal));
     */
 ?>
 <article class="container">
-    <section>
-        <h5><?= $articles['titre']; ?></h5>
-        <p>in <em><?= $articles['nom'] ?></em></p>
-        <p><?= $articles['prix'] ?> €</p>
-        <p><?= date("d/m/Y à H:i", strtotime($articles['date_ajout'])) ?></p>
-        <p><a href="profilVendeur?id=<?= $articles['id_vendeur'] ?>"><?= $articles['identifiant'] ?></a></p>
+
+    <section class="row">
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-image">
+                    <img src="img/articles/<?= $article['photo'] ?>">
+                </div>
+
+                <div class="card-content">
+                    <span class="card-title"><?= $article['titre']; ?></span>
+                    <p><?= $article['prix'] ?> €</p>
+                </div>
+                <div class="card-action">
+                    <p><em><a class="grey-text"
+                              href="categorie?id=<?= $article['id_categorie'] ?>"> <?= $article['nom'] ?> </a></em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6">
+            <div class="card cardVendeur grey darken-3">
+                <div class="card-content white-text">
+
+                    <span class="card-title"><span
+                                class='initialIdentifiant'> <?= strtoupper($article['identifiant']['0']) ?> </span> @<?= $article['identifiant'] ?></span>
+                    <p></p>
+                </div>
+                <div class="card-action white-text">
+                    <a class="goldHover white-text" href="profilVendeur?id=<?= $article['id_vendeur'] ?>">PROFIL</a>
+                    <p class="containerContactUser"><a
+                                class='contactUser white-text <?php if (!isset($_SESSION['user']) or $_SESSION['user']['id'] === $article['id_vendeur']) {
+                                    echo "disabled";
+                                } ?> ' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Infos supplémentaires : </span>
+                    <p>Ouvert aux négociations : <?= $article['ouvert_negociation'] ?></p>
+                    <p>Localisation : <?= $article['zip'] ?></p>
+                    <p>Etat : <?= $article['etat_objet'] ?></p>
+                    <p>Date de publication : <?= date("d/m/Y à H:i", strtotime($article['date_ajout'])) ?></p>
+                </div>
+            </div>
+        </div>
     </section>
-    <!--  <table>
-        <thead>
-        <tr>
-            <th>Description</th>
-            <th>Date Ajout</th>
-            <th>Prix</th>
-            <th>Etat objet</th>
-            <th>Ouvert à négociation</th>
-            <th>Signal</th>
-            <th>Catégorie</th>
-            <th>Vendeur</th>
-            <th>Code Postal</th>
-            <th>Mail</th>
-        </tr>
-        </thead>
 
-        <tbody>
+    <section class="row">
 
-        <tr>
-            <td><? /*= $articles['description']; */ ?></td>
-            <td><? /*= $articles['date_ajout']; */ ?></td>
-            <td><? /*= $articles['prix'] . '€'; */ ?></td>
-            <td><? /*= $articles['etat_objet']; */ ?></td>
-            <td><? /*= $articles['ouvert_negociation']; */ ?></td>
-            <td>
-                <form method='post' action='article.php'>
-                    <input type="hidden" value="<? /*= $articles['id']; */ ?>" name="id">
-                    <input type="text" value="<? /*= $articles['signal']; */ ?>" name="signal">
-                    <input type='submit' name='submit' value='submit'>
-                </form>
-            </td>
-
-            <td><? /*= $articles['nom']; */ ?></td>
-            <td><a href='profilVendeur?id=<? /*= $articles['id']; */ ?>'><? /*= $articles['identifiant']; */ ?></a></td>
-            <td><? /*= $articles['zip']; */ ?></td>
-
-            <td><a id=" <? /*= $articles['id'] */ ?>" class='contactUser <?php /*if (!(isset($_SESSION['user']))) {
-                    echo "disabled";
-                } */ ?>' href='#ex1' rel='modal:open'>Contacter le vendeur</a></td>
-
-
-        </tr>
-
-
-        </tbody>
-    </table>-->
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Description : </span>
+                    <p class="justifyText"><?= $article['description'] ?></p>
+                </div>
+            </div>
+        </div>
+    </section>
 </article>
 
-
 <div id="ex1" class="modal">
-    <div id="idDestinataire" value="<?= $articles['id']; ?>"></div>
-    <div id="nameDestinataire" value="<?= $articles['identifiant']; ?>"></div>
-    <form id='newMessage'>
-        <input placeholder='votre message' required>
-        <button type='submit'>Envoyer</button>
+    <div id="idDestinataire" value="<?= $article['id_vendeur']; ?>"></div>
+    <div id="nameDestinataire" value="<?= $article['identifiant']; ?>">A : <?= $article['identifiant']; ?></div>
+    <form id='newMessage' class="form">
+        <textarea class="materialize-textarea" required placeholder="Votre message. N'oubliez pas de mentionner l'article qui vous intéresse."></textarea>
+        <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
+            <i class="material-icons right">send</i>
+        </button>
     </form>
-    <div id="infoMessage"></div>
-    <a href="#" rel="modal:close">Close</a>
 </div>
+
 

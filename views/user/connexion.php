@@ -27,7 +27,7 @@
         </article>
 
         <article>
-            <p>Vous n'avez pas encore de compte ? <span class="callForm" id="callFormInscription">Inscrivez-vous.</span></p>
+            <p>Vous n'avez pas encore de compte ? <span class="goldHover callForm" id="callFormInscription">Inscrivez-vous.</span></p>
         </article>
     </section>
 </main>

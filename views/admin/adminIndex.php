@@ -8,5 +8,12 @@
         </ul>
     </article>
     <section id="sectionAdmin">
+
+        <div class="section"></div>
+        <div class="center">
+            <h3>Bienvenue <span class="goldText">@<?= $_SESSION['user']['identifiant'] ?></span></h3>
+        </div>
+
+
     </section>
 </main>

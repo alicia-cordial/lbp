@@ -1,6 +1,6 @@
 <?php
 
-require_once ("apiAutoloader.php");
+require_once("apiAutoloader.php");
 
 if (isset($_POST['action']) && $_POST['action'] === 'showConversation') {
     $messages = $userModel->selectMessagesConversation($_POST['idDestinataire'], $_SESSION['user']['id']);
@@ -20,3 +20,21 @@ if (isset($_POST['action']) && $_POST['action'] === 'selectContacts') {
         echo json_encode('none', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
+
+
+if (isset($_POST['view'])) {
+
+    $notifications = $userModel->fetchNotif($_SESSION['user']['id']);
+    if (!empty($notifications)) {
+        echo json_encode($notifications, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode('none', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
+    if ($_POST['view'] == 'yes') {
+        $dismiss = $userModel->dismissNotif($_SESSION['user']['id']);
+    }
+}
+//
+//var_dump($_SESSION['user']['id']);
+//var_dump($userModel->fetchNotif($_SESSION['user']['id']));

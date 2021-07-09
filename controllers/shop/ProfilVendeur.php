@@ -8,7 +8,7 @@ class ProfilVendeur
         
         $title = "ProfilVendeur";
         $css = ["home.css"];
-        $js = ["shop.js" ];
+        $js = ["shop.js", "module.js" ];
 
         ob_start();
         require_once('views/shop/profilVendeur.php');

@@ -7,6 +7,15 @@ require_once('Database.php');
 class Shop extends Database{
 
 
+    /*SELECT ARTICLES D'UNE CATEGORIE*/
+    function selectArticlesCategorie($idCat){
+        $request = $this->pdo->prepare("SELECT * FROM `article` WHERE visible = 1 AND id_categorie = ?");
+        $request->execute([$idCat]);
+        $result_search = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $result_search;
+    }
+
+
 /*SELECTION ARTICLE RANDOM HOME*/
     function selectArticlesRandom(){
         $request = $this->pdo->prepare("SELECT *, article.id as article_id FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE status = 'disponible' and article.visible = '1' ORDER BY RAND() LIMIT 10");
@@ -22,7 +31,6 @@ class Shop extends Database{
     $request->execute([$term]);
     $articles = $request->fetchAll(PDO::FETCH_ASSOC);
   return $articles;
-  
     }
 
   /*PROFIL ARTICLE*/
@@ -54,7 +62,7 @@ class Shop extends Database{
 
   function showVendeur($id){
  
-    $request = $this->pdo->prepare("SELECT *, utilisateur.status as userStatus FROM utilisateur LEFT JOIN `article` on article.id_vendeur = utilisateur.id WHERE utilisateur.id = ? AND utilisateur.status = ?");
+    $request = $this->pdo->prepare("SELECT *, utilisateur.status as userStatus, utilisateur.id as id_vendeur FROM utilisateur LEFT JOIN `article` on article.id_vendeur = utilisateur.id WHERE utilisateur.id = ? AND utilisateur.status = ?");
     $request->execute([$id, 'vendeur']);
     $userExist = $request->fetch(PDO::FETCH_ASSOC);
   
@@ -64,7 +72,7 @@ class Shop extends Database{
 /*ARTICLES VENDEUR */
   function showAllarticles($id){
 
-    $request = $this->pdo->prepare("SELECT * FROM `article` where id_vendeur = '$id' ");
+    $request = $this->pdo->prepare("SELECT *, article.id as id_article FROM `article`  INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id where id_vendeur = '$id' AND visible = 1 AND status = 'disponible' ");
     $request->execute();
     $result = $request->fetchAll(PDO::FETCH_ASSOC);
 

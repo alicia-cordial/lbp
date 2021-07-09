@@ -26,10 +26,10 @@ $(document).ready(function () {
                     let articles = JSON.parse(data);
                     console.log(data);
                     if (articles == 'none') {
-                        $("#articlesAchetes").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a href=''>chiner de nouveaux objets de valeur ?</a></td></tr>");
+                        $("#articlesAchetes").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a class='goldHover' href='home'>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesAchetes').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td> Vendeur : <a href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td> Acheté le : " + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
+                            $('#articlesAchetes').append("<tr id = '" + article.id_article + "'><td>" + article.titre + "</td><td> Vendeur : <a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td> Acheté le : " + article.date_vente + "</td><td><button class='supprimerArticle' >Supprimer</button></td></tr>");
                         }
                     }
                 }
@@ -154,7 +154,6 @@ $(document).ready(function () {
                 for (let message of messages) {
                     if (message === "success") {
                         M.toast({html: 'Modification du profil réussie !'})
-                        // $("#message").append("<p>Modification du profil réussie !</p>");
                         setTimeout(
                             function () {
                                 $("#mainCompte").load(location.href + " #mainCompte")

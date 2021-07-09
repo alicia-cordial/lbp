@@ -8,7 +8,7 @@ class UserModel extends Database
         $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE mail = ? OR identifiant = ?");
         $request->execute([$email, $login]);
         $userExists = $request->fetchAll(PDO::FETCH_ASSOC);
-        if ($userExists) {
+        if (!empty($userExists)) {
             return $userExists;
         } else {
             return false;
@@ -67,7 +67,7 @@ class UserModel extends Database
 
     public function selectVendeurArticles($id)
     {
-        $request = $this->pdo->prepare("SELECT *, DATE_FORMAT(date_ajout, '%b %d, %Y') as date FROM article AS art INNER JOIN utilisateur_article AS ua on art.id = id_article WHERE ua.id_vendeur = ? AND art.status = 'disponible' ");
+        $request = $this->pdo->prepare("SELECT *, DATE_FORMAT(date_ajout, '%b %d, %Y') as date FROM article AS art WHERE art.status = 'disponible' AND id_vendeur = ? ");
         $request->execute([$id]);
         $articlesVendeur = $request->fetchAll(PDO::FETCH_ASSOC);
         return $articlesVendeur;
@@ -105,12 +105,14 @@ class UserModel extends Database
         return $contacts;
     }
 
-    public function marquerCommeVendu($idAcheteur, $id)
+    public function marquerCommeVendu($idAcheteur, $idVendeur, $id)
     {
         $request = $this->pdo->prepare("UPDATE article SET status = 'vendu', visible = 0, date_vente ='" . date('Y-m-d H:i:s') . "', id_acheteur = ? WHERE id = ? ");
         $request->execute([$idAcheteur, $id]);
         $request2 = $this->pdo->prepare("UPDATE utilisateur_article SET id_client = ? WHERE id_article = ? ");
         $request2->execute([$idAcheteur, $id]);
+        $request3 = $this->pdo->prepare("UPDATE utilisateur SET nb_articles_vendus = nb_articles_vendus + 1 WHERE id = ? ");
+        $request3->execute([$idVendeur]);
         return true;
     }
 
@@ -134,7 +136,7 @@ class UserModel extends Database
     public function insertArticleAModerer($titre, $description, $prix, $etat, $negociation, $image, $catSuggeree, $idUser, $visible)
     {
         $request = $this->pdo->prepare("INSERT into article (titre, description, prix, etat_objet, ouvert_negociation, photo, categorie_suggeree, id_vendeur, visible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $request->execute([$titre, $description, $prix, $etat, $negociation,  $image, $catSuggeree, $idUser, $visible]);
+        $request->execute([$titre, $description, $prix, $etat, $negociation, $image, $catSuggeree, $idUser, $visible]);
         return true;
     }
 
@@ -154,22 +156,37 @@ class UserModel extends Database
         $idMessage = $this->pdo->lastInsertId();
         $request2 = $this->pdo->prepare("INSERT into utilisateur_message (id_destinataire, id_message) VALUES (?, ?)");
         $request2->execute([$idDestinataire, $idMessage]);
-        $request3 = $this->pdo->prepare("SELECT *, DATE_FORMAT(date, '%d%m%Y') as shortday, DATE_FORMAT(date, '%b %d, %Y') as day,  DATE_FORMAT(date, '%h:%i %p') as time FROM message WHERE id = $idMessage");
+        $request3 = $this->pdo->prepare("SELECT *, DATE_FORMAT(date, '%d%m%Y') as shortday, DATE_FORMAT(date, '%b %d, %Y') 
+                                        as day,  DATE_FORMAT(date, '%h:%i %p') as time FROM message WHERE id = $idMessage");
         $request3->execute();
         $message = $request3->fetch(PDO::FETCH_ASSOC);
         return $message;
     }
+
+    public function dismissNotif($idUser)
+    {
+        $request = $this->pdo->prepare("UPDATE utilisateur_message SET notification = 0 WHERE notification = 1 AND id_destinataire = ?");
+        $request->execute([$idUser]);
+        return true;
+    }
+
+    public function fetchNotif($idUser)
+    {
+        $request = $this->pdo->prepare("SELECT *, SUBSTRING(contenu, 1, 15) as shortContent FROM utilisateur_message inner join message on utilisateur_message.id_message = message.id inner join utilisateur on utilisateur.id = message.id_expediteur WHERE notification = 1 AND id_destinataire = ?");
+        $request->execute([$idUser]);
+        $notifications = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $notifications;
+    }
 }
 
-//////
-//$model = new UserModel();
-////var_dump($model->selectContacts('4'));
-//
+$model = new UserModel();
+//var_dump($model->fetchNotif('4'));
+////
 ////var_dump($model->sendNewMessage('4', '1', 'lala'));
 ////var_dump($model->selectMessagesConversation('4', '1'));
 //////var_dump($model->selectMessagesConversation('2', '1'));
-////$userExists = $model->userExists('may5', 'may5');
-////var_dump($userExists);
+//$userExists = $model->userExists('admin@admin.fr', 'admin');
+//var_dump($userExists);
 ////if($model->userIsAvailable('may@hotmail.fr', 'may', '1')) echo "no";
 //var_dump($model->userIsAvailable('may@may2.fr', 'may3', '2'));
 //var_dump($model->userIsAvailable('may@may.fr', 'may1', '2'));

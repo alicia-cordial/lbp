@@ -12,7 +12,8 @@ if (isset($_POST['form']) && ($_POST['form'] === 'inscription' || $_POST['form']
         $password = htmlspecialchars($_POST['password']);
         $password2 = htmlspecialchars($_POST['password2']);
         $errors = [];
-        $userExists = $userModel->userExists($login, $email);
+        $userExists = $userModel->userExists($email, $login);
+//        var_dump($userExists);
         $formIsFilled = true;
     } else {
         $errors = ['Veuillez remplir tous les champs SVP'];

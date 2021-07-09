@@ -7,8 +7,11 @@
         </div>
         <form class="form" id="formNewMessage">
             <div class="input-field">
-                <input type="text" id="newMessage" placeholder="écrivez un message ..." required>
+                <textarea class="materialize-textarea" placeholder=" Ecrivez un message ..." required id="newMessage"></textarea>
             </div>
+            <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
+                <i class="material-icons right">send</i>
+            </button>
         </form>
     </article>
 </section>

@@ -12,6 +12,7 @@
     <tr>
         <th>Identifiant</th>
         <th>Statut</th>
+        <th>Nombre d'articles vendus</th>
         <th>Date d'inscription</th>
         <th>Message</th>
         <th>Email</th>

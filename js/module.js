@@ -37,7 +37,7 @@ $(document).ready(function() {
                 let messages = JSON.parse(data);
                 for (let message of messages) {
                     if (message === "success") {
-                        $('#formConnexion button').fadeOut("fast", function() {
+                        $('#formInscription button').fadeOut("fast", function() {
                             M.toast({html: 'Inscription réussie !'})
                         })
                     } else {
@@ -70,8 +70,8 @@ $(document).ready(function() {
                 for (let message of messages) {
                     if (message === "success") {
                         $('#formConnexion button').fadeOut("fast", function() {
-                            M.toast({html: 'Connexion réussie !'})
-                            $("#message").append("<p><a href='compte'>Voir votre profil</a>");
+                            $("#message").append("<p><a class='goldText' href='compte'>Voir votre profil</a>");
+                            M.toast({html: 'Connexion réussie !', displayLength: 1000, completeCallback: function(){location.reload()}})
                         })
                     } else {
                         $('#message').append("<p>" + message + "</p>");
@@ -91,8 +91,7 @@ $(document).ready(function() {
             },
             function(data) {
                 console.log(data);
-                location.reload();
-                M.toast({html: 'Déconnexion réussie !'})
+                M.toast({html: 'Déconnexion réussie !', displayLength: 1000, completeCallback: function(){location.reload()}})
             },
         );
     });

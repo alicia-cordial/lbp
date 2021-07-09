@@ -1,5 +1,5 @@
 <div id="modalContent">
-    <form class="form formArticle" id="<?= $article['id'] ?>">
+    <form class="form formArticle formUpdateArticle" id="<?= $article['id'] ?>">
         <div value="<?= $article['photo'] ?>" class='preview update'></div>
 
         <div class="row center">

@@ -27,7 +27,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'supprimerArticle') {
 }
 
 if (isset($_POST['action']) && $_POST['action'] === 'marquerCommeVendu') {
-    $vendu = $userModel->marquerCommeVendu($_POST['idAcheteur'], $_POST['idArticle']);
+    $vendu = $userModel->marquerCommeVendu($_POST['idAcheteur'], $_SESSION['user']['id'], $_POST['idArticle']);
     if ($vendu) {
         echo json_encode('vendu', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
@@ -97,7 +97,7 @@ if (isset($_FILES['file']['name']) && isset($_POST['action'])) {
     $ext = explode(".", $_FILES['file']['name']);
     $end = end($ext);
     if (in_array($end, $allowed_ext)) {
-        if ($_FILES['file']['size'] < 1048576) {
+        if ($_FILES['file']['size'] < 500000000000) {
             if($_POST['action'] === "update") {
                 $name = $_POST['src'];
             } else {

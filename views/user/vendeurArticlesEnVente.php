@@ -3,6 +3,7 @@
     <tr>
         <th>Titre</th>
         <th>Photo</th>
+        <th>Statut</th>
         <th>Date de création</th>
         <th>Marquer comme vendu</th>
         <th>Modifier</th>
