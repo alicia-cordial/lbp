@@ -89,36 +89,6 @@ function selectObject($id){
   return $result;
 }
 
-/*****************************RECHERCHE PRÉCISE*********************/
-function Research($research){
-
-
- $query = "SELECT * FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id INNER JOIN `utilisateur`ON `article`.`id_vendeur` = `utilisateur`.id WHERE article.visible = '1' ";
-
-  //if(isset($_POST["minimum_price"], $_POST["maximum_price"]) && !empty($_POST["minimum_price"]) && !empty($_POST["maximum_price"])){
-    //$query .= " AND prix BETWEEN '".$_POST["minimum_price"]."' AND '".$_POST["maximum_price"]."' ";
- // }
-
-
-    if(isset($_POST["nom"])){
-      $query .= "AND categorie.nom LIKE '%$research%' ";
-    }
-
-      if(isset($_POST["titre"])){
-        $query .= " AND article.titre LIKE '%$research%' ";
-      }
-
-        if(isset($_POST["zip"])){
-          $query .= "AND utilisateur.zip LIKE '%$research%' ";
-        }
-
- $statement = $this->pdo->prepare($query);
- $statement->execute([$research]);
- $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-  
-  return $result;
-
-}
 
   /*AUTOCOMPLETION RECHERCHE OBJET*/
 
@@ -133,6 +103,7 @@ function Research($research){
   }
 
 
+  /***********AFFICHER TOUTES LES CATEGORIES *************************/
   function get_Cat(){
     $request = $this->pdo->prepare("SELECT * FROM `categorie` ");
     $request->execute();
@@ -141,6 +112,7 @@ function Research($research){
     return $result;
 
   }
+
 
 
   /****************SIGNALER UN OBJET**************/

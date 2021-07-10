@@ -1,5 +1,5 @@
 <?php
-require_once ("apiAutoloader.php");
+require_once ('apiAutoloader.php');
 
   //RECHERCHE ARTICLES
   if (isset($_GET['term'])) {
@@ -17,18 +17,4 @@ if (isset($_POST['search']) ) {
 
 }
 
-/*********RECHERCHE PRÉCISE*/
-if (isset($_GET['action']) && $_GET['action'] === 'Research') {
-    $research = $shopModel->Research($_GET['research']);
-    if ($research) {
-        echo json_encode($research, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
-}
-
-/*selectArticlesCategory*/
-/*if (isset($_POST['action']) && $_POST['action'] === 'selectArticlesCategory') {
-    $articles = $shopModel->selectArticlesCategorie($_POST['idCategory']);
-    if ($articles) {
-        echo json_encode($articles, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
-}*/
+ 

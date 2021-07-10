@@ -1,4 +1,8 @@
-$(document).ready(function () {
+$(document).ready(function() {
+
+
+    $('select').formSelect();
+
 
     // PAGE INDEX TOGGLE
     var objet = $('#objet'); // formulaire recherche objet
@@ -10,7 +14,7 @@ $(document).ready(function () {
     //fonctions pour qu'un seul formulaire ne s'affiche
     objet.hide();
 
-    formobj.click(function () {
+    formobj.click(function() {
         objet.show();
 
         if (objet.css('display') == 'block') {
@@ -18,7 +22,7 @@ $(document).ready(function () {
         }
     });
 
-    formvendeur.click(function () {
+    formvendeur.click(function() {
         vendeur.show();
 
         if (vendeur.css('display') == 'block') {
@@ -29,16 +33,16 @@ $(document).ready(function () {
     /*************************AUTOCOMPLETION HEADER************************/
 
 
-    $('body').on('keyup', '.article_search', function (e) {
+    $('body').on('keyup', '.article_search', function(e) {
         e.preventDefault()
         $('.result').empty();
         var article = $(this).val();
         // console.log(article);
         $.get(
-            'API/apiAutocompletion.php', {term: article},
-            function (data) {
+            'API/apiAutocompletion.php', { term: article },
+            function(data) {
                 console.log(data)
-                // console.log(articles);
+                    // console.log(articles);
                 if (data) {
                     let articles = JSON.parse(data);
                     for (let article of articles) {
@@ -50,16 +54,16 @@ $(document).ready(function () {
     });
 
 
-    /***********************BARRE DE RECHERCHE AVANCÉE************************/
+
 
     //RECHERCHE VENDEUR
-    $('#user').keyup(function () {
+    $('#user').keyup(function() {
         $('#message').html('');
         var user = $(this).val();
         console.log(user);
         $.post(
-            'API/apiSearch.php', {search: user},
-            function (data) {
+            'API/apiSearch.php', { search: user },
+            function(data) {
                 console.log(data)
                 let users = JSON.parse(data);
                 console.log(users);
@@ -70,21 +74,26 @@ $(document).ready(function () {
         );
 
     });
-    $('body').on('click', '.containerContactUser', function (event) {
+    $('body').on('click', '.containerContactUser', function(event) {
 
         if ($(this).find('.contactUser').hasClass('disabled')) {
-            M.toast({html: 'Action impossible'})
+            M.toast({ html: 'Action impossible' })
         }
     })
+
+
+
+
+
     /**************MESSAGERIE**********/
     //BOUTON CONTACT user
-    $('body').on('click', '.contactUser', function (event) {
+    $('body').on('click', '.contactUser', function(event) {
         let idDestinataire = $('#idDestinataire').attr('value'); //id
         if (idDestinataire != $('#idExpediteur').attr('value')) {
             console.log(idDestinataire)
             let loginDestinataire = $('#nameDestinataire').attr('value'); //login
             console.log(loginDestinataire)
-            $('body').on('submit', '#newMessage', function (event) {
+            $('body').on('submit', '#newMessage', function(event) {
                 console.log($('#newMessage input').val())
                 event.preventDefault()
                 $.post(
@@ -93,12 +102,12 @@ $(document).ready(function () {
                         idDestinataire: idDestinataire,
                         messageContent: $('#newMessage textarea').val()
                     },
-                    function (data) {
+                    function(data) {
                         let message = JSON.parse(data);
                         console.log(data);
                         $('#newMessage textarea').val('')
                         M.Toast.dismissAll();
-                        M.toast({html: 'Message envoyé !'})
+                        M.toast({ html: 'Message envoyé !' })
                     }
                 )
             })
@@ -107,51 +116,55 @@ $(document).ready(function () {
     });
 
 
-    /*******************RECHERCHE COMPLETE**********************/
-
-    $('#form_objet').submit(function (e) {
-        e.preventDefault();
-
-        //.serialize à la place des var va chercher dans POST
-        //function filter_data() {
-        $('#message_form').html('');
-        var action = 'apiSearch'; //je sais pas d'où ça vient
-        //var minimum_price = $('#hidden_minimum_price').val();
-        //var maximum_price = $('#hidden_maximum_price').val();
-        var nom = $('nom').val();
-        var titre = $('titre').val();
-        var zip = $('zip').val();
-        $.ajax({
-            url: "API/apiSearch.php",
-            method: "GET",
-            data: {nom: nom, titre: titre, zip: zip},
-            dataType: "json",
-            encode: true,
-            success: function (data) {
-                $('#message_form').append("<p>Message envoyé !</p>");
-
-            }
-        });
-
-
-        // }
-
-
-        /*
-                $('#price_range').slider({
-                    range: true,
-                    min: 1000,
-                    max: 65000,
-                    values: [1000, 65000],
-                    step: 500,
-                    stop: function(event, ui) {
-                        $('#price_show').html(ui.values[0] + ' - ' + ui.values[1]);
-                        $('#hidden_minimum_price').val(ui.values[0]);
-                        $('#hidden_maximum_price').val(ui.values[1]);
-                        filter_data();
-                    }
-                });*/
-    });
-
 
 })
+
+$(document).ready(function() {
+
+    filter_data();
+
+    function filter_data() {
+        $('.filter_data').html('<div id="loading" style="" ></div>');
+        var action = 'fetch_data';
+        var minimum_price = $('#hidden_minimum_price').val();
+        var maximum_price = $('#hidden_maximum_price').val();
+        var brand = get_filter('brand');
+        var ram = get_filter('ram');
+        var storage = get_filter('storage');
+        $.ajax({
+            url: "fetch_data.php",
+            method: "POST",
+            data: { action: action, minimum_price: minimum_price, maximum_price: maximum_price, brand: brand, ram: ram, storage: storage },
+            success: function(data) {
+                $('.filter_data').html(data);
+            }
+        });
+    }
+
+    function get_filter(class_name) {
+        var filter = [];
+        $('.' + class_name + ':checked').each(function() {
+            filter.push($(this).val());
+        });
+        return filter;
+    }
+
+    $('.common_selector').click(function() {
+        filter_data();
+    });
+
+    $('#price_range').slider({
+        range: true,
+        min: 1000,
+        max: 65000,
+        values: [1000, 65000],
+        step: 500,
+        stop: function(event, ui) {
+            $('#price_show').html(ui.values[0] + ' - ' + ui.values[1]);
+            $('#hidden_minimum_price').val(ui.values[0]);
+            $('#hidden_maximum_price').val(ui.values[1]);
+            filter_data();
+        }
+    });
+
+});
