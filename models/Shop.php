@@ -16,6 +16,18 @@ class Shop extends Database{
     }
 
 
+    /*ARTICLES VENDEUR */
+  function showAllarticlesCat($id){
+
+    $request = $this->pdo->prepare("SELECT *, article.id as id_article FROM `article`  INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE id_categorie = '$id' AND visible = 1 AND status = 'disponible' ");
+    $request->execute();
+    $result = $request->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result;
+  }
+
+
+
 /*SELECTION ARTICLE RANDOM HOME*/
     function selectArticlesRandom(){
         $request = $this->pdo->prepare("SELECT *, article.id as article_id FROM `article` INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE status = 'disponible' and article.visible = '1' ORDER BY RAND() LIMIT 10");
@@ -50,7 +62,7 @@ class Shop extends Database{
     /*AUTOCOMPLETION RECHERCHE VENDEUR */
 
   function get_seller($search){
-    $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE status = 'vendeur' AND `identifiant` LIKE '%$search%'");
+    $request = $this->pdo->prepare("SELECT * FROM utilisateur WHERE status = 'vendeur' AND droit = '0' AND `identifiant` LIKE '%$search%'");
     $request->execute([$search]);
     $getseller = $request->fetchAll(PDO::FETCH_ASSOC);
 
