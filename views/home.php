@@ -3,30 +3,21 @@
     <article id="navHome"><br>
         <p class="center">BARRE NAVIGATION COMPLEXE</p><br>
 
-        <!--<section id="objet" class="form">
+        <section id="objet" class="form">
             <span id="formVendeur">Vendeur</span>
             <form id="form_objet" class="form_index">
 
-                <label for="nom">Categories</label>
+                
                 <select class="common_selector nom" id="nom">
-                    <option value="">--Options--</option>
-                    <?php /*foreach ($model->get_Cat() as $cat): */?>
-                        <option value="<?/*= $cat['id'] */?>"><?/*= $cat['nom'] */?></option>
-                    <?php /*endforeach; */?>
+                    <option value="">--Catégories--</option>
+                    <?php foreach ($model->get_Cat() as $cat): ?>
+                        <option value="<?= $cat['id'] ?>"><?= $cat['nom'] ?></option>
+                    <?php endforeach;?>
                 </select>
 
-                <input type="text" class="common_selector titre" id="titre" placeholder="Que recherchez-vous ?">
-
-                <input type="text" class="common_selector zip" id="zip" placeholder="Quelle région?">
-
-
-                <input type="hidden" id="hidden_minimum_price" value="0"/>
-                <input type="hidden" id="hidden_maximum_price" value="65000"/>
-                <p id="price_show">1000 - 65000</p>
-                <div id="price_range"></div>
 
                 <div class="list-group">
-                    <button type="submit" name="submit" value="submit">Submit</button>
+                    <button type="submit">Submit</button>
                 </div>
             </form>
 
@@ -41,7 +32,7 @@
             <div>
                 <div id="message"></div>
             </div>
-        </section>-->
+        </section>
     </article>
 
 
