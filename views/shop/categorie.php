@@ -24,8 +24,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="card-stacked">
                         <div class="card-content articleCard">
-                            <span class="card-title"> <a class="grey-text goldHover"
-                                                         href="article?id=<?= $art['id_article'] ?>"><?= $art['titre'] ?></a></span>
+                            <span class="card-title"> <a class="grey-text goldHover" href="article?id=<?= $art['id_article'] ?>"><?= $art['titre'] ?></a></span>
                             <p><?= $art['prix'] ?> €</p>
                             
                         </div>
@@ -41,73 +40,65 @@ if (isset($_GET['id'])) {
 
 
 
-    <!-- Page Content -->
-    <div class="container">
-        <div class="row">
-     
-            <div class="col-md-3">                    
-    <div class="list-group">
-     <h3>Prix</h3>
-     <input type="hidden" id="hidden_minimum_price" value="0" />
-                    <input type="hidden" id="hidden_maximum_price" value="65000" />
-                    <p id="price_show">1000 - 65000</p>
-                    <div id="price_range"></div>
-                </div>    
+<h3>FILTRES</h3>
+
+     <!-- Page Content -->
+     <form id="form3">
+    <div>
+        <div>
+            <div>                    
+                <div>
+                    <p>Prix</p>
+                    <p class="range-field">
+                        <input type="range" id="test5" min="0" max="100000" />
+                    </p>
+
+                </div> 
+                </div>
+               
+    
+
+                <div>
+     <p>titres</p>
+     <?php foreach ($model->selectArticlesCategorie($id) as $cat): ?>
+                        <option value="<?= $cat['id'] ?>"><?= $cat['titre'] ?></option>
+                    <?php endforeach;?>
+                    <div>
+                        <label>
+                        <input type="checkbox"  />
+                        <span value="<?php echo $cat['titre']; ?>"  > <?php echo $cat['titre']; ?></span>
+                        </label>
+                    </div>
+                  
+                    </div>
+                </div>
                 <div class="list-group">
-
-
-     <h3>Titre</h3>
-                    <div style="height: 180px; overflow-y: auto; overflow-x: hidden;">
-     <?php
-
-                    $query = "SELECT DISTINCT(titre) FROM article WHERE visible = '1' ORDER BY article.id DESC";
-                    $statement = $connect->prepare($query);
-                    $statement->execute();
-                    $result = $statement->fetchAll();
-                    foreach($articles as $row)
-                    {
-                    ?>
-                    <div class="list-group-item checkbox">
-                        <label><input type="checkbox" class="common_selector brand" value="<?php echo $row['titre']; ?>"  > <?php echo $row['titre']; ?></label>
+     <p>Ville</p>
+                
+                    <div>
+                    <label>
+                        <input type="checkbox"  />
+                        <span value="<?php echo $cat['ville']; ?>"  > <?php echo $cat['ville']; ?></span>
+                    </label>
                     </div>
-                    <?php
-                    }
-
-                    ?>
-                    </div>
+               
                 </div>
-
-
     <div class="list-group">
-     <h3>État Objet</h3>
-                    <?php
-
-                    $query = "
-                    SELECT DISTINCT(etat_objet) FROM article WHERE visible = '1' ORDER BY titre DESC
-                    ";
-                    $statement = $connect->prepare($query);
-                    $statement->execute();
-                    $result = $statement->fetchAll();
-                    foreach($articles as $row)
-                    {
-                    ?>
-                    <div class="list-group-item checkbox">
-                        <label><input type="checkbox" class="common_selector ram" value="<?php echo $row['titre']; ?>" > <?php echo $row['titre']; ?> GB</label>
+     <p>État objet</p>
+                
+                    <div>
+                    <label>
+                        <input type="checkbox"  />
+                        <span value="<?php echo $cat['etat_objet']; ?>"  > <?php echo $cat['etat_objet']; ?></span>
+                    </label>
                     </div>
-                    <?php    
-                    }
-
-                    ?>
+               
                 </div>
 
             </div>
+            <button type="submit">Submit</button>
 
-            <div class="col-md-9">
-             <br />
-                <div class="row filter_data">
+     </form>
 
-                </div>
-            </div>
-        </div>
-
-    </div>
+     <div id='search_section'>
+     </div>

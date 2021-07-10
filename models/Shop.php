@@ -139,6 +139,38 @@ return $update;
   }
 
 
+
+
+
+  function filter_grp(){
+
+    $titre = htmlspecialchars($_POST['titre']);
+    $etat = htmlspecialchars($_POST['etat_objet']);
+    $ville = htmlspecialchars($_POST['ville']);
+
+    $query = "SELECT * FROM article as a, categorie as c 
+            WHERE c.id = a.id_categorie  ";
+
+    if(!empty($titre)){
+        $query .= " AND a.titre = '" . $titre . "' ";
+    }
+    if(!empty($etat)){
+        $query .= " AND a.etat_objet = '" . $etat . "' ";
+    }
+    if(!empty($ville)){
+        $query .= " AND a.ville = '" . $ville . "' ";
+    }
+  
+
+
+    $filtergrp = $this->pdo->prepare($query);
+    $filtergrp->execute();
+
+    return $filtergrp->fetchAll(\PDO::FETCH_ASSOC);
+
+
+}
+
 }
 
 //$model = new Shop();
