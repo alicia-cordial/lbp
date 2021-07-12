@@ -60,7 +60,7 @@ var_dump($model->addSignal($id, $signal));
                 <div class="card-action white-text">
                     <a class="goldHover white-text" href="profilVendeur?id=<?= $article['id_vendeur'] ?>">PROFIL</a>
                     <p class="containerContactUser"><a
-                                class='contactUser white-text <?php if (!isset($_SESSION['user']) or $_SESSION['user']['id'] === $article['id_vendeur']) {
+                                class='contactUser white-text <?php if (!isset($_SESSION['user']) or $_SESSION['user']['id'] === $article['id_vendeur'] or $_SESSION['user']['status'] == "vendeur") {
                                     echo "disabled";
                                 } ?> ' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></p>
                 </div>

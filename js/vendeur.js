@@ -42,7 +42,7 @@ $(document).ready(function () {
                         let select = $('.marquerCommeVendu')
                       //Affichage menu déroulant contact
                         $.post(
-                            'API/apiMessagerie', {action: 'selectContacts'},
+                            'API/apiMessagerie.php', {action: 'selectContacts'},
                             function (data) {
                                 let contacts = JSON.parse(data);
                                 // console.log(data);
@@ -273,7 +273,7 @@ $(document).ready(function () {
         // if ($('option:selected').val().length > 0) {
         if (row.find('option:selected').val().length > 0) {
             $.post(
-                'API/apiVendeur', {
+                'API/apiVendeur.php', {
                     action: 'marquerCommeVendu',
                     idArticle: idArticle,
                     idAcheteur: $('option:selected').val()

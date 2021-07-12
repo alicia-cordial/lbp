@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
             <div class="card-content col s12 m3 white-text">
                 <p class="containerContactUser"><a id="<?= $users['id_vendeur'] ?>"
                                                    class='contactUser <?php if (!isset($_SESSION['user']) or
-                                                       $_SESSION['user']['id'] === $users['id_vendeur']) {
+                                                       $_SESSION['user']['id'] === $users['id_vendeur'] or $_SESSION['user']['status'] == "vendeur") {
                                                        echo "disabled";
                                                    } ?>' href='#ex1' rel='modal:open'
                                                    class="btn white waves-effect waves-light">
