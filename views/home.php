@@ -38,7 +38,6 @@
         </section>
     </article>
 
-
     <!--SELECTION D'ZARTICLES EN RANDOM-->
     <article>
         <div class="row">
