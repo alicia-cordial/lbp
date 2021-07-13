@@ -1,22 +1,8 @@
 $(document).ready(function() {
 
 
-    $('select').formSelect();
+    //$('select').formSelect();
 
-    var slider = document.getElementById('test-slider');
-    noUiSlider.create(slider, {
-        start: [20, 80],
-        connect: true,
-        step: 1,
-        orientation: 'horizontal', // 'horizontal' or 'vertical'
-        range: {
-            'min': 0,
-            'max': 600000
-        },
-        format: wNumb({
-            decimals: 0
-        })
-    });
 
 
 

@@ -8,8 +8,7 @@ if (isset($_GET['id'])) {
         header('Location: home');
     }
     $articles = $model->showAllarticles($id);
-//    var_dump($users['id_vendeur']);
-//    var_dump($_SESSION['user']);
+
 }
 ?>
 <main id="profilVendeurMain">
@@ -75,7 +74,7 @@ if (isset($_GET['id'])) {
         <div id="idDestinataire" value="<?= $users['id_vendeur'] ?>"></div>
         <div id="idExpediteur" value="<?= $_SESSION['user']['id'] ?>"></div>
         <div id="nameDestinataire" value="<?= $users['identifiant'] ?>"><p>A : <?= $users['identifiant'] ?></p></div>
-        <form id='newMessage' class="form">
+        <form id='notation' class="form">
             <textarea class="materialize-textarea" required placeholder="Votre message. N'oubliez pas de mentionner l'article qui vous intéresse."></textarea>
             <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
                 <i class="material-icons right">send</i>
@@ -84,3 +83,5 @@ if (isset($_GET['id'])) {
     </div>
 
 </main>
+
+

@@ -1,6 +1,6 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
-    $('body').on('click', '.navUser', function () {
+    $('body').on('click', '.navUser', function() {
         $('.navUser').removeClass('activeTab');
         $(this).addClass('activeTab');
 
@@ -9,7 +9,7 @@ $(document).ready(function () {
         //UPDATE PROFIL
         if ($(this).is('#navUpdateProfil')) {
             callSectionUser('updateProfile')
-            $('body').on('change', 'input[name="status"]', function () {
+            $('body').on('change', 'input[name="status"]', function() {
                 if (!$(this).hasClass('originalStatus')) {
                     $('#statusInfo').css('display', 'block')
                 } else {
@@ -21,15 +21,15 @@ $(document).ready(function () {
         } else if ($(this).is('#navBoughtArticle')) {
             callSectionUser('clientArticlesAchetes')
             $.post(
-                'API/apiClient.php', {action: 'selectArticlesAchetes'},
-                function (data) {
+                'API/apiClient.php', { action: 'selectArticlesAchetes' },
+                function(data) {
                     let articles = JSON.parse(data);
                     console.log(data);
                     if (articles == 'none') {
                         $("#articlesAchetes tbody").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a class='goldHover' href='home'>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button class='noterVendeur btn-flat btn-small' >Noter</button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
+                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button id=" + article.id_vendeur + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
                         }
                     }
                 }
@@ -39,15 +39,15 @@ $(document).ready(function () {
         } else if ($(this).is('#navMessagerie')) {
             callSectionUser('messagerie')
             $.post(
-                'API/apiMessagerie.php', {action: 'selectContacts'},
-                function (data) {
+                'API/apiMessagerie.php', { action: 'selectContacts' },
+                function(data) {
                     let contacts = JSON.parse(data);
                     let contactList = $('#contacts')
                     console.log(data);
                     if (contacts == 'none') {
                         contactList.append("Aucune conversation");
                     } else {
-                        $.each(contacts, function (key, value) {
+                        $.each(contacts, function(key, value) {
                             contactList.append("<p class='individualConversation' id='" + value.id + "'><a href='profilVendeur?id=" + value.id + "'><span  class='initialIdentifiant'>" + value.initial + "</span></a> " + value.identifiant + "</p>")
                             if (value.status != 'vendeur') {
                                 $('#' + value.id + ' a').addClass('disabled')
@@ -63,11 +63,11 @@ $(document).ready(function () {
     })
 
     //MESSAGERIE CONVERSATION INDIVIDUELLE
-    $('body').on('click', '.individualConversation', function (event) {
+    $('body').on('click', '.individualConversation', function(event) {
         let idDestinataire = $(this).attr('id')
         $('.individualConversation').removeClass('activeTab')
         $(this).addClass('activeTab')
-        // console.log(idDestinataire)
+            // console.log(idDestinataire)
         let conversation = $('#conversation')
         conversation.empty()
         if ($(this).is('.supprimé')) {
@@ -77,8 +77,8 @@ $(document).ready(function () {
         }
         $('#formNewMessage').attr('value', idDestinataire)
         $.post(
-            'API/apiMessagerie.php', {action: 'showConversation', idDestinataire: idDestinataire},
-            function (data) {
+            'API/apiMessagerie.php', { action: 'showConversation', idDestinataire: idDestinataire },
+            function(data) {
 
                 let messages = JSON.parse(data);
                 console.log(messages);
@@ -101,7 +101,7 @@ $(document).ready(function () {
     })
 
     //NEW MESSAGE IN CONVERSATION
-    $('body').on('submit', '#formNewMessage', function (event) {
+    $('body').on('submit', '#formNewMessage', function(event) {
         let idDestinataire = $(this).attr('value')
         event.preventDefault()
         let conversation = $('#conversation')
@@ -113,7 +113,7 @@ $(document).ready(function () {
                 idDestinataire: idDestinataire,
                 messageContent: $('#newMessage').val()
             },
-            function (data) {
+            function(data) {
                 let message = JSON.parse(data);
                 $('#newMessage').val('')
                 console.log(data);
@@ -129,13 +129,13 @@ $(document).ready(function () {
     var x = window.matchMedia("(max-width: 640px)")
     mediaQueryContact(x) // Call listener function at run time
     x.addListener(mediaQueryContact)
-    $('body').on('click', '#menuContacts', function () {
+    $('body').on('click', '#menuContacts', function() {
         $('#contacts').toggle()
     })
 
 
-//Formulaire modification profil
-    $('body').on('submit', '#formUpdateUser', function (event) {
+    //Formulaire modification profil
+    $('body').on('submit', '#formUpdateUser', function(event) {
         $('#message').empty();
         event.preventDefault()
         $.post(
@@ -148,14 +148,14 @@ $(document).ready(function () {
                 email: $('#email').val(),
                 zip: $('#zip').val()
             },
-            function (data) {
+            function(data) {
                 console.log(data);
                 let messages = JSON.parse(data);
                 for (let message of messages) {
                     if (message === "success") {
-                        M.toast({html: 'Modification du profil réussie !'})
+                        M.toast({ html: 'Modification du profil réussie !' })
                         setTimeout(
-                            function () {
+                            function() {
                                 $("#mainCompte").load(location.href + " #mainCompte")
                             }, 1000);
                     } else {
@@ -168,10 +168,35 @@ $(document).ready(function () {
 
 
     //BOUTON NOTER VENDEUR
-    $('body').on('click', '.noterVendeur', function (event) {
- //ouverture d'une modale avec des étoiles ? Un commentaire ?
-//Il faudrait faire en sorte qu'une fois que la note a été donnée, on ne puisse plus
-// recliquer.
+    $('body').on('click', '.noterVendeur', function(event) {
+
+        //ouverture d'une modale avec des étoiles ? Un commentaire ?
+        //Il faudrait faire en sorte qu'une fois que la note a été donnée, on ne puisse plus
+        // recliquer.
+        let idVendeur = $(this).attr('id')
+        let idArticle = $(this).attr('id_article')
+        console.log(idVendeur)
+        $('body').on('submit', '#notation', function(event) {
+            console.log($('#notation input').val())
+            event.preventDefault()
+            $.post(
+                'API/apiMessagerie.php', {
+                    action: 'sendNewMessage',
+                    idVendeur: idVendeur,
+                    idArticle: idArticle,
+                    messageContent: $('#notation textarea').val()
+                },
+                function(data) {
+                    let message = JSON.parse(data);
+                    console.log(data);
+                    $('#notation textarea').val('')
+                    M.Toast.dismissAll();
+                    M.toast({ html: 'Message envoyé !' })
+                }
+            )
+        })
+
+
     })
 
 
@@ -181,7 +206,7 @@ $(document).ready(function () {
 /*FUNCTION*/
 function callSectionUser(page) {
     $.get('views/user/' + page + '.php',
-        function (data) {
+        function(data) {
             $('#sectionVendeur').html(data);
         });
 }
@@ -194,5 +219,3 @@ function mediaQueryContact(x) {
         $('#contacts').show()
     }
 }
-
-

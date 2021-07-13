@@ -19,7 +19,7 @@ class Shop extends Database{
     /*ARTICLES VENDEUR */
   function showAllarticlesCat($id){
 
-    $request = $this->pdo->prepare("SELECT *, article.id as id_article FROM `article`  INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE id_categorie = '$id' AND visible = 1 AND status = 'disponible' ");
+    $request = $this->pdo->prepare("SELECT *, article.id as id_article FROM `article`  INNER JOIN `categorie` ON `article`.`id_categorie` = `categorie`.id WHERE id_vendeur = '$id' AND visible = 1 AND status = 'disponible' ");
     $request->execute();
     $result = $request->fetchAll(PDO::FETCH_ASSOC);
 
@@ -126,55 +126,34 @@ function selectObject($id){
   }
 
 
+ /***********SELECTION  CATEGORIE *************************/
+ function cat($id){
+  $request = $this->pdo->prepare("SELECT * FROM `categorie` WHERE id = ? ");
+  $request->execute([$id]);
+  $result = $request->fetch(PDO::FETCH_ASSOC);
 
-  /****************SIGNALER UN OBJET**************/
+  return $result;
 
-  function addSignal($id, $signal){
-    $request = $this->pdo->prepare("UPDATE `article`SET `signal` = '?' WHERE article.id =  $id");
-    $update = $request->execute(array(
-    'signal' => $signal,
-    'id' => $id,
-    ));
-return $update;
-  }
+}
 
 
+  /************AJOUT AVIS******************/
 
+  public function addReview($id_vendeur, $note, $id_article){
 
-
-  function filter_grp(){
-
-    $titre = htmlspecialchars($_POST['titre']);
-    $etat = htmlspecialchars($_POST['etat_objet']);
-    $ville = htmlspecialchars($_POST['ville']);
-
-    $query = "SELECT * FROM article as a, categorie as c 
-            WHERE c.id = a.id_categorie  ";
-
-    if(!empty($titre)){
-        $query .= " AND a.titre = '" . $titre . "' ";
-    }
-    if(!empty($etat)){
-        $query .= " AND a.etat_objet = '" . $etat . "' ";
-    }
-    if(!empty($ville)){
-        $query .= " AND a.ville = '" . $ville . "' ";
-    }
-  
-
-
-    $filtergrp = $this->pdo->prepare($query);
-    $filtergrp->execute();
-
-    return $filtergrp->fetchAll(\PDO::FETCH_ASSOC);
+    //$this->pdo = new database();
+    $request = $this->pdo->prepare('INSERT INTO note(id_vendeur, note, id_article) VALUES(?, ?, ?)');
+    $request->execute([$id_vendeur, $note, $id_article]);
+    $note = $request->fetch(PDO::FETCH_ASSOC);
+    return $note;
+}
 
 
 }
 
-}
 
 //$model = new Shop();
 //echo '<pre>';
-//var_dump($model->selectResearch('vêtement'));
+//var_dump($model->addReview('2', '5'));
 //echo '</pre>';
 

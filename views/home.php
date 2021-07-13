@@ -1,3 +1,5 @@
+
+
 <main id="homeMain">
     <!--BARRE NAVIGATION COMPLEXE-->
     <article id="navHome"><br>
@@ -5,9 +7,10 @@
 
         <section id="objet" class="form">
             <span id="formVendeur">Vendeur</span>
-            <form id="form_objet" class="form_index">
+           
+           
+            <form id="form_objet" class="form_index" action="home.php" method="GET">
 
-                
                 <select class="common_selector nom" id="nom">
                     <option value="">--Catégories--</option>
                     <?php foreach ($model->get_Cat() as $cat): ?>
@@ -17,7 +20,7 @@
 
 
                 <div class="list-group">
-                    <button type="submit">Submit</button>
+                    <button type="submit" neme='submit' id='submit'>Submit</button>
                 </div>
             </form>
 
