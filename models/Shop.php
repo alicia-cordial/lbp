@@ -139,21 +139,39 @@ function selectObject($id){
 
   /************AJOUT AVIS******************/
 
-  public function addReview($id_vendeur, $note, $id_article){
+  public function addReview($note, $idArticle, $idVendeur){
 
-    //$this->pdo = new database();
-    $request = $this->pdo->prepare('INSERT INTO note(id_vendeur, note, id_article) VALUES(?, ?, ?)');
-    $request->execute([$id_vendeur, $note, $id_article]);
-    $note = $request->fetch(PDO::FETCH_ASSOC);
-    return $note;
+    $request = $this->pdo->prepare('INSERT INTO note(note, id_article, id_vendeur) VALUES(?, ?, ?)');
+    $request->execute([$note, $idArticle, $idVendeur]);
+    $idNote = $this->pdo->lastInsertId();
+    $request2 = $this->pdo->prepare("SELECT * FROM note WHERE id = $idNote");
+    $request2->execute();
+    $notes = $request2->fetch(PDO::FETCH_ASSOC);
+    return $notes;
+}
+
+public function moyenneNote($id){
+  $request = $this->pdo->prepare("SELECT  AVG(note) FROM note INNER JOIN article ON note.id_vendeur = article.id_vendeur WHERE article.id_vendeur =  ? ");
+  $request->execute([$id]);
+  $moyenne = $request->fetch(PDO::FETCH_ASSOC);
+
+  return $moyenne;
+}
+
+public function Note($id){
+  $request = $this->pdo->prepare("SELECT COUNT(note) FROM note WHERE note.id_vendeur = $id ");
+  $request->execute([$id]);
+  $allNotes = $request->fetch(PDO::FETCH_ASSOC);
+
+  return $allNotes;
 }
 
 
-}
 
+}
 
 //$model = new Shop();
 //echo '<pre>';
-//var_dump($model->addReview('2', '5'));
+//var_dump($model->addReview('2', '1', '2'));
 //echo '</pre>';
 

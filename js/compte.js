@@ -29,7 +29,7 @@ $(document).ready(function() {
                         $("#articlesAchetes tbody").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a class='goldHover' href='home'>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button id=" + article.id_vendeur + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
+                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
                         }
                     }
                 }
@@ -173,25 +173,27 @@ $(document).ready(function() {
         //ouverture d'une modale avec des étoiles ? Un commentaire ?
         //Il faudrait faire en sorte qu'une fois que la note a été donnée, on ne puisse plus
         // recliquer.
-        let idVendeur = $(this).attr('id')
-        let idArticle = $(this).attr('id_article')
+        let idArticle = $(this).attr('id')
+        let idVendeur = $(this).attr('value')
+        console.log(idArticle)
         console.log(idVendeur)
-        $('body').on('submit', '#notation', function(event) {
-            console.log($('#notation input').val())
+        $('body').on('submit', '#formNotation', function(event) {
+            // console.log($('#formRadio input').val())
             event.preventDefault()
             $.post(
-                'API/apiMessagerie.php', {
-                    action: 'sendNewMessage',
-                    idVendeur: idVendeur,
+                'API/apiAutocompletion.php', {
+                    action: 'addReview',
+                    note: $("input[name='note']:checked").val(),
                     idArticle: idArticle,
-                    messageContent: $('#notation textarea').val()
+                    idVendeur: idVendeur
+
                 },
                 function(data) {
-                    let message = JSON.parse(data);
+                    let notes = JSON.parse(data);
                     console.log(data);
-                    $('#notation textarea').val('')
+                    //$('.note').val('')
                     M.Toast.dismissAll();
-                    M.toast({ html: 'Message envoyé !' })
+                    M.toast({ html: 'Note envoyée !' })
                 }
             )
         })

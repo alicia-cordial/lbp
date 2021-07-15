@@ -8,7 +8,8 @@ if (isset($_GET['id'])) {
         header('Location: home');
     }
     $articles = $model->showAllarticles($id);
-
+    $moyenne = $model->moyenneNote($id);
+    $allNote = $model->Note($id);
 }
 ?>
 <main id="profilVendeurMain">
@@ -34,7 +35,7 @@ if (isset($_GET['id'])) {
                                                    class="btn white waves-effect waves-light">
                         <i class="material-icons">message</i>
                     </a></p>
-                <p>++++ Note</p>
+                <p><?= $moyenne["AVG(note)"]; ?><img src="img/favicon/icons8-étoile-20.png"/> Note(<?= $allNote["COUNT(note)"]; ?>) </p>
                 <p>Nombre de ventes : <?= $users['nb_articles_vendus'] ?> </p>
             </div>
         </div>
@@ -74,7 +75,7 @@ if (isset($_GET['id'])) {
         <div id="idDestinataire" value="<?= $users['id_vendeur'] ?>"></div>
         <div id="idExpediteur" value="<?= $_SESSION['user']['id'] ?>"></div>
         <div id="nameDestinataire" value="<?= $users['identifiant'] ?>"><p>A : <?= $users['identifiant'] ?></p></div>
-        <form id='notation' class="form">
+        <form id='newMessage' class="form">
             <textarea class="materialize-textarea" required placeholder="Votre message. N'oubliez pas de mentionner l'article qui vous intéresse."></textarea>
             <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
                 <i class="material-icons right">send</i>
