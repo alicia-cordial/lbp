@@ -1,4 +1,4 @@
-<table id="articlesSelling" class="highlight centered">
+<table id="articlesSelling" class="highlight centered tableResponsive">
     <thead>
     <tr>
         <th>Titre</th>

@@ -5,6 +5,10 @@
     justify-content: space-between;
 }
 
+#homeMain .card img {
+    position: center;
+}
+
 .cardVendeur .card-title, .cardVendeur  .card-content,
 .card-action  {
     display: flex !important;
@@ -12,6 +16,17 @@
 
 #profilVendeurMain .articleCard {
     text-align: right;
+}
+
+
+#profilVendeurMain .card-image, #categorieMain .card-image  {
+    max-width: 300px;
+    height: auto;
+    overflow: hidden;
+}
+
+#profilVendeurMain .card-image img, #categorieMain .card-image img {
+    object-fit: contain;
 }
 
 .card-action  {
@@ -22,7 +37,7 @@
 
 /*MEDIA QUERIES*/
 @media screen and (max-width: 640px) {
-    #profilVendeurMain .card img {
+    #profilVendeurMain .card img, #categorieMain .card img {
         object-fit: cover;
     }
 

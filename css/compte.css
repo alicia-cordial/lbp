@@ -19,11 +19,6 @@ select {
     display: inline-block;
 }
 
-#articlesSelling {
-    width: 100%;
-    overflow-x: auto;
-}
-
 .modal a.close-modal {
     display: none;
     position: relative;
@@ -212,7 +207,7 @@ select {
     .tabs {
         height: auto;
     }
-    #articlesSelling,
+    #articlesSelling
     #menuContacts {
         display: block;
     }

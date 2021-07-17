@@ -9,7 +9,7 @@ class Shop extends Database{
 
     /*SELECT ARTICLES D'UNE CATEGORIE*/
     function selectArticlesCategorie($idCat){
-        $request = $this->pdo->prepare("SELECT * FROM `article` WHERE visible = 1 AND id_categorie = ?");
+        $request = $this->pdo->prepare("SELECT *, article.id as id_article FROM `article` WHERE visible = 1 AND id_categorie = ?");
         $request->execute([$idCat]);
         $result_search = $request->fetchAll(PDO::FETCH_ASSOC);
         return $result_search;

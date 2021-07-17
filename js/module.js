@@ -38,7 +38,7 @@ $(document).ready(function() {
                 for (let message of messages) {
                     if (message === "success") {
                         $('#formInscription button').fadeOut("fast", function() {
-                            M.toast({html: 'Inscription réussie !'})
+                            M.toast({html: 'Inscription réussie !', displayLength: 1000, completeCallback: function(){location.reload()}})
                         })
                     } else {
                         $('#message').append("<p>" + message + "</p>");

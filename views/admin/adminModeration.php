@@ -8,7 +8,7 @@
 </article>
 
 
-<table id="moderationTriees" class="centered">
+<table id="moderationTriees" class="centered tableResponsive">
     <thead>
     <tr>
         <th>Titre</th>

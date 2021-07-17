@@ -7,7 +7,7 @@
     </div>
 </article>
 
-<table id="listeUsersTries" class="centered highlight">
+<table id="listeUsersTries" class="centered highlight tableResponsive">
     <thead>
     <tr>
         <th>Identifiant</th>

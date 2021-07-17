@@ -13,7 +13,7 @@
     </table>
 
     <div class="center toggleCat" id="toggleFull"><h4>Catégories</h4></div>
-    <table id="categories" class="striped centered">
+    <table id="categories" class="striped centered tableResponsive">
         <thead>
         <th>Nom</th>
         <th>Voir</th>
