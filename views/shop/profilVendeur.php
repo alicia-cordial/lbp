@@ -35,6 +35,7 @@ if (isset($_GET['id'])) {
                                                    class="btn white waves-effect waves-light">
                         <i class="material-icons">message</i>
                     </a></p>
+
                 <p><?= $moyenne["AVG(note)"]; ?><img src="img/favicon/icons8-étoile-20.png"/> Note(<?= $allNote["COUNT(note)"]; ?>) </p>
                 <p>Nombre de ventes : <?= $users['nb_articles_vendus'] ?> </p>
             </div>

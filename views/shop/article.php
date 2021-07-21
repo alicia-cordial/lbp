@@ -9,25 +9,11 @@ if (isset($_GET['id'])) {
     if ($article['visible'] != '1') {
         header('Location: home');
     }
-//    var_dump($article);
-    //echo '<pre>';
-    //var_dump($article);
-    //echo'</pre>';
+
+  
+
 }
-/*
-if($_POST['submit']){
 
-    $model = new Shop();
-
-    $id = htmlspecialchars($_GET['id']);
-    $signal = htmlspecialchars($_POST['signal']);
-
-        $model->addSignal($id, $signal);
-        $success = "SUCCESS";
-    }
-}
-var_dump($model->addSignal($id, $signal));
-    */
 ?>
 <article class="container">
 
@@ -75,6 +61,7 @@ var_dump($model->addSignal($id, $signal));
                     <p>Localisation : <?= $article['zip'] ?></p>
                     <p>Etat : <?= $article['etat_objet'] ?></p>
                     <p>Date de publication : <?= date("d/m/Y à H:i", strtotime($article['date_ajout'])) ?></p>
+                    <p><a class='signaler white-text' href='#ex2' rel='modal:open'><i class='material-icons black-text'>flag</i></a></p>
                 </div>
             </div>
         </div>
@@ -100,6 +87,22 @@ var_dump($model->addSignal($id, $signal));
         <textarea class="materialize-textarea" required placeholder="Votre message. N'oubliez pas de mentionner l'article qui vous intéresse."></textarea>
         <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
             <i class="material-icons right">send</i>
+        </button>
+    </form>
+</div>
+
+
+<div id="ex2" class="modal">
+
+    <form id='newSignal' class="form">
+            <div id="idArticle" value="<?= $article['id']; ?>"></div>
+            <div id="idUser" value="<?= $_SESSION['user']['id']; ?>"></div>
+    
+
+        <p> Pour signaler un article, c'est ici !</p>
+        <input hidden id="signal" value="1"/>
+        <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Signaler
+            <i class="material-icons right">flag</i>
         </button>
     </form>
 </div>

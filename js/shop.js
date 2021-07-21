@@ -117,6 +117,40 @@ $(document).ready(function() {
 
     });
 
+
+
+    //SIGNALEMENT 
+    $('body').on('click', '.signaler', function(event) {
+        let idUser = $('#idUser').attr('value'); //id
+        let idArticle = $('#idArticle').attr('value'); //id
+        console.log(idArticle)
+        console.log(idUser)
+        $('body').on('submit', '#newSignal', function(event) {
+            event.preventDefault()
+            $.post(
+                'API/apiAutocompletion.php', {
+                    action: 'addReport',
+                    signal: $("#signal").val(),
+                    idArticle: idArticle,
+                    idUser: idUser,
+                },
+
+
+                function(data) {
+                    let signals = JSON.parse(data);
+                    console.log(data);
+                    $('.signaler').fadeToggle('500'); //réponse courte durée disparait que temporairement
+                    M.Toast.dismissAll();
+                    M.toast({ html: 'Signalement enregistré !' })
+
+
+                })
+
+        });
+
+    });
+
+
     $("#form3").submit(function(e) {
         e.preventDefault();
 

@@ -137,12 +137,12 @@ function selectObject($id){
 }
 
 
-  /************AJOUT AVIS******************/
+  /************ AVIS******************/
 
-  public function addReview($note, $idArticle, $idVendeur){
+  public function addReview($note, $idArticle, $idVendeur, $visible){
 
-    $request = $this->pdo->prepare('INSERT INTO note(note, id_article, id_vendeur) VALUES(?, ?, ?)');
-    $request->execute([$note, $idArticle, $idVendeur]);
+    $request = $this->pdo->prepare('INSERT INTO note(note, id_article, id_vendeur, visible) VALUES(?, ?, ?, ?)');
+    $request->execute([$note, $idArticle, $idVendeur, $visible]);
     $idNote = $this->pdo->lastInsertId();
     $request2 = $this->pdo->prepare("SELECT * FROM note WHERE id = $idNote");
     $request2->execute();
@@ -166,12 +166,36 @@ public function Note($id){
   return $allNotes;
 }
 
+  /************SIGNALEMENT******************/
+
+  public function addReport($signal, $idArticle, $idUser){
+
+    $request = $this->pdo->prepare('INSERT INTO signalement(`signal`, id_article, id_utilisateur) VALUES(?, ?, ?)');
+    $request->execute([$signal, $idArticle, $idUser]);
+    $idSignal = $this->pdo->lastInsertId();
+    $request2 = $this->pdo->prepare("SELECT * FROM signalement WHERE id = $idSignal ");
+    $request2->execute([$idSignal]);
+    $signals = $request2->fetch(PDO::FETCH_ASSOC);
+    return $signals;
+}
+
+/*récupérer le nombre de signalement */
+
+
+public function nbSignal($id){
+  $request = $this->pdo->prepare("SELECT COUNT(`signal`) FROM signalement WHERE id_article =  $id");
+  $request->execute([$id]);
+  $allSignals = $request->fetch(PDO::FETCH_ASSOC);
+
+  return $allSignals;
+}
+
 
 
 }
 
 //$model = new Shop();
 //echo '<pre>';
-//var_dump($model->addReview('2', '1', '2'));
+//var_dump($model->addReport(2, 2, 3));
 //echo '</pre>';
 

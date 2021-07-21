@@ -11,14 +11,23 @@ if (isset($_GET['term']) && !(empty($_GET['term']))) {
   }
 
 
-
-
   if (isset($_POST['action']) && $_POST['action'] === 'addReview') {
    
-    $notes = $shopModel->addReview(htmlspecialchars($_POST['note']), htmlspecialchars($_POST['idArticle']), htmlspecialchars($_POST['idVendeur']));
+    $notes = $shopModel->addReview(htmlspecialchars($_POST['note']), htmlspecialchars($_POST['idArticle']), htmlspecialchars($_POST['idVendeur']), htmlspecialchars($_POST['visible']));
     if(!empty($notes)){
     echo json_encode($notes, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
 
 
+if (isset($_POST['action']) && $_POST['action'] === 'addReport') {
+  
+   $signal = htmlspecialchars($_POST['signal']);
+   $idArticle = htmlspecialchars($_POST['idArticle']);
+   $idUser = htmlspecialchars($_POST['idUser']);
+
+  $signals = $shopModel-> addReport($signal, $idArticle, $idUser);
+  if(!empty($signals)){
+  echo json_encode($signals, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+}

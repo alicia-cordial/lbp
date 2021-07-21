@@ -177,6 +177,7 @@ $(document).ready(function() {
         let idVendeur = $(this).attr('value')
         console.log(idArticle)
         console.log(idVendeur)
+        console.log(visible)
         $('body').on('submit', '#formNotation', function(event) {
             // console.log($('#formRadio input').val())
             event.preventDefault()
@@ -185,13 +186,16 @@ $(document).ready(function() {
                     action: 'addReview',
                     note: $("input[name='note']:checked").val(),
                     idArticle: idArticle,
-                    idVendeur: idVendeur
+                    idVendeur: idVendeur,
+                    visible: $("#visible").val(),
 
                 },
                 function(data) {
                     let notes = JSON.parse(data);
                     console.log(data);
                     //$('.note').val('')
+                    //$(#[identitifiant du bouton]).prop(disabled, true);
+                    $('.noterVendeur').fadeToggle('500'); //réponse courte durée disparait que temporairement
                     M.Toast.dismissAll();
                     M.toast({ html: 'Note envoyée !' })
                 }
@@ -203,6 +207,7 @@ $(document).ready(function() {
 
 
 })
+
 
 
 /*FUNCTION*/
