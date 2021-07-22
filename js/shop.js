@@ -97,7 +97,7 @@ $(document).ready(function() {
 
                 } else {
                     for (let cat of categories) {
-                        $('#categories').append("<option value='" + cat.nom + "' id='" + user.id + "'><p id='categories'>" + cat.nom + "</p></option>")
+                        $('#categories').append("<option value='" + cat.nom + "' id='" + user.id + "'><option id='categories'>" + cat.nom + "</option></option>")
 
 
                     }
