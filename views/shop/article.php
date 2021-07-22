@@ -16,7 +16,7 @@ if (isset($_GET['id'])) {
         header('Location: home');
     }
 
-  var_dump($signalement);
+  
   
 
 }

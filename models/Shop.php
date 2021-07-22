@@ -118,11 +118,11 @@ function selectObject($id){
   /***********AFFICHER TOUTES LES CATEGORIES *************************/
  
 
-  public function getCat($choice)
+  public function getCat()
   {
       
-          $request = $this->pdo->prepare("SELECT * FROM `categorie` WHERE id != 0 ");
-          $request->execute([$choice]);
+          $request = $this->pdo->prepare("SELECT * FROM `categorie` ");
+          $request->execute();
   
       $categories = $request->fetchAll(PDO::FETCH_ASSOC);
       return $categories;

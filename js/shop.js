@@ -1,10 +1,6 @@
 $(document).ready(function() {
 
-
-    //$('select').formSelect();
-
-
-
+    $('select').formSelect();
 
     // PAGE INDEX TOGGLE
     var objet = $('#objet'); // formulaire recherche objet
@@ -87,26 +83,25 @@ $(document).ready(function() {
 
     /***********************CATEGORIES***************************/
     $('body').on('click', '#form_objet', function() {
-        let choice = $(this).attr('value');
-        $('.categories').empty()
-        console.log(choice)
+
+        $('#categories').empty()
         $.post(
             'API/apiAutocompletion.php', {
-                action: 'getCat',
-                choice: choice
+                action: 'getCat'
             },
             function(data) {
                 console.log(data);
                 let categories = JSON.parse(data);
+                if (categories === 'none') {
+                    $('#categories').append("<p>Rien</p>")
 
-                for (let cat of categories) {
+                } else {
+                    for (let cat of categories) {
+                        $('#categories').append("<option value='" + cat.nom + "' id='" + user.id + "'><p id='categories'>" + cat.nom + "</p></option>")
 
-                    //$('.nom').append("<option value='" + cat.nom + "' id='" + cat.id + "'><p class='categories'>" + cat.nom + "</p></option>")
 
-                    $('.categories').append("<select value='" + cat.nom + "' id='" + user.id + "'><option class='categories'>" + cat.nom + "</option></select>")
-
+                    }
                 }
-
             }
         )
     })

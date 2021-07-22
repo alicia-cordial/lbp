@@ -173,18 +173,16 @@ $(document).ready(function() {
 
 
     //BOUTON NOTER VENDEUR
+    //ouverture d'une modale avec des étoiles ? Un commentaire ?
+    //Il faudrait faire en sorte qu'une fois que la note a été donnée, on ne puisse plus
+    // recliquer.
     $('body').on('click', '.noterVendeur', function(event) {
-
-        //ouverture d'une modale avec des étoiles ? Un commentaire ?
-        //Il faudrait faire en sorte qu'une fois que la note a été donnée, on ne puisse plus
-        // recliquer.
         let idArticle = $(this).attr('id')
         let idVendeur = $(this).attr('value')
         console.log(idArticle)
         console.log(idVendeur)
-            //console.log(visible)
+
         $('body').on('submit', '#formNotation', function(event) {
-            // console.log($('#formRadio input').val())
             event.preventDefault()
             $.post(
                 'API/apiAutocompletion.php', {
@@ -196,7 +194,7 @@ $(document).ready(function() {
                 function(data) {
                     let notes = JSON.parse(data);
                     console.log(data);
-                    $('.noterVendeur').fadeToggle('500'); //réponse courte durée disparait que temporairement
+                    $('.noterVendeur').fadeToggle('500');
                     M.Toast.dismissAll();
                     M.toast({ html: 'Note envoyée !' })
                 }

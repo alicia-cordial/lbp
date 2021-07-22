@@ -11,8 +11,8 @@
            
             <div id="form_objet" class="form_index"> 
 
-                <select class="common_selector nom" value= "" id="nom">
-                    <option class="categories">--Catégories--</option>
+                <select class="common_selector nom" id="nom">
+                    <option id="categories"  disabled selected>--Catégories--</option>
                  
                 </select>
             </div>
