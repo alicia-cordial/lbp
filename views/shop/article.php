@@ -10,7 +10,6 @@ if (isset($_GET['id'])) {
         header('Location: home');
     }
 
-    $id = htmlspecialchars($_GET['id']);
     $signalement = $model->nbSignal($id);
     if($signalement["COUNT(`signal`)"] == 2){
         header('Location: home');
