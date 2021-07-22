@@ -172,10 +172,10 @@ public function Note($id){
 
   /************SIGNALEMENT******************/
 
-  public function addReport($signal, $idArticle, $idUser){
+  public function addReport($signal, $idUser, $idArticle){
 
-    $request = $this->pdo->prepare('INSERT INTO signalement(`signal`, id_article, id_utilisateur) VALUES(?, ?, ?)');
-    $request->execute([$signal, $idArticle, $idUser]);
+    $request = $this->pdo->prepare('INSERT INTO signalement(`signal`, id_acheteur, id_article) VALUES(?, ?, ?)');
+    $request->execute([$signal,  $idUser, $idArticle]);
     $idSignal = $this->pdo->lastInsertId();
     $request2 = $this->pdo->prepare("SELECT DISTINCT * FROM signalement WHERE id = $idSignal ");
     $request2->execute([$idSignal]);
@@ -187,7 +187,7 @@ public function Note($id){
 
 
 public function nbSignal($id){
-  $request = $this->pdo->prepare("SELECT COUNT(`signal`) FROM signalement WHERE id_article =  $id");
+  $request = $this->pdo->prepare("SELECT COUNT(`signal`) FROM signalement INNER JOIN article ON article.id = signalement.id_article WHERE article.id =  ?");
   $request->execute([$id]);
   $allSignals = $request->fetch(PDO::FETCH_ASSOC);
 

@@ -40,7 +40,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'addReport') {
    $idArticle = htmlspecialchars($_POST['idArticle']);
    $idUser = htmlspecialchars($_POST['idUser']);
 
-  $signals = $shopModel-> addReport($signal, $idArticle, $idUser);
+  $signals = $shopModel-> addReport($signal, $idUser, $idArticle);
   if(!empty($signals)){
   echo json_encode($signals, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }

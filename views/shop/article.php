@@ -10,6 +10,13 @@ if (isset($_GET['id'])) {
         header('Location: home');
     }
 
+    $id = htmlspecialchars($_GET['id']);
+    $signalement = $model->nbSignal($id);
+    if($signalement["COUNT(`signal`)"] == 2){
+        header('Location: home');
+    }
+
+  var_dump($signalement);
   
 
 }
@@ -95,8 +102,9 @@ if (isset($_GET['id'])) {
 <div id="ex2" class="modal">
 
     <form id='newSignal' class="form">
-            <div id="idArticle" value="<?= $article['id']; ?>"></div>
-            <div id="idUser" value="<?= $_SESSION['user']['id']; ?>"></div>
+            <div id="idUser" value="<?= $article['id']; ?>"></div>
+          
+            <div id="idArticle" value="<?= $_SESSION['user']['id']; ?>"></div>
     
 
         <p> Pour signaler un article, c'est ici !</p>
