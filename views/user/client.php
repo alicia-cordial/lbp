@@ -16,7 +16,6 @@
 
 
     <div id="ex2" class="modal">
-
             <form id='formNotation' class="form">
             <div id="idArticle" ></div>
             <div id="idVendeur" ></div>
@@ -33,31 +32,24 @@
                                     <span><img src="img/favicon/icons8-étoile-20.png"/> </span>
                                 </label>
                             </p>
-
                             <p>
                                 <label>
                                     <input type="radio" name="note" value="3" />
                                     <span><img src="img/favicon/icons8-étoile-20.png"/> </span>
                                 </label>
                             </p>
-
-
                             <p>
                                 <label>
                                     <input type="radio" name="note" value="4" />
                                     <span><img src="img/favicon/icons8-étoile-20.png"/> </span>
                                 </label>
                             </p>
-
-
                             <p>
                                 <label>
                                     <input type="radio" name="note" value="5" />
                                     <span><img src="img/favicon/icons8-étoile-20.png"/> </span>
                                 </label>
                             </p>
-                      
-                        <!--<input hidden id="visible" value="1" />-->
 
                 <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
                     <i class="material-icons right">send</i>
