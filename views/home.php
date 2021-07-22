@@ -9,18 +9,16 @@
             <span id="formVendeur">Vendeur</span>
            
            
-            <form id="form_objet" class="form_index">
+            <div id="form_objet" class="form_index"> 
 
-                <select class="common_selector nom" id="nom">
-                    <option class="categories" value="">--Catégories--</option>
+                <select class="common_selector nom" value= "" id="nom">
+                    <option class="categories">--Catégories--</option>
                  
                 </select>
+            </div>
 
+ 
 
-                <div class="list-group">
-                    <button type="submit" neme='submit' id='submit'>Submit</button>
-                </div>
-            </form>
 
             <div id="message_form"></div>
         </section>

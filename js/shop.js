@@ -88,7 +88,7 @@ $(document).ready(function() {
     /***********************CATEGORIES***************************/
     $('body').on('click', '#form_objet', function() {
         let choice = $(this).attr('value');
-        $('.nom').empty()
+        $('#nom').empty()
         console.log(choice)
         $.post(
             'API/apiAutocompletion.php', {
@@ -99,11 +99,13 @@ $(document).ready(function() {
                 console.log(data);
                 let categories = JSON.parse(data);
                 if (categories === 'none') {
-                    $('.nom').append("<p>Rien</p>")
+                    $('#nom').append("<p>Rien</p>")
                 } else {
                     for (let cat of categories) {
 
-                        $('.nom').append("<option value='" + cat.nom + "' id='" + cat.id + "'><p class='categories'>" + cat.nom + "</p></option>")
+                        //$('.nom').append("<option value='" + cat.nom + "' id='" + cat.id + "'><p class='categories'>" + cat.nom + "</p></option>")
+
+                        $('#nom').append("<select value='" + cat.nom + "' id='" + user.id + "'><option class='categories'>" + cat.nom + "</option></select>")
 
                     }
                 }

@@ -10,14 +10,13 @@ if (isset($_GET['term']) && !(empty($_GET['term']))) {
     echo json_encode($getArticle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
-  if (isset($_POST['action']) && $_POST['action'] === 'getCat') {
-   
-    $choice = htmlspecialchars($_POST['choice']);
 
-    $notes = $shopModel->get_cat($choice);
-    if(!empty($notes)){
-    echo json_encode($notes, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
+
+if (isset($_POST['action']) && $_POST['action'] === 'getCat') {
+  $categories = $shopModel->getCat($_POST['choice']);
+  
+      echo json_encode($categories, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  
 }
 
 
