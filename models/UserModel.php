@@ -99,7 +99,7 @@ class UserModel extends Database
 
     public function selectContacts($id)
     {
-        $request = $this->pdo->prepare("SELECT DISTINCT utilisateur.identifiant, utilisateur.id, utilisateur.status, UPPER(SUBSTRING(`identifiant`, 1, 1)) as initial FROM utilisateur JOIN message INNER JOIN utilisateur_message on utilisateur_message.id_message = message.id WHERE (id_expediteur = $id AND id_destinataire = utilisateur.id) OR (id_destinataire = $id AND id_expediteur = utilisateur.id) AND droit = 0 AND utilisateur.id != $id");
+        $request = $this->pdo->prepare("SELECT DISTINCT utilisateur.identifiant, utilisateur.id, utilisateur.status, UPPER(SUBSTRING(`identifiant`, 1, 1)) as initial FROM utilisateur JOIN message INNER JOIN utilisateur_message on utilisateur_message.id_message = message.id WHERE (id_expediteur = $id AND id_destinataire = utilisateur.id) OR (id_destinataire = $id AND id_expediteur = utilisateur.id) AND utilisateur.id != $id");
         $request->execute();
         $contacts = $request->fetchAll(PDO::FETCH_ASSOC);
         return $contacts;
@@ -172,7 +172,7 @@ class UserModel extends Database
 
     public function fetchNotif($idUser)
     {
-        $request = $this->pdo->prepare("SELECT *, SUBSTRING(contenu, 1, 15) as shortContent FROM utilisateur_message inner join message on utilisateur_message.id_message = message.id inner join utilisateur on utilisateur.id = message.id_expediteur WHERE notification = 1 AND id_destinataire = ?");
+        $request = $this->pdo->prepare("SELECT *, SUBSTRING(contenu, 1,50) as shortContent FROM utilisateur_message inner join message on utilisateur_message.id_message = message.id inner join utilisateur on utilisateur.id = message.id_expediteur WHERE notification = 1 AND id_destinataire = ?");
         $request->execute([$idUser]);
         $notifications = $request->fetchAll(PDO::FETCH_ASSOC);
         return $notifications;

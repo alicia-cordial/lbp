@@ -34,6 +34,7 @@ $(document).ready(function () {
 
         } else if ($(this).is('#navAdminModeration')) {
             callSectionAdmin('adminModeration')
+
         } else if ($(this).is('#navAdminCategorie')) { //CATEGORIES
             callSectionAdmin('adminShop')
             $.post(
@@ -47,7 +48,7 @@ $(document).ready(function () {
                     } else {
                         for (let cat of categories) {
                             if ($('#' + cat.id).length === 0) {
-                                if (cat.titre) {
+                                if (cat.titre && cat.visible == '1') {
                                     $('#categories tbody').append("<tr value='" + cat.nom + "' id='" + cat.id + "'><td><input class='catNameInput' type='text' disabled value='" + cat.nom + "'></input></td><td><a href='#modalArticlesTries' rel='modal:open' class='btn-small btn-flat rowCategorie'>Voir</a></td><td><a class='btn-small btn-flat updateCat'>Modifier</a></td></tr>")
                                 } else {
                                     $('#categoriesVides tbody').append("<tr value='" + cat.nom + "' id='" + cat.id + "'><td class='rowCategorie'>" + cat.nom + "</td><td><a class='btn-small btn-flat deleteCat'>Supprimer</a></td></tr>")
@@ -88,7 +89,7 @@ $(document).ready(function () {
                 console.log(data);
                 let articles = JSON.parse(data);
                 for (let article of articles) {
-                    $('#articlesTries tbody').append("<tr value='" + article.identifiant + "' id='" + article.article_id + "'><td><a href='article?id=" + article.article_id + "'>" + article.titre + "</a></td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td>" + article.date_ajout + "</td><td><a href='profilVendeur?id="+ article.id_vendeur + "'> " + article.identifiant + "</td><td><a id ='" + article.id_vendeur + "' class='contactUser btn-flat btn-small' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><a class='btn-flat deleteArticle'>Supprimer</a></td></tr>")
+                    $('#articlesTries tbody').append("<tr value='" + article.identifiant + "' id='" + article.article_id + "'><td><a href='article?id=" + article.article_id + "'>" + article.titre + "</a></td><td><span class='imgContainer'><img src='img/articles/" + article.photo + "'></span></td><td>" + article.date_ajout + "</td><td><a href='profilVendeur?id="+ article.id_vendeur + "'>  @" + article.identifiant + "</td><td><a id ='" + article.id_vendeur + "' class='contactUser btn-flat btn-small' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><a class='btn-flat deleteArticle'>Supprimer</a></td></tr>")
                 }
 
             }
@@ -192,9 +193,9 @@ $(document).ready(function () {
                 } else {
                     for (let user of users) {
                         if (user.status == 'vendeur') {
-                            $('#listeUsersTries tbody').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a class='titleArticle' href='profilVendeur?id=" + user.id + "'>" + user.identifiant + "</a></td><td>" + user.status + "</td><td>" + user.nb_articles_vendus + "</td><td>" + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><a href='mailto:" + user.mail + "' target='blank'><i class='material-icons'>mail</i></a></td></t><td><button class='btn-flat deleteUser'>Supprimer</button></td></tr>")
+                            $('#listeUsersTries tbody').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td><a class='titleArticle' href='profilVendeur?id=" + user.id + "'>  @" + user.identifiant + "</a></td><td>" + user.status + "</td><td>" + user.nb_articles_vendus + "</td><td>" + user.date_inscription + "</td><td><a id ='" + user.id + "' class='contactUser' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><a href='mailto:" + user.mail + "' target='blank'><i class='material-icons'>mail</i></a></td></t><td><button class='btn-flat deleteUser'>Supprimer</button></td></tr>")
                         } else {
-                            $('#listeUsersTries tbody').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>" + user.identifiant + "</td><td>" + user.status + "</td><td> - </td><td>" + user.date_inscription + "</td><td><a id ='" + user.id_vendeur + "' class='contactUser' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><a href='mailto:" + user.mail + "' target='blank'><i class='material-icons'>mail</i></a><td><button class='btn-flat deleteUser'>Supprimer</button></td></tr>")
+                            $('#listeUsersTries tbody').append("<tr value='" + user.identifiant + "' id='" + user.id + "'><td>  @" + user.identifiant + "</td><td>" + user.status + "</td><td> - </td><td>" + user.date_inscription + "</td><td><a id ='" + user.id + "' class='contactUser' href='#ex1' rel='modal:open'><i class='material-icons'>message</i></a></td><td><a href='mailto:" + user.mail + "' target='blank'><i class='material-icons'>mail</i></a><td><button class='btn-flat deleteUser'>Supprimer</button></td></tr>")
                         }
                     }
                     $('#nbInscrits').text(users.length)
@@ -236,25 +237,28 @@ $(document).ready(function () {
         let loginDestinataire = row.attr('value')
         console.log(idDestinataire)
         $('#nameDestinataire').append('<p>' + loginDestinataire + '</p>')
+        sendNewMessage(idDestinataire)
+
+    });
+
+    function sendNewMessage(idDest) {
         $('body').on('submit', '#newMessage', function (event) {
-            console.log($('#newMessage input').val())
             event.preventDefault()
             $.post(
                 'API/apiMessagerie.php', {
                     action: 'sendNewMessage',
-                    idDestinataire: idDestinataire,
+                    idDestinataire: idDest,
                     messageContent: $('#newMessage textarea').val()
                 },
                 function (data) {
                     let message = JSON.parse(data);
                     console.log(data);
                     $('#newMessage textarea').val('')
-                    M.Toast.dismissAll();
                     M.toast({html: 'Message envoyé !'})
                 }
             )
         })
-    });
+    }
 
 
     //MODERATION
@@ -279,10 +283,10 @@ $(document).ready(function () {
                     for (let article of articles) {
                         if (article.categorie_suggeree != null) {
                             console.log("cat")
-                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='titleArticle' id='" + article.id_vendeur + "' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td><input value='" + article.categorie_suggeree + "'></td><td>" + article.description + "</td><td><a class='btn-flat acceptArticleNewCat'>Accepter</a></td><td><a class='deleteArticle btn-flat'>Supprimer</a></td></tr>")
+                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='titleArticle' id='" + article.id_vendeur + "' href='profilVendeur?id=" + article.id_vendeur + "'>  @" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td><input value='" + article.categorie_suggeree + "'></td><td><p class='articleDesc'>" + article.description + "<p></p></td><td><a class='btn-flat acceptArticleNewCat'>Accepter</a></td><td><a class='deleteArticle btn-flat'>Supprimer</a></td></tr>")
                         } else if (article.signal == 2 && article.categorie_suggeree == null && article.nom != null) {
                             console.log('signal')
-                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td class='categorie' id='" + article.id_categorie + "'>" + article.nom + "</td><td><a class='titleArticle' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td>" + article.description + "</td><td><a class='btn-flat acceptArticleSignal'>Accepter</a></td><td><a class='deleteArticle btn-flat '>Supprimer</a></td></tr>")
+                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td class='categorie' id='" + article.id_categorie + "'>" + article.nom + "</td><td><a class='titleArticle' href='profilVendeur?id=" + article.id_vendeur + "'>  @" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td>" + article.description + "</td><td><a class='btn-flat acceptArticleSignal'>Accepter</a></td><td><a class='deleteArticle btn-flat '>Supprimer</a></td></tr>")
                         }
                     }
                     $('#nbModeration').text(articles.length)

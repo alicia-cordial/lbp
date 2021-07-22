@@ -52,8 +52,6 @@ $(document).ready(function() {
     });
 
 
-
-
     //RECHERCHE VENDEUR
     $('#user').keyup(function() {
         $('#message').html('');
@@ -115,27 +113,30 @@ $(document).ready(function() {
             console.log(idDestinataire)
             let loginDestinataire = $('#nameDestinataire').attr('value'); //login
             console.log(loginDestinataire)
-            $('body').on('submit', '#newMessage', function(event) {
-                console.log($('#newMessage input').val())
-                event.preventDefault()
-                $.post(
-                    'API/apiMessagerie.php', {
-                        action: 'sendNewMessage',
-                        idDestinataire: idDestinataire,
-                        messageContent: $('#newMessage textarea').val()
-                    },
-                    function(data) {
-                        let message = JSON.parse(data);
-                        console.log(data);
-                        $('#newMessage textarea').val('')
-                        M.Toast.dismissAll();
-                        M.toast({ html: 'Message envoyé !' })
-                    }
-                )
-            })
+            sendNewMessage()
         }
-
     });
+
+    function sendNewMessage() {
+        $('body').on('submit', '#newMessage', function(event) {
+            console.log($('#newMessage input').val())
+            event.preventDefault()
+            $.post(
+                'API/apiMessagerie.php', {
+                    action: 'sendNewMessage',
+                    idDestinataire: idDestinataire,
+                    messageContent: $('#newMessage textarea').val()
+                },
+                function(data) {
+                    let message = JSON.parse(data);
+                    console.log(data);
+                    $('#newMessage textarea').val('')
+                    M.toast({ html: 'Message envoyé !' })
+                }
+            )
+        })
+    }
+
 
 
 
@@ -169,8 +170,6 @@ $(document).ready(function() {
         });
 
     });
-
-
 
 
 })
