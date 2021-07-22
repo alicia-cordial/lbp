@@ -29,12 +29,10 @@ $(document).ready(function() {
                         $("#articlesAchetes tbody").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a class='goldHover' href='home'>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
-                            if (article.note == 0) {
-                                $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
-                            } else {
-                                $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td>" + article.note + "</td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
-                            }
+
+                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
                         }
+
                     }
                 }
             )
@@ -193,15 +191,11 @@ $(document).ready(function() {
                     action: 'addReview',
                     note: $("input[name='note']:checked").val(),
                     idArticle: idArticle,
-                    idVendeur: idVendeur,
-                    // visible: $("#visible").val(),
-
+                    idVendeur: idVendeur
                 },
                 function(data) {
                     let notes = JSON.parse(data);
                     console.log(data);
-                    //$('.note').val('')
-                    //$(#[identitifiant du bouton]).prop(disabled, true);
                     $('.noterVendeur').fadeToggle('500'); //réponse courte durée disparait que temporairement
                     M.Toast.dismissAll();
                     M.toast({ html: 'Note envoyée !' })
