@@ -13,10 +13,10 @@ if (isset($_GET['term']) && !(empty($_GET['term']))) {
 
 
 if (isset($_POST['action']) && $_POST['action'] === 'getCat') {
-  $categories = $shopModel->getCat();
+  $categorie = $shopModel->getCat();
   
-      if (!empty($categories)) {
-        echo json_encode($categories, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+      if (!empty($categorie)) {
+        echo json_encode($categorie, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     } else {
         echo json_encode("none", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
