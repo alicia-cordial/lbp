@@ -29,11 +29,17 @@ $(document).ready(function() {
                         $("#articlesAchetes tbody").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a class='goldHover' href='home'>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
+                            if (article.note == 0) {
+                                $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
+                            } else {
+                                $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td>" + article.note + "</td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
+                            }
                         }
                     }
                 }
-            );
+            )
+
+
 
             //MESSAGERIE
         } else if ($(this).is('#navMessagerie')) {
@@ -127,8 +133,9 @@ $(document).ready(function() {
 
 
     var x = window.matchMedia("(max-width: 640px)")
-    mediaQueryContact(x) // Call listener function at run time
-    x.addListener(mediaQueryContact)
+    mediaQueryContact(x), // Call listener function at run time
+        x.addListener(mediaQueryContact)
+
     $('body').on('click', '#menuContacts', function() {
         $('#contacts').toggle()
     })
@@ -177,7 +184,7 @@ $(document).ready(function() {
         let idVendeur = $(this).attr('value')
         console.log(idArticle)
         console.log(idVendeur)
-        console.log(visible)
+            //console.log(visible)
         $('body').on('submit', '#formNotation', function(event) {
             // console.log($('#formRadio input').val())
             event.preventDefault()
@@ -187,7 +194,7 @@ $(document).ready(function() {
                     note: $("input[name='note']:checked").val(),
                     idArticle: idArticle,
                     idVendeur: idVendeur,
-                    visible: $("#visible").val(),
+                    // visible: $("#visible").val(),
 
                 },
                 function(data) {

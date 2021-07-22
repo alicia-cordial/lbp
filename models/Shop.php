@@ -116,9 +116,9 @@ function selectObject($id){
 
 
   /***********AFFICHER TOUTES LES CATEGORIES *************************/
-  function get_Cat(){
+  function get_Cat($choice){
     $request = $this->pdo->prepare("SELECT * FROM `categorie` ");
-    $request->execute();
+    $request->execute([$choice]);
     $result = $request->fetchAll(PDO::FETCH_ASSOC);
 
     return $result;
@@ -139,19 +139,19 @@ function selectObject($id){
 
   /************ AVIS******************/
 
-  public function addReview($note, $idArticle, $idVendeur, $visible){
+  public function addReview($note, $idArticle, $idVendeur){
 
-    $request = $this->pdo->prepare('INSERT INTO note(note, id_article, id_vendeur, visible) VALUES(?, ?, ?, ?)');
-    $request->execute([$note, $idArticle, $idVendeur, $visible]);
+    $request = $this->pdo->prepare('INSERT INTO notation(note, id_article, id_vendeur) VALUES(?, ?, ?)');
+    $request->execute([$note, $idArticle, $idVendeur]);
     $idNote = $this->pdo->lastInsertId();
-    $request2 = $this->pdo->prepare("SELECT * FROM note WHERE id = $idNote");
+    $request2 = $this->pdo->prepare("SELECT * FROM notation WHERE id = $idNote");
     $request2->execute();
     $notes = $request2->fetch(PDO::FETCH_ASSOC);
     return $notes;
 }
 
 public function moyenneNote($id){
-  $request = $this->pdo->prepare("SELECT  AVG(note) FROM note INNER JOIN article ON note.id_vendeur = article.id_vendeur WHERE article.id_vendeur =  ? ");
+  $request = $this->pdo->prepare("SELECT  AVG(note) FROM notation INNER JOIN article ON note.id_vendeur = article.id_vendeur WHERE article.id_vendeur =  ? ");
   $request->execute([$id]);
   $moyenne = $request->fetch(PDO::FETCH_ASSOC);
 
@@ -159,7 +159,7 @@ public function moyenneNote($id){
 }
 
 public function Note($id){
-  $request = $this->pdo->prepare("SELECT COUNT(note) FROM note WHERE note.id_vendeur = $id ");
+  $request = $this->pdo->prepare("SELECT COUNT(note) FROM notation WHERE note.id_vendeur = $id ");
   $request->execute([$id]);
   $allNotes = $request->fetch(PDO::FETCH_ASSOC);
 
@@ -173,7 +173,7 @@ public function Note($id){
     $request = $this->pdo->prepare('INSERT INTO signalement(`signal`, id_article, id_utilisateur) VALUES(?, ?, ?)');
     $request->execute([$signal, $idArticle, $idUser]);
     $idSignal = $this->pdo->lastInsertId();
-    $request2 = $this->pdo->prepare("SELECT * FROM signalement WHERE id = $idSignal ");
+    $request2 = $this->pdo->prepare("SELECT DISTINCT * FROM signalement WHERE id = $idSignal ");
     $request2->execute([$idSignal]);
     $signals = $request2->fetch(PDO::FETCH_ASSOC);
     return $signals;
@@ -196,6 +196,6 @@ public function nbSignal($id){
 
 //$model = new Shop();
 //echo '<pre>';
-//var_dump($model->addReport(2, 2, 3));
+//var_dump($model->addReview(3, 2, 2));
 //echo '</pre>';
 

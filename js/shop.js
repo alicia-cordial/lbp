@@ -85,6 +85,31 @@ $(document).ready(function() {
 
 
 
+    /***********************CATEGORIES***************************/
+    $('body').on('click', '#form_objet', function() {
+        let choice = $(this).attr('value');
+        $('.nom').empty()
+        console.log(choice)
+        $.post(
+            'API/apiAutocompletion.php', {
+                action: 'getCat',
+                choice: choice
+            },
+            function(data) {
+                console.log(data);
+                let categories = JSON.parse(data);
+                if (categories === 'none') {
+                    $('.nom').append("<p>Rien</p>")
+                } else {
+                    for (let cat of categories) {
+
+                        $('.nom').append("<option value='" + cat.nom + "' id='" + cat.id + "'><p class='categories'>" + cat.nom + "</p></option>")
+
+                    }
+                }
+            }
+        )
+    })
 
 
     /**************MESSAGERIE**********/

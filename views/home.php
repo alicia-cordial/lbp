@@ -9,13 +9,11 @@
             <span id="formVendeur">Vendeur</span>
            
            
-            <form id="form_objet" class="form_index" action="home.php" method="GET">
+            <form id="form_objet" class="form_index">
 
                 <select class="common_selector nom" id="nom">
-                    <option value="">--Catégories--</option>
-                    <?php foreach ($model->get_Cat() as $cat): ?>
-                        <option value="<?= $cat['id'] ?>"><?= $cat['nom'] ?></option>
-                    <?php endforeach;?>
+                    <option class="categories" value="">--Catégories--</option>
+                 
                 </select>
 
 

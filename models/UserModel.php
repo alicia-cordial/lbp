@@ -84,7 +84,7 @@ class UserModel extends Database
 
     public function selectClientArticles($id)
     {
-        $request = $this->pdo->prepare("SELECT * FROM article AS art INNER JOIN utilisateur_article as ua ON art.id = ua.id_article INNER JOIN utilisateur AS u ON art.id_vendeur = u.id WHERE ua.id_client = ? AND art.status = 'vendu'  ");
+        $request = $this->pdo->prepare("SELECT DISTINCT * FROM article AS art INNER JOIN utilisateur_article as ua ON art.id = ua.id_article INNER JOIN utilisateur AS u ON art.id_vendeur = u.id LEFT JOIN notation ON art.id = notation.id_article WHERE ua.id_client = ? AND art.status = 'vendu'  ");
         $request->execute([$id]);
         $articlesClient = $request->fetchAll(PDO::FETCH_ASSOC);
         return $articlesClient;
