@@ -12,13 +12,40 @@ if (isset($_GET['term']) && !(empty($_GET['term']))) {
 
 
 
+if (isset($_POST['action']) && $_POST['action'] === 'getCat') {
+  $categories = $shopModel->getCat();
+  
+      if (!empty($categories)) {
+        echo json_encode($categories, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    } else {
+        echo json_encode("none", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+  
+}
+
 
   if (isset($_POST['action']) && $_POST['action'] === 'addReview') {
+
+    $note = htmlspecialchars($_POST['note']);
+    $idArticle = htmlspecialchars($_POST['idArticle']);
+    $idVendeur =  htmlspecialchars($_POST['idVendeur']);
+  
    
-    $notes = $shopModel->addReview(htmlspecialchars($_POST['note']), htmlspecialchars($_POST['idArticle']), htmlspecialchars($_POST['idVendeur']));
+    $notes = $shopModel->addReview($note, $idArticle, $idVendeur);
     if(!empty($notes)){
     echo json_encode($notes, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
 
 
+if (isset($_POST['action']) && $_POST['action'] === 'addReport') {
+  
+   $signal = htmlspecialchars($_POST['signal']);
+   $idArticle = htmlspecialchars($_POST['idArticle']);
+   $idUser = htmlspecialchars($_POST['idUser']);
+
+  $signals = $shopModel-> addReport($signal, $idUser, $idArticle);
+  if(!empty($signals)){
+  echo json_encode($signals, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+}

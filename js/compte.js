@@ -29,11 +29,15 @@ $(document).ready(function() {
                         $("#articlesAchetes tbody").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a class='goldHover' href='home'>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'> @" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
+
+                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
                         }
+
                     }
                 }
-            );
+            )
+
+
 
             //MESSAGERIE
         } else if ($(this).is('#navMessagerie')) {
@@ -127,8 +131,9 @@ $(document).ready(function() {
 
 
     var x = window.matchMedia("(max-width: 640px)")
-    mediaQueryContact(x) // Call listener function at run time
-    x.addListener(mediaQueryContact)
+    mediaQueryContact(x), // Call listener function at run time
+        x.addListener(mediaQueryContact)
+
     $('body').on('click', '#menuContacts', function() {
         $('#contacts').toggle()
     })
@@ -168,17 +173,16 @@ $(document).ready(function() {
 
 
     //BOUTON NOTER VENDEUR
+    //ouverture d'une modale avec des étoiles ? Un commentaire ?
+    //Il faudrait faire en sorte qu'une fois que la note a été donnée, on ne puisse plus
+    // recliquer.
     $('body').on('click', '.noterVendeur', function(event) {
-
-        //ouverture d'une modale avec des étoiles ? Un commentaire ?
-        //Il faudrait faire en sorte qu'une fois que la note a été donnée, on ne puisse plus
-        // recliquer.
         let idArticle = $(this).attr('id')
         let idVendeur = $(this).attr('value')
         console.log(idArticle)
         console.log(idVendeur)
+
         $('body').on('submit', '#formNotation', function(event) {
-            // console.log($('#formRadio input').val())
             event.preventDefault()
             $.post(
                 'API/apiAutocompletion.php', {
@@ -186,12 +190,11 @@ $(document).ready(function() {
                     note: $("input[name='note']:checked").val(),
                     idArticle: idArticle,
                     idVendeur: idVendeur
-
                 },
                 function(data) {
                     let notes = JSON.parse(data);
                     console.log(data);
-                    //$('.note').val('')
+                    $('.noterVendeur').fadeToggle('500');
                     M.Toast.dismissAll();
                     M.toast({ html: 'Note envoyée !' })
                 }
@@ -203,6 +206,7 @@ $(document).ready(function() {
 
 
 })
+
 
 
 /*FUNCTION*/

@@ -57,6 +57,7 @@
                                 </label>
                             </p>
                       
+                        <!--<input hidden id="visible" value="1" />-->
 
                 <button class="btn grey darken-3 waves-effect waves-light" type="submit" name="action">Envoyer
                     <i class="material-icons right">send</i>
