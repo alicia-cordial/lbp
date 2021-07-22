@@ -171,20 +171,6 @@ $(document).ready(function() {
     });
 
 
-    $("#form3").submit(function(e) {
-        e.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: "models/Shop.php",
-            data: $('#form3').serialize(),
-            dataType: 'html',
-            success: function(data) {
-                $('#search_section').html(data);
-
-            }
-        })
-
-    });
 
 })
