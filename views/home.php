@@ -3,8 +3,6 @@
 <main id="homeMain">
     <!--BARRE NAVIGATION COMPLEXE-->
     <article id="navHome"><br>
-        <p class="center">BARRE NAVIGATION COMPLEXE</p><br>
-
         <section id="objet" class="form">
             <span id="formVendeur">Vendeur</span>
            

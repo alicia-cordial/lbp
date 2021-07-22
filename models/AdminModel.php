@@ -34,7 +34,7 @@ class AdminModel extends Database
             if ($choice == 'categorie_suggeree') {
                 $request = $this->pdo->prepare("SELECT *, article.id as article_id FROM article INNER JOIN utilisateur on article.id_vendeur = utilisateur.id WHERE visible = 0 AND $choice is not null AND article.status = 'disponible'");
             } else {
-                $request = $this->pdo->prepare("SELECT *, article.id as article_id FROM article INNER JOIN categorie on article.id_categorie = categorie.id INNER JOIN utilisateur on article.id_vendeur = utilisateur.id WHERE visible = 0 AND `signal` = 2 AND article.status = 'disponible'");
+                $request = $this->pdo->prepare("SELECT *, SUM(signalement.signal) as signale, article.id as article_id FROM signalement INNER JOIN article on article.id = signalement.id_article INNER JOIN categorie on article.id_categorie = categorie.id INNER JOIN utilisateur on article.id_vendeur = utilisateur.id  WHERE article.status = 'disponible' GROUP BY id_article HAVING SUM(signalement.signal) = 2");
             }
         }
         $request->execute();
@@ -111,7 +111,7 @@ class AdminModel extends Database
     //accept article signale
     public function acceptArticleSignal($id)
     {
-        $request = $this->pdo->prepare("UPDATE article SET `signal` = NULL, visible = 1 WHERE id = ?");
+        $request = $this->pdo->prepare("DELETE FROM signalement WHERE id_article = ?");
         $request->execute([$id]);
         return true;
     }

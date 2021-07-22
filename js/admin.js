@@ -283,10 +283,9 @@ $(document).ready(function () {
                     for (let article of articles) {
                         if (article.categorie_suggeree != null) {
                             console.log("cat")
-                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='titleArticle' id='" + article.id_vendeur + "' href='profilVendeur?id=" + article.id_vendeur + "'>  @" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td><input value='" + article.categorie_suggeree + "'></td><td><p class='articleDesc'>" + article.description + "<p></p></td><td><a class='btn-flat acceptArticleNewCat'>Accepter</a></td><td><a class='deleteArticle btn-flat'>Supprimer</a></td></tr>")
-                        } else if (article.signal == 2 && article.categorie_suggeree == null && article.nom != null) {
-                            console.log('signal')
-                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td class='categorie' id='" + article.id_categorie + "'>" + article.nom + "</td><td><a class='titleArticle' href='profilVendeur?id=" + article.id_vendeur + "'>  @" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td>" + article.description + "</td><td><a class='btn-flat acceptArticleSignal'>Accepter</a></td><td><a class='deleteArticle btn-flat '>Supprimer</a></td></tr>")
+                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='titleArticle' id='" + article.id_vendeur + "' href='profilVendeur?id=" + article.id_vendeur + "'>  @" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td><input value='" + article.categorie_suggeree + "'></td><td><p class='articleDesc'>" + article.description + "</p></td><td><a class='btn-flat acceptArticleNewCat'>Accepter</a></td><td><a class='deleteArticle btn-flat'>Supprimer</a></td></tr>")
+                        } else if (article.signale == 2 && article.categorie_suggeree == null && article.nom != null) {
+                            $('#moderationTriees tbody').append("<tr id='" + article.article_id + "'><td>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='titleArticle' href='profilVendeur?id=" + article.id_vendeur + "'>  @" + article.identifiant + "</a></td><td>" + article.date_ajout + "</td><td class='categorie' id='" + article.id_categorie + "'>" + article.nom + "</td><td><p class='articleDesc'>" + article.description + "</p></td><td><a class='btn-flat acceptArticleSignal'>Accepter</a></td><td><a class='deleteArticle btn-flat '>Supprimer</a></td></tr>")
                         }
                     }
                     $('#nbModeration').text(articles.length)
@@ -366,6 +365,7 @@ $(document).ready(function () {
                     $('#infoAdmin').html("<p>Un problème est survenu.</p>")
                 } else {
                     row.hide()
+                    M.toast({html: 'Article en ligne !'})
                     $('#infoAdmin').html("<p><a href='article?id=" + idArticle + "'>Article en ligne !</a></p>")
                 }
             },
