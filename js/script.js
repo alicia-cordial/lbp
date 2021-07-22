@@ -7,6 +7,8 @@ $(document).ready(function () {
 
     //NOTIFICATIONS
     function load_unseen_notification(view = '') {
+        $('#notification_dropdown').empty()
+
         $.ajax({
             url: "API/apiMessagerie.php",
             method: "POST",

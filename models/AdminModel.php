@@ -67,7 +67,7 @@ class AdminModel extends Database
 
     public function selectCategories()
     {
-        $request = $this->pdo->prepare("SELECT categorie.id, categorie.nom, article.titre from categorie LEFT JOIN article on article.id_categorie = categorie.id ORDER BY categorie.nom");
+        $request = $this->pdo->prepare("SELECT categorie.id, categorie.nom, article.titre, article.visible from categorie LEFT JOIN article on article.id_categorie = categorie.id ORDER BY categorie.nom");
         $request->execute();
         $categories = $request->fetchAll(PDO::FETCH_ASSOC);
         return $categories;

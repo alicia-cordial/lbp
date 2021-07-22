@@ -4,13 +4,14 @@ if (isset($_GET['id'])) {
 
     $id = htmlspecialchars($_GET['id']);
     $users = $model->showVendeur($id);
-    if ($users['userStatus'] != 'vendeur') {
+    if ($users['userStatus'] == 'supprimé' || $users['droit'] != 0) {
         header('Location: home');
     }
     $articles = $model->showAllarticles($id);
     $moyenne = $model->moyenneNote($id);
     $allNote = $model->Note($id);
 }
+
 ?>
 <main id="profilVendeurMain">
 

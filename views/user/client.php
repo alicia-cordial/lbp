@@ -7,6 +7,11 @@
             </ul>
     </article>
     <section id="sectionVendeur">
+        <div class="section"></div>
+        <div class="center">
+            <h3>Bienvenue <span class="goldText">@<?= $_SESSION['user']['identifiant'] ?></span></h3>
+        </div>
+        <div class="section"></div>
     </section>
 
 

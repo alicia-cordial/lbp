@@ -62,15 +62,14 @@ select {
     box-shadow: 0 1px 0 0 #c2ac71 !important;
 }
 
-[type="radio"]:checked+span:after,
-[type="radio"].with-gap:checked+span:after {
-    background-color: #c2ac71;
-    ;
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+    background-color: #c2ac71;;
 }
 
-[type="radio"]:checked+span:after,
-[type="radio"].with-gap:checked+span:before,
-[type="radio"].with-gap:checked+span:after {
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:before,
+[type="radio"].with-gap:checked + span:after {
     border: 2px solid #c2ac71;
 }
 
@@ -197,20 +196,35 @@ select {
 }
 
 
+/*IMAGE TABLEAU*/
+
+.imgContainer {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.imgContainer img {
+    width: 100%;
+}
+
 /*QUERIES*/
 
 @media screen and (max-width: 640px) {
     .tabs {
         flex-direction: column;
     }
+
     .tab,
     .tabs {
         height: auto;
     }
+
     #articlesSelling
     #menuContacts {
         display: block;
     }
+
     #sectionMessagerie,
     #contacts,
     #articleMessagerie {

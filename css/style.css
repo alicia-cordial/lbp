@@ -210,7 +210,10 @@ nav:-moz-placeholder {
     overflow-x: auto;
 }
 
-
+.articleDesc {
+    max-height: 30vh;
+    text-align: justify;
+}
 
 /*MEDIA QUERIES*/
 @media screen and (max-width: 640px) {
@@ -225,6 +228,9 @@ nav:-moz-placeholder {
 
     .card.horizontal.small .card-image img, .card.horizontal.medium .card-image img, .card.horizontal.large .card-image img {
         height: 80%;
+    }
+    .articleDesc {
+        overflow-y: scroll;
     }
 
     .tableResponsive {

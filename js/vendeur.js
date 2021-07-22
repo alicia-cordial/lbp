@@ -27,8 +27,8 @@ $(document).ready(function() {
                             }
                             d = new Date();
                             $('#articlesSelling tbody').append("<tr id ='" + article.id +
-                                "'><td><a class='goldHover' href='article?id=" + article.id + "'>" + article.titre + "</a></td><td>" +
-                                "<img height='100' width='100' src='img/articles/" + article.photo + '?' + d.getTime() + "'>" +
+                                "'><td><a class='goldHover' href='article?id=" + article.id + "'>" + article.titre + "</a></td><td><span class='imgContainer'>" +
+                                "<img src='img/articles/" + article.photo + '?' + d.getTime() + "'></span></td>" +
                                 "<td>" + article.visible + "</td>" +
                                 "</td><td>" + article.date + "</td><td>" +
                                 "    <select class='marquerCommeVendu'>" +
@@ -50,7 +50,7 @@ $(document).ready(function() {
                                     select.append("<option>Aucun contact</option>");
                                 } else {
                                     $.each(contacts, function(key, value) {
-                                        if (value.status != 'supprimé') select.append("<option value='" + value.id + "'>" + value.identifiant + "</option>")
+                                        if (value.status != 'supprimé' && value.identifiant != 'admin') select.append("<option value='" + value.id + "'>" + value.identifiant + "</option>")
                                     })
                                 }
                             },

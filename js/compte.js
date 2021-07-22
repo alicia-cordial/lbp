@@ -29,7 +29,7 @@ $(document).ready(function() {
                         $("#articlesAchetes tbody").append("<tr><td>Il n'y a rien ici.</td></tr><tr><td>Que diriez-vous de <a class='goldHover' href='home'>chiner de nouveaux objets de valeur ?</a></td></tr>");
                     } else {
                         for (let article of articles) {
-                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'>" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
+                            $('#articlesAchetes tbody').append("<tr><td id = '" + article.id_article + "'>" + article.titre + "</td><td><img height='100' width='100' src='img/articles/" + article.photo + "'></td><td><a class='goldHover' href='profilVendeur?id=" + article.id_vendeur + "'> @" + article.identifiant + "</a></td><td>" + article.date_vente + "</td><td><button value=" + article.id_vendeur + " id=" + article.id_article + " class='noterVendeur btn-flat btn-small' ><a href='#ex2' rel='modal:open'>Noter</a></button></td><td><button class='supprimerArticle  btn-flat  btn-small' >Supprimer</button></td></tr>");
                         }
                     }
                 }
