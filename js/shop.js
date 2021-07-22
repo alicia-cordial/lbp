@@ -82,7 +82,7 @@ $(document).ready(function() {
     /***********************CATEGORIES***************************/
     $('body').on('click', '#form_objet', function() {
 
-        $('#categories').empty()
+        $('#categorie').empty()
         $.post(
             'API/apiAutocompletion.php', {
                 action: 'getCat'
@@ -91,13 +91,11 @@ $(document).ready(function() {
                 console.log(data);
                 let categories = JSON.parse(data);
                 if (categories === 'none') {
-                    $('#categories').append("<p>Rien</p>")
+                    $('#categorie').append("<p>Rien</p>")
 
                 } else {
                     for (let cat of categories) {
-                        $('#categories').append("<option value='" + cat.nom + "' id='" + user.id + "'><option id='categories'>" + cat.nom + "</option></option>")
-
-
+                        $('#categorie').append("<option><a href='categorie?id=" + cat.id + "'>" + cat.nom + "</a></option></br>")
                     }
                 }
             }

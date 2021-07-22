@@ -120,12 +120,10 @@ function selectObject($id){
 
   public function getCat()
   {
-      
-          $request = $this->pdo->prepare("SELECT * FROM `categorie` ");
+          $request = $this->pdo->prepare("SELECT * FROM `categorie` INNER JOIN article ON categorie.id = article.id_categorie ");
           $request->execute();
-  
-      $categories = $request->fetchAll(PDO::FETCH_ASSOC);
-      return $categories;
+          $categorie[] = $request->fetchAll(PDO::FETCH_ASSOC);
+      return $categorie;
   }
 
 

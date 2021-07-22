@@ -7,18 +7,13 @@
             <span id="formVendeur">Vendeur</span>
            
            
-            <div id="form_objet" class="form_index"> 
-
+            <form id="form_objet" class="form_index"> 
                 <select class="common_selector nom" id="nom">
-                    <option id="categories"  disabled selected>--Catégories--</option>
-                 
+                    <option id="categories" disabled selected>--Catégories--</option>
+                    <option id="categorie"></option>
                 </select>
-            </div>
 
- 
-
-
-            <div id="message_form"></div>
+            </form>
         </section>
 
         <section id="vendeur">
